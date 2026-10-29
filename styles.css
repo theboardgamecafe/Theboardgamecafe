@@ -424,3 +424,57 @@ p{text-wrap:pretty}
 .sports-proof span{display:inline-flex;padding:8px 11px;border-radius:var(--r-pill);background:#fff;border:1px solid var(--line-light);font-size:12px;font-weight:700;color:var(--ink)}
 .sports-note{font-size:12px;color:var(--ink-muted);margin-top:14px}
 @media(max-width:900px){.sports-license{grid-template-columns:1fr}}
+
+
+/* Mobile venue gallery correction */
+@media(max-width:900px){
+  .gallery-grid.refined{
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  .gallery-grid.refined .gallery-card.featured{
+    grid-column:1 / -1;
+    grid-row:auto;
+  }
+  .gallery-grid.refined .gallery-card.featured img{
+    height:360px;
+    min-height:360px;
+    object-fit:cover;
+    object-position:center 52%;
+  }
+  .gallery-grid.refined .gallery-card:not(.featured) img{
+    height:290px;
+    min-height:290px;
+    object-fit:cover;
+  }
+  .gallery-grid.refined .gallery-card:nth-child(3) img{
+    object-position:52% 58%;
+  }
+}
+@media(max-width:600px){
+  .gallery-grid.refined{
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .gallery-grid.refined .gallery-card.featured img{
+    height:300px;
+    min-height:300px;
+  }
+  .gallery-grid.refined .gallery-card:not(.featured) img{
+    height:250px;
+    min-height:250px;
+  }
+  .gallery-grid.refined .gallery-card figcaption{
+    padding:10px 11px;
+    font-size:11px;
+    line-height:1.35;
+  }
+}
+@media(max-width:360px){
+  .gallery-grid.refined{
+    grid-template-columns:1fr;
+  }
+  .gallery-grid.refined .gallery-card.featured{
+    grid-column:auto;
+  }
+}
