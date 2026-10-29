@@ -78,10 +78,6 @@
     if(action) push({event:"site_cta",action,href,page:location.pathname});
   });
 
-  document.addEventListener("site:form-success",e=>{
-    push({event:"site_form_success",form:e.detail?.form||"form",page:location.pathname});
-  });
-
   document.querySelectorAll("form").forEach(form=>{
     form.addEventListener("submit",()=>{
       if(!form.checkValidity()) return;
@@ -92,22 +88,27 @@
   if(location.pathname.endsWith("/booking-thanks.html")) push({event:"site_form_success",form:"booking",page:location.pathname});
   if(location.pathname.endsWith("/thanks.html")) push({event:"site_form_success",form:"enquiry",page:location.pathname});
 
-  try{
-    if("PerformanceObserver" in window){
-      let cls=0;
+  if("PerformanceObserver" in window){
+    let cls=0,lcp=0,inp=0;
+    try{
       new PerformanceObserver(list=>{for(const entry of list.getEntries())if(!entry.hadRecentInput)cls+=entry.value})
         .observe({type:"layout-shift",buffered:true});
+    }catch(_){}
+    try{
       new PerformanceObserver(list=>{
         const entries=list.getEntries(),last=entries[entries.length-1];
-        if(last) push({event:"site_web_vital",metric:"LCP",value:Math.round(last.startTime),page:location.pathname});
+        if(last) lcp=Math.max(lcp,last.startTime||0);
       }).observe({type:"largest-contentful-paint",buffered:true});
+    }catch(_){}
+    try{
       new PerformanceObserver(list=>{
-        for(const entry of list.getEntries()) if(entry.interactionId) window.__siteInp=Math.max(window.__siteInp||0,entry.duration||0);
-      }).observe({type:"event",durationThreshold:40,buffered:true});
-      addEventListener("pagehide",()=>{
-        push({event:"site_web_vital",metric:"CLS",value:+cls.toFixed(3),page:location.pathname});
-        if(window.__siteInp) push({event:"site_web_vital",metric:"INP",value:Math.round(window.__siteInp),page:location.pathname});
-      },{once:true});
-    }
-  }catch(_){}
+        for(const entry of list.getEntries()) if(entry.interactionId) inp=Math.max(inp,entry.duration||0);
+      }).observe({type:"event",durationThreshold:16,buffered:true});
+    }catch(_){}
+    addEventListener("pagehide",()=>{
+      if(lcp) push({event:"site_web_vital",metric:"LCP",value:Math.round(lcp),page:location.pathname});
+      push({event:"site_web_vital",metric:"CLS",value:+cls.toFixed(3),page:location.pathname});
+      if(inp) push({event:"site_web_vital",metric:"INP",value:Math.round(inp),page:location.pathname});
+    },{once:true});
+  }
 })();
