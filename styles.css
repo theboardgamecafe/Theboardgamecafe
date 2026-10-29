@@ -402,3 +402,14 @@ p{text-wrap:pretty}
   .group-photo img,.gallery-grid.refined .gallery-card img,.text-link:after{transition:none}
   .group-photo:hover img,.gallery-grid.refined .gallery-card:hover img{transform:none}
 }
+
+
+.contact-lead{max-width:720px}
+.contact-card h2,.form-card h2{margin-top:0;color:var(--ink)}
+.contact-card hr{border:0;border-top:1px solid var(--line-light);margin:22px 0}
+.booking-page-head{max-width:760px;margin-bottom:30px}
+.faq-groups{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.faq-group h2{font-size:26px;margin:0 0 14px;color:var(--ink)}
+.faq-group .faq-list{gap:9px}
+.faq-group details{background:#fff}
+@media(max-width:800px){.faq-groups{grid-template-columns:1fr}}
