@@ -87,4 +87,41 @@
       window.dispatchEvent(new CustomEvent("site:cta",{detail:{action,href,page:location.pathname}}));
     }
   });
+
+
+  // Lightweight Core Web Vitals hooks. These do not transmit data by themselves;
+  // they make metrics available to any analytics layer connected later.
+  try{
+    if("PerformanceObserver" in window){
+      let cls=0;
+      new PerformanceObserver(list=>{
+        for(const entry of list.getEntries()){
+          if(!entry.hadRecentInput) cls+=entry.value;
+        }
+      }).observe({type:"layout-shift",buffered:true});
+
+      new PerformanceObserver(list=>{
+        const entries=list.getEntries();
+        const last=entries[entries.length-1];
+        if(last){
+          window.dataLayer=window.dataLayer||[];
+          window.dataLayer.push({event:"site_web_vital",metric:"LCP",value:Math.round(last.startTime),page:location.pathname});
+        }
+      }).observe({type:"largest-contentful-paint",buffered:true});
+
+      new PerformanceObserver(list=>{
+        for(const entry of list.getEntries()){
+          if(entry.interactionId){
+            window.__siteInp=Math.max(window.__siteInp||0,entry.duration||0);
+          }
+        }
+      }).observe({type:"event",durationThreshold:40,buffered:true});
+
+      addEventListener("pagehide",()=>{
+        window.dataLayer=window.dataLayer||[];
+        window.dataLayer.push({event:"site_web_vital",metric:"CLS",value:+cls.toFixed(3),page:location.pathname});
+        if(window.__siteInp) window.dataLayer.push({event:"site_web_vital",metric:"INP",value:Math.round(window.__siteInp),page:location.pathname});
+      },{once:true});
+    }
+  }catch(_){}
 })();
