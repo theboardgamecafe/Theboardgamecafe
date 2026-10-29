@@ -413,3 +413,6 @@ p{text-wrap:pretty}
 .faq-group .faq-list{gap:9px}
 .faq-group details{background:#fff}
 @media(max-width:800px){.faq-groups{grid-template-columns:1fr}}
+
+.portrait-media{aspect-ratio:4/5!important;object-fit:cover;object-position:center 62%}
+@media(max-width:900px){.portrait-media{aspect-ratio:4/5!important;max-height:680px}}
