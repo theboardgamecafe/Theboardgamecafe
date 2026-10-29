@@ -416,3 +416,11 @@ p{text-wrap:pretty}
 
 .portrait-media{aspect-ratio:4/5!important;object-fit:cover;object-position:center 62%}
 @media(max-width:900px){.portrait-media{aspect-ratio:4/5!important;max-height:680px}}
+
+.sports-license{display:grid;grid-template-columns:.95fr 1.05fr;gap:32px;align-items:center}
+.sports-license-media{overflow:hidden;border-radius:var(--r-large);border:1px solid var(--line-light);background:#05070b;box-shadow:var(--shadow)}
+.sports-license-media img{display:block;width:100%;height:auto}
+.sports-proof{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.sports-proof span{display:inline-flex;padding:8px 11px;border-radius:var(--r-pill);background:#fff;border:1px solid var(--line-light);font-size:12px;font-weight:700;color:var(--ink)}
+.sports-note{font-size:12px;color:var(--ink-muted);margin-top:14px}
+@media(max-width:900px){.sports-license{grid-template-columns:1fr}}
