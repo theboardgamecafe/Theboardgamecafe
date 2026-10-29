@@ -481,3 +481,14 @@ footer{padding:36px 0 42px;border-top:1px solid var(--line);margin-top:64px;back
   .btn,.group-photo img,.gallery-card img,.text-link:after,.mobile-bar{transition:none}
   .btn:hover,.group-photo:hover img,.gallery-card:hover img{transform:none}
 }
+.breadcrumb-wrap{padding-top:18px}
+.breadcrumbs{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13px;color:#aeb8c5}
+.breadcrumbs a{color:#c9d2de;text-decoration:none;min-height:28px;display:inline-flex;align-items:center}
+.breadcrumbs a:hover{color:#fff}
+.breadcrumbs .sep{color:#6f7b8a}
+.breadcrumbs [aria-current="page"]{color:#f4f7fb;font-weight:600}
+.light-breadcrumbs{color:#647082}
+.light-breadcrumbs a{color:#46556b}
+.light-breadcrumbs a:hover{color:#131a26}
+.light-breadcrumbs [aria-current="page"]{color:#131a26}
+.legal-company{max-width:760px;line-height:1.55}
