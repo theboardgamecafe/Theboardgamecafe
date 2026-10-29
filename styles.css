@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 :root{
   --bg:#111722;
   --bg2:#17202e;
@@ -33,7 +33,7 @@ body{
     radial-gradient(circle at 88% 5%,rgba(255,66,182,.08),transparent 24%),
     var(--bg);
   color:var(--text);
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   line-height:1.6
 }
 img{max-width:100%;height:auto}
@@ -46,7 +46,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
 .topbar{border-bottom:1px solid var(--line);background:#0e141e;color:#e4e8ef;font-size:12px}
 .topbar .wrap{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;padding:8px 0}
 .topbar a{text-decoration:none}
-header{position:sticky;top:0;z-index:50;background:rgba(8,12,18,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+header{position:sticky;top:0;z-index:50;background:#000;backdrop-filter:blur(16px);border-bottom:1px solid var(--line);box-shadow:0 8px 24px rgba(0,0,0,.18)}
 nav{height:74px;display:flex;align-items:center;justify-content:space-between;gap:18px}
 .brand img{display:block;width:178px;max-width:43vw;height:auto}
 .navlinks{display:flex;align-items:center;gap:18px;font-size:13px;font-weight:700}
@@ -262,8 +262,8 @@ h1,h2,h3{font-weight:700;text-wrap:balance}
 p{text-wrap:pretty}
 .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .navlinks a{font-weight:600}
-.navlinks a[aria-current="page"]{color:#fff;position:relative}
-.navlinks a[aria-current="page"]:after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:2px;background:linear-gradient(90deg,var(--blue),var(--pink));border-radius:var(--r-pill)}
+.navlinks a[aria-current]{color:#fff;position:relative}
+.navlinks a[aria-current]:after{content:"";position:absolute;left:0;right:0;bottom:-9px;height:2px;background:linear-gradient(90deg,var(--blue),var(--pink));border-radius:var(--r-pill)}
 .btn{font-weight:700}
 .btn-outline{background:transparent}
 .btn-dark{background:var(--ink);color:#fff}
@@ -477,4 +477,39 @@ p{text-wrap:pretty}
   .gallery-grid.refined .gallery-card.featured{
     grid-column:auto;
   }
+}
+
+
+/* Launch QA corrections */
+main:focus{outline:none}
+.topbar{font-size:13px}
+.eyebrow{font-size:13px}
+.trust-item span{font-size:13px}
+.gallery-card figcaption,
+.gallery-grid.refined .gallery-card figcaption{font-size:13px;line-height:1.45}
+.review-person{font-size:13px}
+.experience-link,.group-photo-copy span,.sports-proof span,.sports-note{font-size:13px}
+.field label{font-size:14px}
+.form-note{font-size:13px;color:#5f6977;line-height:1.5}
+.booking-status{font-size:13px}
+.footerlinks a{font-size:13px;min-height:32px;display:inline-flex;align-items:center;padding-block:5px}
+.legal{font-size:13px}
+.contact-stack small{font-size:13px}
+.text-link,.experience-link,.map-link{min-height:32px;padding-block:5px}
+.btn{min-height:44px}
+.mobile-toggle{min-width:44px;min-height:44px}
+.field input,.field select,.field textarea{font-size:16px;min-height:46px}
+.faq-list summary{min-height:32px;display:flex;align-items:center}
+header .brand{display:flex;align-items:center;background:#000}
+header .brand img{background:#000}
+.mobile-bar{transform:translateY(calc(100% + 30px));opacity:0;pointer-events:none;transition:transform .22s ease,opacity .22s ease}
+.mobile-bar.is-visible{transform:translateY(0);opacity:1;pointer-events:auto}
+.mobile-bar a{min-height:44px;font-size:13px;display:flex;align-items:center;justify-content:center}
+body.mobile-cta-active{padding-bottom:86px}
+@media(min-width:601px){body.mobile-cta-active{padding-bottom:0}}
+@media(max-width:600px){
+  .topbar{display:none}
+  .navlinks{top:64px}
+  .hero p{font-size:16px}
+  .mobile-bar{left:12px;right:12px;bottom:max(10px,env(safe-area-inset-bottom));padding:6px;gap:6px}
 }
