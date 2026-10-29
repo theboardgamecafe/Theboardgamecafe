@@ -305,7 +305,7 @@ footer{padding:36px 0 42px;border-top:1px solid var(--line);margin-top:64px;back
 .menu-row span:last-child{font-weight:700}
 
 .contact-lead{max-width:720px}
-.contact-grid,.booking-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:20px;align-items:start}
+.contact-grid,.booking-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:20px;align-items:start}\n.contact-grid>*,.booking-grid>*{min-width:0}\n.contact-card a,.legal-panel a{overflow-wrap:anywhere}
 .contact-card,.booking-summary,.form-card{
   background:#fff;border:1px solid var(--line-light);border-radius:var(--r-large);
   color:var(--ink);box-shadow:0 12px 32px rgba(19,26,38,.055)
