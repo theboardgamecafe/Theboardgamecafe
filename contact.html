@@ -6,80 +6,70 @@
 <section class="light-band"><div class="wrap contact-grid">
 <aside class="contact-card"><h2>Quick contact</h2><p><strong>Phone / WhatsApp</strong><br><a href="tel:+447768489048">07768 489048</a></p><p><strong>Bookings</strong><br><a href="mailto:bookings@theboardgamecafe.co.uk">bookings@theboardgamecafe.co.uk</a></p><p><strong>Events & private hire</strong><br><a href="mailto:events@theboardgamecafe.co.uk">events@theboardgamecafe.co.uk</a></p><p><strong>Address</strong><br>Unit 12, The Stables, Eanam<br>Blackburn BB1 5BY</p><a class="map-link" href="https://www.google.com/maps/search/?api=1&query=The%20Board%20Game%20Cafe%20Blackburn&query_place_id=ChIJ8UlMAX-fe0gR7HN9vMNRsH8" target="_blank" rel="noopener">Get directions on Google Maps →</a><hr><h3>Opening hours</h3><p>Mon 7pm–12am<br>Tue Closed<br>Wed–Thu 7pm–12am<br>Fri 7pm–2am<br>Sat 4pm–2am<br>Sun 2pm–11pm</p></aside>
 <div class="form-card"><h2>Send an enquiry</h2><p class="muted">Give us the essentials and we’ll reply with the most relevant option for your visit or event.</p>
-<form id="enquiry-form" action="https://api.web3forms.com/submit" method="POST"><input type="hidden" name="access_key" value="402d240f-a68a-4606-b8c4-b44e31623871"><input type="hidden" id="form-subject" name="subject" value="Website enquiry"><input type="hidden" name="from_name" value="The Board Game Café Website"><input type="hidden" name="redirect" value="https://theboardgamecafe.co.uk/thanks.html"><input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none"><div class="form-grid"><div class="field"><label for="name">Name</label><input id="name" name="name" autocomplete="name" required></div><div class="field"><label for="email">Email</label><input id="email" type="email" name="email" autocomplete="email" required></div><div class="field"><label for="phone">Phone</label><input id="phone" type="tel" name="Phone" autocomplete="tel"></div><div class="field"><label for="type">Enquiry type</label><select id="type" name="Enquiry type" required onchange="updateFormState()"><option value="" selected disabled>Choose enquiry type</option><option>Table booking</option><option>Birthday party</option><option>Group booking</option><option>Private hire</option><option>Corporate event</option><option>School or college group</option><option>Care or support group</option><option>Charity or community event</option><option>Live sport</option><option>Movie night</option><option>Other</option></select></div><div id="booking-details"></div><template id="booking-details-template"><div class="field"><label for="date">Preferred date</label><input id="date" type="date" name="Preferred date"></div><div class="field"><label for="size">Group size</label><input id="size" type="number" min="1" inputmode="numeric" name="Group size"></div></template><div class="field full"><label for="message">Tell us what you’re planning</label><textarea id="message" name="message" required placeholder="Preferred time, occasion, group size or anything else useful."></textarea></div><div class="field full"><label style="display:flex;gap:9px;align-items:flex-start;font-weight:600"><input type="checkbox" name="Consent" value="Agreed" required style="width:auto;margin-top:4px"> <span>I’m happy for The Board Game Café to use these details to respond to my enquiry. <a href="privacy.html">Privacy notice</a>.</span></label></div></div><div class="actions"><button class="btn btn-dark" type="submit">Send enquiry</button><button class="btn btn-light" type="button" onclick="sendWhatsAppEnquiry()">Send by WhatsApp</button></div><p class="form-note">We’ll only use these details to respond to this enquiry.</p></form></div>
+<form id="enquiry-form" action="https://api.web3forms.com/submit" method="POST"><input type="hidden" name="access_key" value="402d240f-a68a-4606-b8c4-b44e31623871"><input type="hidden" id="form-subject" name="subject" value="Website enquiry"><input type="hidden" name="from_name" value="The Board Game Café Website"><input type="hidden" name="redirect" value="https://theboardgamecafe.co.uk/thanks.html"><input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none"><div class="form-grid"><div class="field"><label for="name">Name</label><input id="name" name="name" autocomplete="name" required></div><div class="field"><label for="email">Email</label><input id="email" type="email" name="email" autocomplete="email" required></div><div class="field"><label for="phone">Phone</label><input id="phone" type="tel" name="Phone" autocomplete="tel"></div><div class="field"><label for="type">Enquiry type</label><select id="type" name="Enquiry type" required><option value="" selected disabled>Choose enquiry type</option><option>Table booking</option><option>Birthday party</option><option>Group booking</option><option>Private hire</option><option>Corporate event</option><option>School or college group</option><option>Care or support group</option><option>Charity or community event</option><option>Live sport</option><option>Movie night</option><option>Other</option></select></div><div id="booking-details"></div><template id="booking-details-template"><div class="field"><label for="date">Preferred date</label><input id="date" type="date" name="Preferred date"></div><div class="field"><label for="size">Estimated group size</label><input id="size" type="number" min="1" inputmode="numeric" name="Group size"></div></template><div class="field full"><label for="message">Tell us what you’re planning</label><textarea id="message" name="message" required placeholder="Preferred time, occasion, group size or anything else useful."></textarea></div></div><div class="actions"><button id="enquiry-submit" class="btn btn-dark" type="submit">Send enquiry</button><button class="btn btn-light" type="button" onclick="sendWhatsAppEnquiry()">Send by WhatsApp</button></div><p class="form-note">We’ll use these details to respond to your enquiry and manage any resulting booking. By submitting, you acknowledge our <a href="privacy.html">Privacy Notice</a>.</p></form></div>
 </div></section>
 </main><footer><div class="wrap footer-grid"><div class="footer-brand"><img src="https://static.wixstatic.com/media/bd79fe_f4695205d25e49208b86dead0942e945~mv2.png" alt="The Board Game Café" width="900" height="371" loading="lazy" decoding="async"><div class="legal">Unit 12, The Stables, Eanam, Blackburn BB1 5BY · 07768 489048</div></div><div class="footerlinks"><a href="things-to-do-blackburn.html">Experience</a><a href="menu.html">Menu</a><a href="group-bookings.html">Groups</a><a href="private-hire.html">Private hire</a><a href="about.html">About</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="https://www.instagram.com/theboardgamecafe_bb" target="_blank" rel="noopener">Instagram</a><a href="https://www.tiktok.com/@theboardgamecafe" target="_blank" rel="noopener">TikTok</a></div><div class="legal">© 2026 The Board Game Café</div></div></footer><script>
-function selectedEnquiryType(){
-  const el=document.getElementById("type");
-  return el?el.value:"General enquiry";
-}
+const form=document.getElementById("enquiry-form");
+const typeEl=document.getElementById("type");
+const submitBtn=document.getElementById("enquiry-submit");
+const eventTypes=new Set(["Birthday party","Group booking","Private hire","Corporate event","School or college group","Care or support group","Charity or community event","Live sport","Movie night"]);
+function pad(n){return String(n).padStart(2,"0")}
+function todayKey(){const d=new Date();return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function selectedEnquiryType(){return typeEl?typeEl.value:"General enquiry"}
 function updateFormState(){
-  const typeEl=document.getElementById("type");
-  const rawType=typeEl?typeEl.value:"";
+  const rawType=selectedEnquiryType();
+  if(rawType==="Table booking"){location.href="booking.html";return}
   const subject=document.getElementById("form-subject");
   if(subject) subject.value=rawType?"Website enquiry – "+rawType:"Website enquiry";
-
-  const showBookingDetails=Boolean(rawType && rawType!=="Other");
   const host=document.getElementById("booking-details");
   const template=document.getElementById("booking-details-template");
-  if(host && template){
+  const showDetails=eventTypes.has(rawType);
+  if(host&&template){
     const alreadyShown=Boolean(host.querySelector("#date"));
-    if(showBookingDetails && !alreadyShown){
-      host.appendChild(template.content.cloneNode(true));
-    }else if(!showBookingDetails && alreadyShown){
-      host.replaceChildren();
-    }
+    if(showDetails&&!alreadyShown) host.appendChild(template.content.cloneNode(true));
+    if(!showDetails&&alreadyShown) host.replaceChildren();
+    const date=host.querySelector("#date");
+    const size=host.querySelector("#size");
+    if(date){date.min=todayKey();date.required=showDetails}
+    if(size) size.required=showDetails;
   }
 }
 function enquiryPayload(){
-  const name=document.getElementById("name")?.value.trim()||"";
-  const email=document.getElementById("email")?.value.trim()||"";
-  const phone=document.getElementById("phone")?.value.trim()||"";
-  const type=selectedEnquiryType();
-  const date=document.getElementById("date")?.value||"";
-  const size=document.getElementById("size")?.value||"";
-  const message=document.getElementById("message")?.value.trim()||"";
-  return {name,email,phone,type,date,size,message};
+  return {
+    name:document.getElementById("name")?.value.trim()||"",
+    email:document.getElementById("email")?.value.trim()||"",
+    phone:document.getElementById("phone")?.value.trim()||"",
+    type:selectedEnquiryType(),
+    date:document.getElementById("date")?.value||"",
+    size:document.getElementById("size")?.value||"",
+    message:document.getElementById("message")?.value.trim()||""
+  };
 }
-function validEnquiry(){
-  const form=document.getElementById("enquiry-form");
-  return form?form.reportValidity():false;
-}
+function validEnquiry(){return form?form.reportValidity():false}
 function formattedBody(){
   const d=enquiryPayload();
-  const lines=[
-    "Website enquiry – "+d.type,
-    "",
-    "Name: "+d.name,
-    "Email: "+d.email,
-    "Phone: "+(d.phone||"Not provided")
-  ];
+  const lines=["Website enquiry – "+d.type,"","Name: "+d.name,"Email: "+d.email,"Phone: "+(d.phone||"Not provided")];
   if(d.date) lines.push("Preferred date: "+d.date);
   if(d.size) lines.push("Group size: "+d.size);
   lines.push("","Message:",d.message);
   return lines.join("\n");
-}
-function sendEmailEnquiry(event){
-  event.preventDefault();
-  if(!validEnquiry()) return;
-  const d=enquiryPayload();
-  const subject=encodeURIComponent("Website enquiry – "+d.type);
-  const body=encodeURIComponent(formattedBody());
-  window.location.href="mailto:bookings@theboardgamecafe.co.uk?subject="+subject+"&body="+body;
 }
 function sendWhatsAppEnquiry(){
   if(!validEnquiry()) return;
   const body=encodeURIComponent(formattedBody());
   window.open("https://wa.me/447768489048?text="+body,"_blank","noopener");
 }
+typeEl.addEventListener("change",updateFormState);
 const p=new URLSearchParams(location.search).get("type");
 if(p){
-  const sel=document.getElementById("type");
-  if(sel){
-    for(const o of sel.options){
-      if(o.text.toLowerCase().includes(p.toLowerCase())){sel.value=o.value;break}
-    }
+  for(const o of typeEl.options){
+    if(o.text.toLowerCase().includes(p.toLowerCase())){typeEl.value=o.value;break}
   }
 }
+form.addEventListener("submit",()=>{
+  if(!form.checkValidity()) return;
+  submitBtn.disabled=true;
+  submitBtn.textContent="Sending…";
+});
 updateFormState();
 </script><script src="site.js" defer></script></body></html>
