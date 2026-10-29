@@ -88,6 +88,7 @@ form.addEventListener("submit",async e=>{
   e.preventDefault();
   if(hpInput?.value || Date.now()-formStarted<800) return;
   if(!form.reportValidity() || selectedEnquiryType()==="Table booking") return;
+  window.siteTrack?.({event:"site_form_submit",form:"enquiry",page:location.pathname});
   const previous=submitBtn.textContent;
   submitBtn.disabled=true;
   submitBtn.textContent="Sending…";
@@ -96,8 +97,7 @@ form.addEventListener("submit",async e=>{
     const response=await fetch(form.action,{method:"POST",body:new FormData(form)});
     const data=await response.json().catch(()=>null);
     if(!response.ok || data?.success===false) throw new Error("Submission failed");
-    const redirect=form.querySelector('input[name="redirect"]')?.value||"thanks.html";
-    location.href=redirect;
+    location.href="thanks.html";
   }catch(_){
     statusEl.textContent="We couldn’t send your enquiry just now. Please try again, call 07768 489048, or use WhatsApp.";
     submitBtn.disabled=false;
