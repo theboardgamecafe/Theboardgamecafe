@@ -88,7 +88,6 @@ form.addEventListener("submit",async e=>{
   e.preventDefault();
   if(hpInput?.value || Date.now()-formStarted<800) return;
   if(!form.reportValidity() || selectedEnquiryType()==="Table booking") return;
-  window.siteTrack?.({event:"site_form_submit",form:"enquiry",page:location.pathname});
   const previous=submitBtn.textContent;
   submitBtn.disabled=true;
   submitBtn.textContent="Sending…";
