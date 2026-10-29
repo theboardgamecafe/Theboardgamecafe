@@ -33,7 +33,6 @@
 
   if(!bar) return;
 
-  document.body.classList.add("has-mobile-cta");
   const barLinks=[...bar.querySelectorAll("a")];
   let blocked = false;
   let formFocus = false;
