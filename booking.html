@@ -14,6 +14,15 @@ const hpInput=document.getElementById("booking-website");
 const formStarted=Date.now();
 if(startedInput) startedInput.value=new Date(formStarted).toISOString();
 const dateInput=document.getElementById("booking-date");
+try{
+  const saved=JSON.parse(sessionStorage.getItem("tbgc_booking_prefill")||"null");
+  if(saved){
+    if(saved.name) document.getElementById("booking-name").value=saved.name;
+    if(saved.email) document.getElementById("booking-email").value=saved.email;
+    if(saved.phone) document.getElementById("booking-phone").value=saved.phone;
+    sessionStorage.removeItem("tbgc_booking_prefill");
+  }
+}catch(_){}
 const timeSelect=document.getElementById("booking-time");
 const durationSelect=document.getElementById("booking-duration");
 const statusEl=document.getElementById("booking-status");
@@ -93,11 +102,26 @@ const today=new Date();
 dateInput.min=key(today);
 dateInput.addEventListener("change",refreshTimes);
 timeSelect.addEventListener("change",refreshDurations);
-form.addEventListener("submit",e=>{
-  if(hpInput?.value || Date.now()-formStarted<800){e.preventDefault();return}
-  if(!form.checkValidity()) return;
+form.addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(hpInput?.value || Date.now()-formStarted<800) return;
+  if(!form.reportValidity()) return;
+  const previous=submitBtn.textContent;
   submitBtn.disabled=true;
   submitBtn.textContent="Sending…";
+  statusEl.textContent="Sending your booking request…";
+  try{
+    const response=await fetch(form.action,{method:"POST",body:new FormData(form)});
+    const data=await response.json().catch(()=>null);
+    if(!response.ok || data?.success===false) throw new Error("Submission failed");
+    document.dispatchEvent(new CustomEvent("site:form-success",{detail:{form:"booking"}}));
+    const redirect=form.querySelector('input[name="redirect"]')?.value||"booking-thanks.html";
+    location.href=redirect;
+  }catch(_){
+    statusEl.textContent="We couldn’t send your request just now. Please try again, call 07768 489048, or use the contact page.";
+    submitBtn.disabled=false;
+    submitBtn.textContent=previous;
+  }
 });
 refreshTimes();
 </script><script src="site.js" defer></script></body></html>
