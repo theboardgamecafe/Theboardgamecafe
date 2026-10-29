@@ -78,7 +78,6 @@
     if(action) push({event:"site_cta",action,href,page:location.pathname});
   });
 
-  window.siteTrack=push;
   document.querySelectorAll("form").forEach(form=>{
     form.addEventListener("submit",()=>{
       if(!form.checkValidity()) return;
