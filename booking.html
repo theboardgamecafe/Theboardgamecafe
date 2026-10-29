@@ -114,7 +114,6 @@ form.addEventListener("submit",async e=>{
     const response=await fetch(form.action,{method:"POST",body:new FormData(form)});
     const data=await response.json().catch(()=>null);
     if(!response.ok || data?.success===false) throw new Error("Submission failed");
-    document.dispatchEvent(new CustomEvent("site:form-success",{detail:{form:"booking"}}));
     const redirect=form.querySelector('input[name="redirect"]')?.value||"booking-thanks.html";
     location.href=redirect;
   }catch(_){
