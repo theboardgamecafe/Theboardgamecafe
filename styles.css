@@ -492,3 +492,7 @@ footer{padding:36px 0 42px;border-top:1px solid var(--line);margin-top:64px;back
 .light-breadcrumbs a:hover{color:#131a26}
 .light-breadcrumbs [aria-current="page"]{color:#131a26}
 .legal-company{max-width:760px;line-height:1.55}
+
+.route-note{border:1px solid #aeb8c5;background:#f4f7fb;border-radius:var(--r-card);padding:14px 16px;color:var(--ink)}
+.route-note p{margin:0;color:var(--ink-muted)}
+.route-note a{margin-top:8px}
