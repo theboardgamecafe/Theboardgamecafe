@@ -84,7 +84,7 @@ function refreshTimes(){
     const slot=new Date(selected);
     slot.setHours(Math.floor(t)%24,t%1?30:0,0,0);
     if(t>=24) slot.setDate(slot.getDate()+1);
-    if(key(selected)===key(now)&&slot.getTime()<now.getTime()+30*60*1000) continue;
+    if(slot.getTime()<now.getTime()+30*60*1000) continue;
     const o=document.createElement("option");
     o.value=labelTime(t);
     o.textContent=labelTime(t);
@@ -99,7 +99,12 @@ function refreshTimes(){
   }
 }
 const today=new Date();
-dateInput.min=key(today);
+const previousDay=new Date(today);
+previousDay.setDate(today.getDate()-1);
+const previousSchedule=hours[previousDay.getDay()];
+const currentHour=today.getHours()+today.getMinutes()/60;
+const inLateNightSpillover=Boolean(previousSchedule&&previousSchedule[1]>24&&currentHour<(previousSchedule[1]-24));
+dateInput.min=key(inLateNightSpillover?previousDay:today);
 dateInput.addEventListener("change",refreshTimes);
 timeSelect.addEventListener("change",refreshDurations);
 form.addEventListener("submit",async e=>{
