@@ -37,7 +37,7 @@ body{
   line-height:1.6;
   -webkit-font-smoothing:antialiased;
 }
-body.mobile-cta-active{padding-bottom:86px}
+body.has-mobile-cta{padding-bottom:86px}
 img{max-width:100%;height:auto}
 a{color:inherit}
 button,input,select,textarea{font:inherit}
@@ -56,6 +56,10 @@ main:focus{outline:none}
 a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
   outline:3px solid var(--blue);outline-offset:3px;border-radius:var(--r-control)
 }
+.light-band :focus-visible,.paper :focus-visible,.form-card :focus-visible,.contact-card :focus-visible,
+.booking-summary :focus-visible,.legal-panel :focus-visible,.hours.clean :focus-visible{
+  outline-color:#3159c7
+}
 
 h1,h2,h3,.navlinks,.btn{font-family:"Space Grotesk",system-ui,sans-serif}
 h1,h2,h3{font-weight:700;text-wrap:balance}
@@ -71,7 +75,7 @@ header{
 }
 nav{height:74px;display:flex;align-items:center;justify-content:space-between;gap:18px}
 .brand{display:flex;align-items:center;background:#000;text-decoration:none}
-.brand img{display:block;width:178px;max-width:43vw;height:auto;background:#000}
+.brand img{display:block;width:154px;max-width:43vw;height:auto;background:#000}
 .navlinks{display:flex;align-items:center;gap:18px;font-size:13px;font-weight:600}
 .navlinks>a:not(.btn){position:relative;text-decoration:none;color:#cfd6df;padding:7px 0}
 .navlinks>a:not(.btn):hover{color:#fff}
@@ -261,7 +265,7 @@ section{position:relative;padding:var(--section) 0}
 
 footer{padding:36px 0 42px;border-top:1px solid var(--line);margin-top:64px;background:#0b1018}
 .footer-grid{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;flex-wrap:wrap}
-.footer-brand img{width:165px;background:#000;border-radius:var(--r-control)}
+.footer-brand img{width:145px;background:#000;border-radius:var(--r-control)}
 .footerlinks{display:flex;gap:6px 13px;flex-wrap:wrap;max-width:600px}
 .footerlinks a{display:inline-flex;align-items:center;min-height:32px;padding-block:5px;text-decoration:none;color:#c4ccd8;font-size:13px;font-weight:700}
 .footerlinks a:hover{color:#fff}
@@ -321,7 +325,7 @@ footer{padding:36px 0 42px;border-top:1px solid var(--line);margin-top:64px;back
 .field.full{grid-column:1/-1}
 .field label{font-size:14px;font-weight:700;color:#29313d}
 .field input,.field select,.field textarea{
-  width:100%;min-height:46px;border:1px solid #c6cfdb;border-radius:var(--r-control);
+  width:100%;min-height:46px;border:1px solid #8993a1;border-radius:var(--r-control);
   background:#fbfcfe;color:#1b2430;padding:12px 13px;font-size:16px
 }
 .field textarea{min-height:140px;resize:vertical}
@@ -381,7 +385,7 @@ footer{padding:36px 0 42px;border-top:1px solid var(--line);margin-top:64px;back
 
 @media(max-width:1000px){
   .navlinks{gap:12px;font-size:13px}
-  .brand img{width:162px}
+  .brand img{width:148px}
 }
 
 @media(max-width:900px){
@@ -420,10 +424,10 @@ footer{padding:36px 0 42px;border-top:1px solid var(--line);margin-top:64px;back
 
 @media(max-width:600px){
   html{scroll-padding-top:72px}
-  body.mobile-cta-active{padding-bottom:86px}
+  body.has-mobile-cta{padding-bottom:86px}
   .topbar{display:none}
   .wrap{width:min(100% - 28px,var(--max))}
-  .brand img{width:150px}
+  .brand img{width:132px}
   .hero{padding:42px 0 38px}
   .hero h1{font-size:clamp(40px,12vw,48px);line-height:.95}
   .hero p{font-size:16px}
@@ -458,7 +462,7 @@ footer{padding:36px 0 42px;border-top:1px solid var(--line);margin-top:64px;back
     flex:1;display:flex;align-items:center;justify-content:center;min-height:44px;padding:10px 8px;
     border-radius:var(--r-control);text-decoration:none;font-size:13px;font-weight:700
   }
-  .mobile-bar a:first-child{background:linear-gradient(90deg,#159fe9,#7b59ff 48%,#ef2bab);color:#fff}
+  .mobile-bar a:first-child{background:linear-gradient(90deg,#34d8ff,#8d75ff 52%,#ff4db8);color:#081018}
   .mobile-bar a:last-child{background:#fff;color:#111827}
 }
 
@@ -469,7 +473,7 @@ footer{padding:36px 0 42px;border-top:1px solid var(--line);margin-top:64px;back
 }
 
 @media(min-width:601px){
-  body.mobile-cta-active{padding-bottom:0}
+  body.has-mobile-cta{padding-bottom:0}
 }
 
 @media(prefers-reduced-motion:reduce){
