@@ -380,7 +380,7 @@ footer{padding:36px 0 42px;border-top:1px solid var(--line);margin-top:64px;back
 .mobile-bar{display:none}
 
 @media(max-width:1000px){
-  .navlinks{gap:12px;font-size:12.5px}
+  .navlinks{gap:12px;font-size:13px}
   .brand img{width:162px}
 }
 
