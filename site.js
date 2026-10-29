@@ -79,6 +79,13 @@
   });
 
   window.siteTrack=push;
+  document.querySelectorAll("form").forEach(form=>{
+    form.addEventListener("submit",()=>{
+      if(!form.checkValidity()) return;
+      const kind=form.id==="booking-form"?"booking":form.id==="enquiry-form"?"enquiry":"form";
+      push({event:"site_form_submit",form:kind,page:location.pathname});
+    });
+  });
   if(location.pathname.endsWith("/booking-thanks.html")) push({event:"site_form_success",form:"booking",page:location.pathname});
   if(location.pathname.endsWith("/thanks.html")) push({event:"site_form_success",form:"enquiry",page:location.pathname});
 
