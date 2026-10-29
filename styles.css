@@ -476,6 +476,18 @@ footer{padding:36px 0 42px;border-top:1px solid var(--line);margin-top:64px;back
   body.has-mobile-cta{padding-bottom:0}
 }
 
+
+/* Graceful navigation fallback when scripting is unavailable. */
+@media (max-width:900px) and (scripting:none){
+  header{position:relative}
+  nav{height:auto;min-height:64px;flex-wrap:wrap;padding-bottom:12px}
+  .mobile-toggle{display:none}
+  .navlinks{
+    display:flex;position:static;width:100%;box-shadow:none;margin:0;
+    border-radius:var(--r-card);padding:10px 12px;flex-direction:column;align-items:stretch
+  }
+}
+
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .btn,.group-photo img,.gallery-card img,.text-link:after,.mobile-bar{transition:none}
