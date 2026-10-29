@@ -78,6 +78,10 @@
     if(action) push({event:"site_cta",action,href,page:location.pathname});
   });
 
+  document.addEventListener("site:form-success",e=>{
+    push({event:"site_form_success",form:e.detail?.form||"form",page:location.pathname});
+  });
+
   document.querySelectorAll("form").forEach(form=>{
     form.addEventListener("submit",()=>{
       if(!form.checkValidity()) return;
