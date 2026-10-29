@@ -33,12 +33,15 @@
 
   if(!bar) return;
 
+  document.body.classList.add("has-mobile-cta");
+  const barLinks=[...bar.querySelectorAll("a")];
   let blocked = false;
   let formFocus = false;
   const syncBar = () => {
     const show = window.scrollY > 320 && !blocked && !formFocus;
     bar.classList.toggle("is-visible", show);
-    document.body.classList.toggle("mobile-cta-active", show);
+    bar.setAttribute("aria-hidden", String(!show));
+    barLinks.forEach(a => show ? a.removeAttribute("tabindex") : a.setAttribute("tabindex","-1"));
   };
 
   const blockers = [...document.querySelectorAll("footer, .footer-cta-section, form")];
