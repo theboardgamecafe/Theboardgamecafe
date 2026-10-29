@@ -19,3 +19,9 @@ Key pages:
 - Group bookings: https://theboardgamecafe.co.uk/group-bookings.html
 - Private hire: https://theboardgamecafe.co.uk/private-hire.html
 - Corporate events: https://theboardgamecafe.co.uk/corporate-events.html
+
+- About the café: https://theboardgamecafe.co.uk/about.html
+- FAQ: https://theboardgamecafe.co.uk/faq.html
+- Contact and enquiries: https://theboardgamecafe.co.uk/contact.html
+
+Current table pricing: £15 for the first hour per table including four drinks, then £8 per additional hour per table.
