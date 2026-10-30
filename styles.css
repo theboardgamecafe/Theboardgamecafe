@@ -805,3 +805,100 @@ footer{
     color:#171711;
   }
 }
+
+
+/* === DEEP PETROL REBALANCE 2026 === */
+:root{
+  --petrol:#3f5553;
+  --petrol-deep:#253936;
+  --petrol-soft:#526b67;
+}
+.topbar{
+  background:linear-gradient(90deg,#172724,#243b37 52%,#172724);
+  border-bottom-color:rgba(195,154,66,.28);
+}
+header{
+  background:rgba(20,31,29,.97);
+}
+.navlinks{
+  --nav-petrol:#243b37;
+}
+.dark-band{
+  background:
+    radial-gradient(circle at 88% 12%,rgba(195,154,66,.055),transparent 27%),
+    linear-gradient(180deg,#172522,#13201e);
+}
+.review-dark{
+  background:
+    radial-gradient(circle at 12% 16%,rgba(195,154,66,.06),transparent 28%),
+    #172522;
+}
+.hero-premium-overlay{
+  background:
+    linear-gradient(90deg,rgba(20,38,35,.94) 0%,rgba(16,29,27,.84) 44%,rgba(10,14,12,.42) 75%,rgba(10,14,12,.55) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.10),rgba(5,6,5,.58));
+}
+.btn-outline{
+  background:rgba(63,85,83,.72);
+  border-color:rgba(224,192,111,.62);
+  color:#f7efe2;
+}
+.btn-outline:hover{
+  background:#3f5553;
+  border-color:#e0c06f;
+}
+.experience-item{
+  border-top-color:rgba(195,154,66,.22);
+  transition:background .2s ease,padding-left .2s ease;
+}
+.experience-item:hover{
+  background:linear-gradient(90deg,rgba(63,85,83,.28),rgba(63,85,83,0));
+  padding-left:12px;
+}
+.experience-icon{
+  color:#d6b45d;
+}
+.hero-proof span:before{
+  background:#73908a;
+  box-shadow:0 0 0 3px rgba(63,85,83,.25);
+}
+.footer-cta{
+  background:
+    radial-gradient(circle at 12% 20%,rgba(195,154,66,.08),transparent 32%),
+    linear-gradient(135deg,#243b37,#172522 72%);
+}
+.callout{
+  background:
+    radial-gradient(circle at 88% 18%,rgba(195,154,66,.07),transparent 30%),
+    linear-gradient(135deg,#2a4440,#192724 72%);
+}
+.hours{
+  background:#213631;
+}
+.gallery-card{
+  background:#203531;
+}
+.sports-license-media{
+  background:#1a2b28;
+}
+.feature-list div{
+  background:rgba(63,85,83,.16);
+  border-color:rgba(195,154,66,.18);
+}
+.menu-feature:after{
+  background:linear-gradient(180deg,rgba(15,29,27,.03),rgba(19,36,33,.92));
+}
+.group-photo:after{
+  background:linear-gradient(180deg,rgba(17,35,32,.04) 18%,rgba(18,36,33,.92) 94%);
+}
+.footer-wordmark,.brand{color:#e1bf67}
+@media(max-width:900px){
+  .navlinks{
+    background:#1b2e2b;
+  }
+}
+@media(max-width:600px){
+  .mobile-bar{
+    background:rgba(28,45,42,.98);
+  }
+}
