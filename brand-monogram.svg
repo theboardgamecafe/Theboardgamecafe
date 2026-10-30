@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="t">
+<title id="t">The Board Game Café monogram</title>
+<circle cx="256" cy="256" r="236" fill="#151513" stroke="#C39A42" stroke-width="12"/>
+<g fill="#C39A42">
+<text x="256" y="310" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="238" font-weight="700">BG</text>
+<circle cx="256" cy="132" r="18"/>
+<path d="M235 155h42l14 68h-70z"/>
+<path d="M218 226h76v18h-76z"/>
+</g></svg>
