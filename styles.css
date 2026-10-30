@@ -510,3 +510,298 @@ footer{padding:36px 0 42px;border-top:1px solid var(--line);margin-top:64px;back
 .route-note{border:1px solid #aeb8c5;background:#f4f7fb;border-radius:var(--r-card);padding:14px 16px;color:var(--ink)}
 .route-note p{margin:0;color:var(--ink-muted)}
 .route-note a{margin-top:8px}
+
+
+/* === TBGC PREMIUM REBRAND 2026 === */
+:root{
+  --bg:#151513;
+  --bg-deep:#0b0c0a;
+  --bg2:#1b201d;
+  --panel:#20241f;
+  --panel2:#2b322d;
+  --text:#f2eadc;
+  --muted:#c8bead;
+  --line:rgba(195,154,66,.24);
+  --paper:#f2eadf;
+  --paper2:#e7ddcf;
+  --ink:#191a17;
+  --ink-muted:#605b52;
+  --line-light:rgba(35,33,28,.13);
+  --blue:#c39a42;
+  --pink:#d69a52;
+  --purple:#3f5553;
+  --green:#7d9287;
+  --shadow:0 22px 60px rgba(0,0,0,.24);
+  --r-control:8px;
+  --r-card:14px;
+  --r-large:20px;
+}
+html{scroll-padding-top:92px}
+body{
+  background:
+    radial-gradient(circle at 12% 2%,rgba(63,85,83,.18),transparent 28%),
+    radial-gradient(circle at 86% 4%,rgba(195,154,66,.09),transparent 24%),
+    var(--bg);
+  color:var(--text);
+  font-family:"Montserrat",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+h1,h2,h3,.section-title,.callout-title,.price,.rating-number,.review-summary .rating-number{
+  font-family:"Playfair Display",Georgia,serif;
+  font-weight:600;
+  letter-spacing:-.025em;
+}
+.navlinks,.btn,.eyebrow,.trust-item strong,.how-inline strong,.hero-badge strong,.feature-list strong{
+  font-family:"Montserrat",system-ui,sans-serif;
+}
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline-color:#d7b65e;
+}
+.light-band :focus-visible,.paper :focus-visible,.form-card :focus-visible,.contact-card :focus-visible,
+.booking-summary :focus-visible,.legal-panel :focus-visible,.hours.clean :focus-visible{outline-color:#765c22}
+
+.topbar{
+  background:#0a0b09;
+  color:#d9d0c1;
+  border-color:rgba(195,154,66,.20);
+}
+header{
+  background:rgba(11,12,10,.97);
+  border-color:rgba(195,154,66,.22);
+  box-shadow:0 10px 30px rgba(0,0,0,.22);
+  backdrop-filter:blur(12px);
+}
+nav{height:82px}
+.brand{
+  display:grid;
+  justify-items:center;
+  align-content:center;
+  gap:0;
+  min-width:178px;
+  background:transparent;
+  color:#d6b45d;
+  text-decoration:none;
+  line-height:.88;
+  text-align:center;
+}
+.brand-the{
+  font:600 9px/1 "Montserrat",sans-serif;
+  letter-spacing:.33em;
+  margin-bottom:5px;
+}
+.brand-name{
+  font:700 23px/.92 "Playfair Display",Georgia,serif;
+  letter-spacing:.015em;
+  white-space:nowrap;
+}
+.brand-cafe{
+  font:600 14px/1 "Playfair Display",Georgia,serif;
+  letter-spacing:.34em;
+  margin-top:5px;
+  padding-left:.34em;
+}
+.navlinks{gap:22px;font-size:12px;letter-spacing:.035em}
+.navlinks>a:not(.btn){color:#d2c9ba}
+.navlinks>a:not(.btn):hover,.navlinks a[aria-current]{color:#f5eddf}
+.navlinks a[aria-current]:after{
+  background:#c39a42;
+  height:1px;
+  bottom:-7px;
+}
+.mobile-toggle{color:#d8b85f}
+
+.btn{
+  border-radius:8px;
+  letter-spacing:.045em;
+  text-transform:uppercase;
+  font-size:12px;
+  box-shadow:none;
+}
+.btn-primary{
+  color:#171711;
+  background:linear-gradient(135deg,#e1c16f,#b98934);
+  border-color:#e7cc84;
+  box-shadow:0 10px 26px rgba(195,154,66,.14);
+}
+.btn-primary:hover{background:linear-gradient(135deg,#ead083,#c49742)}
+.btn-outline{border-color:rgba(195,154,66,.48);color:#f4ead9}
+.btn-dark{background:#191a17;color:#f4eadf;border-color:#191a17}
+.btn-light{background:#f7f1e8;color:#191a17;border-color:rgba(25,26,23,.15)}
+
+.light-band{
+  background:linear-gradient(180deg,#f5efe6,#eee4d7);
+  color:var(--ink);
+  border-color:rgba(41,37,31,.12);
+}
+.dark-band,.review-dark{background:#10120f}
+.eyebrow{color:#d2c5ae}
+.eyebrow:before{background:#c39a42;height:1px}
+.light-band .eyebrow,.paper .eyebrow,.hours.clean .eyebrow{color:#6a6256}
+.neon,.brand-emphasis{
+  background:none;
+  color:#d8b65f;
+  -webkit-text-fill-color:currentColor;
+}
+.section-head h2,.section-title,.about-split h2{
+  letter-spacing:-.02em;
+  line-height:1.02;
+}
+.experience-section:before{
+  background:radial-gradient(circle,rgba(63,85,83,.17),transparent 66%)
+}
+.experience-icon{color:#c9a451}
+.experience-item{border-color:rgba(195,154,66,.22)}
+.gallery-card{background:#1b211d}
+.review-dark{background:#121511}
+.hours{background:#1b211d}
+
+.footer-cta{
+  border-color:rgba(195,154,66,.28);
+  background:
+    radial-gradient(circle at 10% 20%,rgba(63,85,83,.14),transparent 32%),
+    radial-gradient(circle at 90% 85%,rgba(195,154,66,.08),transparent 35%),
+    #131612;
+}
+footer{
+  background:#0a0b09;
+  border-color:rgba(195,154,66,.18);
+}
+.footer-wordmark{
+  width:max-content;
+  min-width:170px;
+  margin-bottom:13px;
+}
+.brand-descriptor{
+  color:#c9a451;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin:4px 0 10px;
+}
+.footerlinks a{color:#c9c0b2}
+.footerlinks a:hover{color:#f7efe2}
+.legal{color:#9e9588}
+
+.callout{
+  border-color:rgba(195,154,66,.28);
+  background:
+    radial-gradient(circle at 15% 20%,rgba(63,85,83,.15),transparent 32%),
+    radial-gradient(circle at 88% 80%,rgba(195,154,66,.08),transparent 34%),
+    #1a1f1a;
+}
+.journey-step b{
+  background:linear-gradient(135deg,#d8b75f,#b88934);
+  color:#171711;
+}
+
+/* Premium homepage hero */
+.hero-premium{
+  min-height:650px;
+  padding:0;
+  display:grid;
+  align-items:center;
+  isolation:isolate;
+  overflow:hidden;
+  border-bottom:1px solid rgba(195,154,66,.22);
+}
+.hero-premium-bg{position:absolute;inset:0;z-index:-2}
+.hero-premium-bg img{width:100%;height:100%;object-fit:cover;object-position:center 53%;filter:saturate(.86) brightness(.72)}
+.hero-premium-overlay{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,rgba(9,10,8,.91) 0%,rgba(9,10,8,.76) 45%,rgba(9,10,8,.38) 73%,rgba(9,10,8,.52) 100%),
+    linear-gradient(180deg,rgba(0,0,0,.13),rgba(5,6,5,.60));
+}
+.hero-premium-content{
+  padding-top:72px;
+  padding-bottom:72px;
+}
+.hero-premium-copy{max-width:780px}
+.hero-premium .eyebrow{
+  color:#d8b65f;
+  letter-spacing:.20em;
+}
+.hero-premium h1{
+  font-size:clamp(58px,7.2vw,92px);
+  line-height:.92;
+  letter-spacing:-.035em;
+  margin:18px 0 22px;
+  color:#f2eadc;
+  text-shadow:0 4px 28px rgba(0,0,0,.34);
+}
+.hero-premium .brand-emphasis{font-style:italic}
+.hero-premium p{
+  max-width:700px;
+  margin:0;
+  color:#e5dccd;
+  font-size:17px;
+  line-height:1.75;
+}
+.hero-premium .actions{margin-top:28px}
+.hero-premium .text-link{color:#f1e7d7}
+.hero-proof{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 18px;
+  margin-top:30px;
+  color:#d8cfbf;
+  font-size:12px;
+  letter-spacing:.045em;
+}
+.hero-proof span{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.hero-proof span:before{
+  content:"";
+  width:5px;height:5px;border-radius:50%;
+  background:#c39a42;
+}
+
+/* Refine cards and light surfaces */
+.trust-item,.contact-card,.booking-summary,.form-card,.hours.clean,.legal-panel,.use-case{
+  border-color:rgba(48,43,35,.12);
+  box-shadow:0 12px 30px rgba(34,28,20,.06);
+}
+.trust-item strong{font-family:"Playfair Display",Georgia,serif;font-size:21px}
+.group-photo,.menu-feature,.commercial-layout>img,.menu-hero-grid>img,.about-split>img,
+.page-photo-strip img,.sports-license-media{border-color:rgba(195,154,66,.20)}
+.group-photo:after{
+  background:linear-gradient(180deg,rgba(5,6,5,.04) 18%,rgba(5,6,5,.90) 94%)
+}
+
+@media(max-width:1000px){
+  .brand{min-width:154px}
+  .brand-name{font-size:20px}
+}
+@media(max-width:900px){
+  nav{height:70px}
+  .navlinks{
+    top:70px;
+    background:#11130f;
+    border-color:rgba(195,154,66,.24);
+  }
+}
+@media(max-width:600px){
+  .brand{min-width:136px}
+  .brand-name{font-size:18px}
+  .brand-cafe{font-size:12px}
+  .hero-premium{min-height:590px}
+  .hero-premium-content{padding-top:58px;padding-bottom:58px}
+  .hero-premium h1{font-size:clamp(47px,14vw,64px);line-height:.94}
+  .hero-premium p{font-size:15.5px;line-height:1.65}
+  .hero-proof{display:grid;gap:7px;margin-top:24px}
+  .mobile-bar{
+    background:rgba(12,13,11,.97);
+    border-color:rgba(195,154,66,.26);
+  }
+  .mobile-bar a:first-child{
+    background:linear-gradient(135deg,#e1c16f,#b98934);
+    color:#171711;
+  }
+  .mobile-bar a:last-child{
+    background:#f4eddf;
+    color:#171711;
+  }
+}
