@@ -892,6 +892,31 @@ header{
   background:linear-gradient(180deg,rgba(17,35,32,.04) 18%,rgba(18,36,33,.92) 94%);
 }
 .footer-wordmark,.brand{color:#e1bf67}
+
+/* Real venue photographs: keep landscape views and portrait setups intact. */
+.commercial-layout>.photo-portrait{
+  width:min(100%,360px);aspect-ratio:9/16;justify-self:center;object-fit:contain;
+}
+.group-photo--birthday img{object-position:center 34%}
+.venue-gallery{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch}
+.venue-gallery .gallery-card{grid-column:auto;grid-row:auto;display:flex;flex-direction:column}
+.venue-gallery .gallery-card img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover}
+.venue-gallery .gallery-card figcaption{flex:1}
+.venue-gallery .gallery-card--portrait{grid-column:3;grid-row:1/span 2;background:#0e1211}
+.venue-gallery .gallery-card--portrait img{flex:1;min-height:0;aspect-ratio:auto;object-fit:contain}
+.venue-gallery .gallery-card--portrait figcaption{flex:0 0 auto}
+.play-photo-strip{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);align-items:center}
+.play-photo-strip img{height:auto;aspect-ratio:4/3;object-fit:contain}
+.play-photo-strip img.photo-portrait{width:min(100%,360px);aspect-ratio:9/16;justify-self:center}
+@media(max-width:900px){
+  .venue-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .venue-gallery .gallery-card--portrait{grid-column:2;grid-row:1/span 2}
+}
+@media(max-width:600px){
+  .venue-gallery,.play-photo-strip{grid-template-columns:minmax(0,1fr)}
+  .venue-gallery .gallery-card--portrait{grid-column:auto;grid-row:auto}
+  .venue-gallery .gallery-card--portrait img{flex:0 0 auto;aspect-ratio:941/1671;max-height:620px}
+}
 @media(max-width:900px){
   .navlinks{
     background:#1b2e2b;
