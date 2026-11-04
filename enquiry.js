@@ -1,0 +1,105 @@
+(() => {
+"use strict";
+
+const form=document.getElementById("enquiry-form");
+const startedInput=document.getElementById("enquiry-started");
+const hpInput=document.getElementById("enquiry-website");
+const formStarted=Date.now();
+if(startedInput) startedInput.value=new Date(formStarted).toISOString();
+const typeEl=document.getElementById("type");
+const submitBtn=document.getElementById("enquiry-submit");
+const statusEl=document.getElementById("enquiry-status");
+const routeNote=document.getElementById("booking-route-note");
+const routeLink=document.getElementById("table-booking-link");
+const eventTypes=new Set(["Birthday party","Group booking","Private hire","Corporate event","School or college group","Care or support group","Charity or community event","Live sport","Movie night"]);
+function pad(n){return String(n).padStart(2,"0")}
+function todayKey(){const d=new Date();return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function selectedEnquiryType(){return typeEl?typeEl.value:"General enquiry"}
+function updateFormState(){
+  const rawType=selectedEnquiryType();
+  const tableBooking=rawType==="Table booking";
+  if(routeNote) routeNote.hidden=!tableBooking;
+  submitBtn.disabled=tableBooking;
+  const subject=document.getElementById("form-subject");
+  if(subject) subject.value=rawType?"Website enquiry – "+rawType:"Website enquiry";
+  const host=document.getElementById("booking-details");
+  const template=document.getElementById("booking-details-template");
+  const showDetails=eventTypes.has(rawType);
+  if(host&&template){
+    const alreadyShown=Boolean(host.querySelector("#date"));
+    if(showDetails&&!alreadyShown) host.appendChild(template.content.cloneNode(true));
+    if(!showDetails&&alreadyShown) host.replaceChildren();
+    const date=host.querySelector("#date");
+    const size=host.querySelector("#size");
+    if(date){date.min=todayKey();date.required=showDetails}
+    if(size) size.required=showDetails;
+  }
+}
+function enquiryPayload(){
+  return {
+    name:document.getElementById("name")?.value.trim()||"",
+    email:document.getElementById("email")?.value.trim()||"",
+    phone:document.getElementById("phone")?.value.trim()||"",
+    type:selectedEnquiryType(),
+    date:document.getElementById("date")?.value||"",
+    size:document.getElementById("size")?.value||"",
+    message:document.getElementById("message")?.value.trim()||""
+  };
+}
+function validEnquiry(){return form?form.reportValidity():false}
+function formattedBody(){
+  const d=enquiryPayload();
+  const lines=["Website enquiry – "+d.type,"","Name: "+d.name,"Email: "+d.email,"Phone: "+(d.phone||"Not provided")];
+  if(d.date) lines.push("Preferred date: "+d.date);
+  if(d.size) lines.push("Group size: "+d.size);
+  lines.push("","Message:",d.message);
+  return lines.join("\n");
+}
+function sendWhatsAppEnquiry(){
+  if(!validEnquiry()) return;
+  const body=encodeURIComponent(formattedBody());
+  window.open("https://wa.me/447768489048?text="+body,"_blank","noopener");
+}
+document.querySelector("[data-whatsapp-enquiry]")?.addEventListener("click",sendWhatsAppEnquiry);
+typeEl.addEventListener("change",updateFormState);
+routeLink?.addEventListener("click",()=>{
+  try{
+    sessionStorage.setItem("tbgc_booking_prefill",JSON.stringify({
+      name:document.getElementById("name")?.value.trim()||"",
+      email:document.getElementById("email")?.value.trim()||"",
+      phone:document.getElementById("phone")?.value.trim()||""
+    }));
+  }catch(_){}
+});
+const p=new URLSearchParams(location.search).get("type");
+if(p){
+  for(const o of typeEl.options){
+    if(o.text.toLowerCase().includes(p.toLowerCase())){typeEl.value=o.value;break}
+  }
+}
+form.addEventListener("submit",async e=>{
+  e.preventDefault();
+  if(hpInput?.value || Date.now()-formStarted<800) return;
+  if(!form.reportValidity() || selectedEnquiryType()==="Table booking") return;
+  if(form.getAttribute("aria-busy")==="true") return;
+  form.setAttribute("aria-busy","true");
+  const previous=submitBtn.textContent;
+  submitBtn.disabled=true;
+  submitBtn.textContent="Sending…";
+  statusEl.textContent="Sending your enquiry…";
+  try{
+    const response=await fetch(form.action,{method:"POST",body:new FormData(form),signal:AbortSignal.timeout(20000)});
+    const data=await response.json().catch(()=>null);
+    if(!response.ok || data?.success!==true) throw new Error("Submission failed");
+    try{sessionStorage.setItem("tbgc_form_receipt",JSON.stringify({form:form.id==="booking-form"?"booking":"enquiry",time:Date.now()}))}catch(_){}
+    location.href="thanks.html";
+  }catch(_){
+    statusEl.textContent="We couldn’t send your enquiry just now. Please try again, call 07768 489048, or use WhatsApp.";
+    form.removeAttribute("aria-busy");
+    submitBtn.disabled=false;
+    submitBtn.textContent=previous;
+  }
+});
+updateFormState();
+
+})();

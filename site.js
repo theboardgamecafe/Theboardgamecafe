@@ -85,8 +85,16 @@
       push({event:"site_form_submit",form:kind,page:location.pathname});
     });
   });
-  if(location.pathname.endsWith("/booking-thanks.html")) push({event:"site_form_success",form:"booking",page:location.pathname});
-  if(location.pathname.endsWith("/thanks.html")) push({event:"site_form_success",form:"enquiry",page:location.pathname});
+  // Count only a confirmed submission from this browser, once. A direct visit
+  // or refresh of a thank-you URL is not a conversion.
+  try{
+    const receipt=JSON.parse(sessionStorage.getItem("tbgc_form_receipt")||"null");
+    const kind=location.pathname.endsWith("/booking-thanks.html")?"booking":location.pathname.endsWith("/thanks.html")?"enquiry":null;
+    if(kind&&receipt?.form===kind&&Date.now()-receipt.time>=0&&Date.now()-receipt.time<300000){
+      sessionStorage.removeItem("tbgc_form_receipt");
+      push({event:"site_form_success",form:kind,page:location.pathname});
+    }
+  }catch(_){}
 
   if("PerformanceObserver" in window){
     let cls=0,lcp=0,inp=0;
@@ -108,7 +116,8 @@
     addEventListener("pagehide",()=>{
       if(lcp) push({event:"site_web_vital",metric:"LCP",value:Math.round(lcp),page:location.pathname});
       push({event:"site_web_vital",metric:"CLS",value:+cls.toFixed(3),page:location.pathname});
-      if(inp) push({event:"site_web_vital",metric:"INP",value:Math.round(inp),page:location.pathname});
+      // A maximum event duration is a diagnostic, not the standard INP metric.
+      if(inp) push({event:"site_performance_diagnostic",metric:"max_interaction_duration",value:Math.round(inp),page:location.pathname});
     },{once:true});
   }
 })();
