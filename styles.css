@@ -930,3 +930,49 @@ header{
 
 /* Preserve native hidden semantics when component display rules apply. */
 [hidden]{display:none!important}
+
+/* Direct menu discovery and practical event planning. */
+.menu-jump-links{height:auto;justify-content:flex-start;flex-wrap:wrap;gap:10px;margin:0 0 28px}
+.menu-jump-links a{display:inline-flex;align-items:center;min-height:44px;padding:8px 16px;border:1px solid var(--line);border-radius:var(--r-pill);text-decoration:none;font-size:13px;font-weight:600;color:var(--text);background:rgba(255,255,255,.035)}
+.menu-jump-links a:hover{background:rgba(255,255,255,.09)}
+.menu-category{padding-bottom:0;scroll-margin-top:16px}
+.menu-category h3{font-size:28px;margin:0 0 12px}
+.event-details-host{grid-column:1/-1;min-width:0}
+.event-details-host:empty{display:none}
+.event-planning{min-width:0;margin:0;padding:18px;border:1px solid var(--line-light);border-radius:var(--r-card);background:var(--paper)}
+.event-planning legend{padding:0 8px;font-weight:700;font-size:15px;color:var(--ink)}
+.event-planning>.form-note{margin:0 0 16px}
+.event-planning-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.event-planning-grid .field{min-width:0}
+@media(max-width:600px){.event-planning-grid{grid-template-columns:1fr}.event-planning-grid .field.full{grid-column:auto}.event-planning{padding:14px}.menu-jump-links{gap:8px}.menu-jump-links a{font-size:12px;padding:8px 12px}}
+
+/* A small, photograph-grounded game chooser. */
+.game-picker{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start}
+.game-picker figure{margin:0;min-width:0}
+.game-picker figure img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:var(--r-card);border:1px solid var(--line-light)}
+.game-picker figcaption{font-size:12px;line-height:1.6;color:var(--ink-muted);margin-top:12px}
+.game-options{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.game-options article{border-top:1px solid var(--line-light);padding-top:15px;min-width:0}
+.game-format{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#6a6256}
+.game-options h3{font-size:23px;margin:8px 0}
+.game-options p{font-size:14px;line-height:1.65;color:var(--ink-muted);margin:0}
+.game-options .game-console-note{grid-column:1/-1;padding-top:16px;border-top:1px solid var(--line-light);font-size:13px}
+@media(max-width:900px){.game-picker{grid-template-columns:1fr;gap:25px}.game-picker figure img{max-height:480px}}
+@media(max-width:400px){.game-options{grid-template-columns:1fr;gap:18px}}
+
+/* Breadcrumbs are compact navigation, independent of the primary header. */
+.breadcrumbs{height:auto;min-height:30px;justify-content:flex-start}
+
+main>section:not(.light-band) .form-note{color:var(--muted)}
+
+#enquiry-form{scroll-margin-top:18px}
+
+@media(min-width:601px) and (max-width:900px){.section-head{flex-direction:column;align-items:flex-start;gap:14px}.section-head>p{max-width:680px}}
+@media(min-width:700px) and (max-width:900px){.menu-feature-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.menu-feature{min-height:290px}.menu-feature h3{font-size:21px}.menu-feature p{font-size:12px}}
+
+#booking-form,#table-pricing{scroll-margin-top:18px}
+
+.callout{color:var(--text)}
+.callout .price,.callout h2,.callout h3,.callout .eyebrow{color:var(--text)}
+.callout .muted{color:var(--muted)}
+.dark-band .muted,.review-dark .muted,.footer-cta .muted{color:var(--muted)}

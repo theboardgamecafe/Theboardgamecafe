@@ -130,6 +130,7 @@ form.addEventListener("submit",async e=>{
     const response=await fetch(form.action,{method:"POST",body:new FormData(form),signal:AbortSignal.timeout(20000)});
     const data=await response.json().catch(()=>null);
     if(!response.ok || data?.success!==true) throw new Error("Submission failed");
+    try{window.dispatchEvent(new CustomEvent("site:conversion",{detail:{form:"booking"}}));}catch(_){}
     try{sessionStorage.setItem("tbgc_form_receipt",JSON.stringify({form:form.id==="booking-form"?"booking":"enquiry",time:Date.now()}))}catch(_){}
     location.href="booking-thanks.html";
   }catch(_){

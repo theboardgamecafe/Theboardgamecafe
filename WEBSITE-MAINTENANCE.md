@@ -25,3 +25,12 @@ Check links/fragments, heading structure, JSON-LD and matching visible informati
 ## Account-level items
 
 Enable Enforce HTTPS in GitHub Pages if HTTP still serves the site. Registrar forwarding should preserve paths from the old domain. Search Console, analytics account/property, current complete menu, reconciled hours/offer and game inventory remain owner inputs.
+
+
+## Completion pass, 4 November 2026
+
+Optional aggregate statistics: statistics.js/statistics.css; disabled until explicit opt-in, no visitor IDs or form values; DNT/GPC respected. Endpoint is the existing H&V website-service /api/statistics with fixed origin/page/event allowlists. Coordinate new page paths with the service allowlist. Keep policy wording and consent controls in sync. 
+
+Protected operational console: https://hollin-and-vale-enquiries.r9shbntmg2.chatgpt.site/admin — owner ChatGPT sign-in required; no public records. It shows H&V enquiries and statistics for both websites, excludes QA by default and does not send email notifications. SITE_ADMIN_EMAIL stays secret in hosting runtime. Existing enquiry API and CORS are unchanged.
+
+Fonts now use exact self-hosted approved WOFF2 files in assets/fonts with OFL licences and critical preloads; preserve their declared weights. Google rating is dated to its last confirmed check, not represented as a fresh live number.
