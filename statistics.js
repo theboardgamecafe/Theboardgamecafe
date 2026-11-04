@@ -54,6 +54,7 @@
     else if(url.pathname.endsWith('/trade.html')||url.searchParams.get('enquiry')==='trade')send('trade_enquiry');
     else if(/\/(group-bookings|private-hire|corporate-events|birthday-party-venue-blackburn)\.html$/.test(url.pathname))send('group_or_event');
   });
+  window.addEventListener('site:whatsapp-draft',()=>send('whatsapp'));
   document.addEventListener('focusin',event=>{
     if(startCounted||!event.target.matches?.('input:not([type=hidden]),select,textarea')||!event.target.closest('form'))return;
     if(enabled()){startCounted=true;send('enquiry_start');}

@@ -99,6 +99,7 @@ function sendWhatsAppEnquiry(){
   if(!validEnquiry()) return;
   const body=encodeURIComponent(formattedBody());
   window.open("https://wa.me/447768489048?text="+body,"_blank","noopener");
+  window.dispatchEvent(new CustomEvent("site:whatsapp-draft"));
 }
 document.querySelector("[data-whatsapp-enquiry]")?.addEventListener("click",sendWhatsAppEnquiry);
 typeEl.addEventListener("change",updateFormState);
