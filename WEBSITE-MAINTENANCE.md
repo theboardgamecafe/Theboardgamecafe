@@ -7,14 +7,14 @@ Canonical site: https://theboardgamecafe.co.uk/ · GitHub Pages publishes main.
 - Hours appear in booking.html, contact.html, index.html, FAQ/structured data and booking.js (UK service-day schedule). Update all together only after owner confirmation.
 - Gaming prices appear on several pages and schema. Current published first-hour offer is £15 including four drinks, then £8 per extra hour. Older owner records say £12; reconcile before changing.
 - Menu.html contains in-café highlights. Uber Eats prices and stock are a different source; never copy delivery prices into the café menu automatically.
-- Parking/access: free on-site parking, step-free street-level entry, accessible parking, no accessible toilet. Private hire: up to60 depending layout,3-hour minimum,£50 outside-food fee; agreed quote confirms catering/access/safe capacity.
+- Parking/access: free on-site parking, step-free street-level entry, accessible parking, no accessible toilet. Private hire: £100/hour exclusive whole venue, three-hour minimum (£300), food/refreshments separate, £50 outside-food fee, no café VAT added. This existing owner-approved rate was recovered from the 30 October visibility/action-plan record. Capacity is confirmed by layout: earlier maximum60 conflicts with later platform layout figures, so do not publish a blanket capacity until reconciled. The agreed quote confirms catering, access and safe capacity.
 - Movie requests require verified screening permissions and setup. Publish dated events only when confirmed.
 
 ## Forms and privacy
 
 booking.js and enquiry.js send to the existing Web3Forms account. A successful HTTP response must contain success:true. Test failures as well as success; keep test messages clearly labelled and verify actual inbox delivery separately. Do not place a booking/payment during QA.
 
-site.js emits local dataLayer/custom events; no analytics collector is installed. Thank-you events require a recent one-use session receipt. Do not claim collected conversions or field Core Web Vitals until an approved analytics destination and privacy setup are connected.
+site.js emits local dataLayer/custom events. The optional statistics.js collector counts only consented allowlisted page/action events, without form text or contact details. Thank-you events require a recent one-use session receipt, and success counts require a validated successful form response. Google Analytics is not connected; do not claim Google attribution, unique visitors or field Core Web Vitals from the aggregate counters.
 
 The CSP allows same-origin scripts only. Keep code in external scripts and update cache version strings with asset changes. No cookies for ads/analytics currently load; disclose new providers before deployment.
 
