@@ -927,3 +927,6 @@ header{
     background:rgba(28,45,42,.98);
   }
 }
+
+/* Preserve native hidden semantics when component display rules apply. */
+[hidden]{display:none!important}
