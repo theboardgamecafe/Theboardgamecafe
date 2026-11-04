@@ -33,7 +33,7 @@
     const actions=document.createElement('div');actions.className='statistics-actions';
     const allow=document.createElement('button');allow.type='button';allow.textContent='Allow statistics';allow.addEventListener('click',()=>updateChoice('on'));
     const off=document.createElement('button');off.type='button';off.textContent='Keep off';off.addEventListener('click',()=>updateChoice('off'));
-    const privacy=document.createElement('a');privacy.href='privacy.html#website-statistics';privacy.textContent='How statistics work';
+    const privacy=document.createElement('a');privacy.href='/privacy.html#website-statistics';privacy.textContent='How statistics work';
     const dismiss=document.createElement('button');dismiss.type='button';dismiss.className='statistics-close';dismiss.textContent='Close';dismiss.setAttribute('aria-label','Close statistics preferences');dismiss.addEventListener('click',()=>{notice.hidden=true;preferenceButton?.focus();});
     actions.append(allow,off);notice.append(title,text,actions,privacy,dismiss);document.body.append(notice);
     const footer=document.querySelector('.footerlinks')||document.querySelector('.footer-links')||document.querySelector('.site-footer .wrap,footer .wrap')||document.querySelector('footer');
