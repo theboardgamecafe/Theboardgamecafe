@@ -2,10 +2,8 @@
 "use strict";
 
 const form=document.getElementById("enquiry-form");
-const startedInput=document.getElementById("enquiry-started");
 const hpInput=document.getElementById("enquiry-website");
 const formStarted=Date.now();
-if(startedInput) startedInput.value=new Date(formStarted).toISOString();
 const typeEl=document.getElementById("type");
 const submitBtn=document.getElementById("enquiry-submit");
 const statusEl=document.getElementById("enquiry-status");
@@ -129,7 +127,11 @@ form.addEventListener("submit",async e=>{
   submitBtn.textContent="Sending…";
   statusEl.textContent="Sending your enquiry…";
   try{
-    const response=await fetch(form.action,{method:"POST",body:new FormData(form),signal:AbortSignal.timeout(20000)});
+    const payload = new FormData(form);
+    for (const [field, value] of Array.from(payload)) {
+      if (value === "") payload.delete(field);
+    }
+    const response=await fetch(form.action,{method:"POST",body:payload,signal:AbortSignal.timeout(20000)});
     const data=await response.json().catch(()=>null);
     if(!response.ok || data?.success!==true) throw new Error("Submission failed");
     try{window.dispatchEvent(new CustomEvent("site:conversion",{detail:{form:"enquiry"}}))}catch(_){}
