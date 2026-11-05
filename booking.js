@@ -2,10 +2,8 @@
 "use strict";
 
 const form=document.getElementById("booking-form");
-const startedInput=document.getElementById("booking-started");
 const hpInput=document.getElementById("booking-website");
 const formStarted=Date.now();
-if(startedInput) startedInput.value=new Date(formStarted).toISOString();
 const dateInput=document.getElementById("booking-date");
 try{
   const saved=JSON.parse(sessionStorage.getItem("tbgc_booking_prefill")||"null");
@@ -127,7 +125,14 @@ form.addEventListener("submit",async e=>{
   submitBtn.textContent="Sending…";
   statusEl.textContent="Sending your booking request…";
   try{
-    const response=await fetch(form.action,{method:"POST",body:new FormData(form),signal:AbortSignal.timeout(20000)});
+    const payload = new FormData(form);
+    if (payload.get("Actual arrival date") === payload.get("Date")) {
+      payload.delete("Actual arrival date");
+    }
+    for (const [field, value] of Array.from(payload)) {
+      if (value === "") payload.delete(field);
+    }
+    const response=await fetch(form.action,{method:"POST",body:payload,signal:AbortSignal.timeout(20000)});
     const data=await response.json().catch(()=>null);
     if(!response.ok || data?.success!==true) throw new Error("Submission failed");
     try{window.dispatchEvent(new CustomEvent("site:conversion",{detail:{form:"booking"}}));}catch(_){}
