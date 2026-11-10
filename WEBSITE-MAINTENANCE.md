@@ -8,6 +8,14 @@ The homepage uses section navigation and an embedded table planner. `layout-refr
 
 The planner collects visit details, shows the per-table estimate and then reveals contact details after Review your plan. Edit visit details preserves the entered values. A booking request still needs the café to confirm availability. Validate both entry points after booking changes.
 
+## Website and app together
+
+Keep `cafe-ui.css` and `cafe-calendar.js` byte-identical with their copies in `web/` in `theboardgamecafe/the-board-game-cafe-preview`. These files own the shared colours, mobile Home / Book / Join / Menu bar, review cards and calendar. Each booking flow supplies its own date limits and availability predicate; selecting a date updates its original date input. The app still checks station availability on the server, and the public website still sends a booking request.
+
+Mobile navigation uses a single sticky masthead and an expandable vertical menu below 900px. Keep the four bottom links and their active states consistent across the website and app. Verify the menu with a keyboard, phone widths, safe areas and the footer when editing shared navigation.
+
+The home page includes the previously published 4.9/5 Google rating and two review excerpts. These are manually maintained content, not a live Google feed. Preserve the Google link and do not add a review count without verification.
+
 ## Keep information consistent
 
 - Hours appear in booking.html, contact.html, index.html, FAQ/structured data and booking.js (UK service-day schedule). Update all together only after owner confirmation.

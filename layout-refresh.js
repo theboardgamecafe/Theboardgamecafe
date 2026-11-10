@@ -3,6 +3,15 @@
   if (!navigation) return;
   const links = Array.from(navigation.querySelectorAll('[data-section]'));
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const mobileLinks = Array.from(document.querySelectorAll('[data-mobile-page]'));
+
+  function highlightMobile(section) {
+    const page = {home:'home', games:'join', players:'join', menu:'menu', book:'book', 'whats-on':'home', events:'home', visit:'home'}[section];
+    mobileLinks.forEach(link => {
+      if (link.dataset.mobilePage === page) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+  }
 
   function showActiveLink(link) {
     if (!link || navigation.scrollWidth <= navigation.clientWidth) return;
@@ -28,6 +37,7 @@
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
+      highlightMobile(entry.target.id);
       let active;
       links.forEach(link => {
         if (link.dataset.section === entry.target.id) {

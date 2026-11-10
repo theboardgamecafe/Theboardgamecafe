@@ -1096,3 +1096,141 @@ dl.home-hours > div {
     font-size: 21px;
   }
 }
+
+/* Mobile navigation follows the café app's four main actions. */
+.layout-menu-toggle,
+.mobile-app-nav {
+  display: none;
+}
+.cafe-google-proof {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 8px;
+  color: #e5cc8d;
+  font: 600 14px/1.5 var(--cafe-sans);
+  text-decoration: none;
+}
+.cafe-google-proof > span:first-child {
+  margin-right: 6px;
+}
+.cafe-google-proof > span:last-child {
+  margin-left: 10px;
+  color: #e6ddcd;
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  html { scroll-padding-top: calc(84px + env(safe-area-inset-top, 0px)); }
+  body {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    font-family: var(--cafe-sans);
+    font-size: 15px;
+  }
+  body.navigation-open { overflow: hidden; }
+  .site-masthead {
+    position: sticky;
+    top: 0;
+    z-index: 120;
+    padding-top: env(safe-area-inset-top, 0px);
+    background: var(--cafe-plum);
+  }
+  .masthead-inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 72px;
+    padding-block: 10px;
+  }
+  .site-masthead .masthead-book { display: none; }
+  .navigation-ready .layout-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 78px;
+    min-height: 44px;
+    margin: 0;
+    border: 1px solid #d8b65f88;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--cafe-gold);
+    font: 600 14px/1.4 var(--cafe-sans);
+  }
+  .layout-menu-toggle span { margin-right: 6px; }
+  header.layout-header {
+    position: static;
+    border: 0;
+    background: transparent;
+  }
+  .navigation-ready header.layout-header { height: 0; }
+  .layout-header .section-navigation {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    min-height: 0;
+    padding: 16px;
+    background: var(--cafe-plum);
+  }
+  .navigation-ready .layout-header .section-navigation {
+    display: none;
+    position: fixed;
+    top: calc(72px + env(safe-area-inset-top, 0px));
+    right: 0;
+    bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+    left: 0;
+    z-index: 110;
+    width: 100%;
+    margin: 0;
+    align-content: start;
+    overflow-y: auto;
+  }
+  .navigation-ready .layout-header .section-navigation.open { display: grid; }
+  .section-navigation .section-nav-link,
+  .section-navigation .section-nav-link:first-child,
+  .section-navigation .section-nav-link:last-child {
+    justify-content: space-between;
+    min-height: 48px;
+    padding: 12px 10px;
+    border-bottom: 1px solid #e7d9bc22;
+    color: #f2eadc;
+    font: 500 16px/1.4 var(--cafe-sans);
+  }
+  .section-navigation .section-nav-link::after { content: '→'; color: var(--cafe-gold); }
+  .section-navigation .section-nav-link[aria-current] {
+    background: #493554;
+    color: #ffe09c;
+    border-radius: 6px;
+  }
+  .home-page .home-hero { padding: 28px 0; }
+  .home-hero h1 { font: 500 clamp(36px, 10vw, 44px)/1.1 var(--cafe-serif); }
+  .home-hero-grid { gap: 22px; }
+  .home-hero-copy > p { font-size: 15px; line-height: 1.65; margin-top: 16px; }
+  .home-hero-copy > .home-hero-note { font-size: 12px; }
+  .home-hero-photo img { max-height: 220px; object-position: 50% 70%; }
+  .home-ribbon { display: none; }
+  .home-page .home-section { padding: 34px 0; }
+  .home-section-head h2,
+  .home-players h2,
+  .home-split h2,
+  .home-sports h2 { font: 500 32px/1.15 var(--cafe-serif); }
+  .home-section-head p,
+  .home-players p,
+  .home-split p,
+  .home-sports p,
+  .home-visit-grid p { font-size: 15px; line-height: 1.65; }
+  .home-game-card h3 { font: 500 23px/1.15 var(--cafe-serif); }
+  .home-game-card p { font-size: 14px; line-height: 1.55; }
+  .home-game-card > span,
+  .home-inline-links a,
+  .home-player-actions a > span,
+  .home-faq summary { font-size: 14px; }
+  .home-game-card > span { min-height: 44px; }
+  .home-player-actions a { font-size: 16px; }
+  .btn { font-size: 14px; border-radius: 8px; }
+  .text-link { min-height: 44px; font-size: 14px; }
+  .home-on-move { padding: 18px; }
+  .home-event-list h3 { font: 500 25px/1.2 var(--cafe-serif); }
+  .home-event-list p { font-size: 14px; }
+  .home-hours dl { font-size: 14px; }
+}

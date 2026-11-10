@@ -2,6 +2,7 @@
   const nav=document.getElementById("site-navigation");
   const toggle=document.querySelector(".mobile-toggle");
   const main=document.getElementById("main-content");
+  if(nav&&toggle) document.body.classList.add("navigation-ready");
   if(main&&!main.hasAttribute("tabindex")) main.setAttribute("tabindex","-1");
 
   const video = document.querySelector("video[data-autoplay-in-view]");
@@ -22,6 +23,7 @@
   window.setMenu=function(open){
     if(!nav||!toggle) return;
     nav.classList.toggle("open",open);
+    document.body.classList.toggle("navigation-open",open);
     toggle.setAttribute("aria-expanded",String(open));
     toggle.setAttribute("aria-label",open?"Close menu":"Open menu");
     if(open){
