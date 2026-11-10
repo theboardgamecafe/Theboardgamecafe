@@ -2,15 +2,28 @@
 :root {
   --cafe-plum: #2c2038;
   --cafe-plum-light: #eee7f1;
-  --cafe-gold: #d8b65f;
-  --cafe-cream: #f5f0e7;
+  --cafe-gold: #d6b45d;
+  --cafe-cream: #f2eadf;
   --cafe-paper: #fffdf9;
   --cafe-ink: #261b2d;
   --cafe-muted: #655d54;
   --cafe-border: #e3dbcf;
-  --cafe-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-  --cafe-serif: Georgia, "Times New Roman", serif;
+  --cafe-sans: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --cafe-serif: "Playfair Display", Georgia, "Times New Roman", serif;
 }
+.cafe-wordmark {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0;
+  min-width: 178px;
+  color: #e1bf67;
+  text-decoration: none;
+  text-align: center;
+}
+.cafe-wordmark .brand-the { margin-bottom: 5px; font: 600 9px/1 var(--cafe-sans); letter-spacing: .33em; }
+.cafe-wordmark .brand-name { font: 700 23px/.92 var(--cafe-serif); letter-spacing: .015em; white-space: nowrap; }
+.cafe-wordmark .brand-cafe { margin-top: 5px; padding-left: .34em; font: 600 14px/1 var(--cafe-serif); letter-spacing: .34em; }
 .booking-calendar {
   margin: 0 0 20px;
   padding: 12px;
@@ -199,7 +212,21 @@
   font-size: 14px;
   text-underline-offset: 3px;
 }
+.cafe-reviews.on-dark { color: var(--cafe-cream); }
+.cafe-reviews.on-dark h2,
+.cafe-reviews.on-dark .cafe-rating { color: var(--cafe-cream); }
+.cafe-reviews.on-dark .cafe-review-eyebrow,
+.cafe-reviews.on-dark .cafe-rating-label,
+.cafe-reviews.on-dark .cafe-review-card cite { color: #d5c9b9; }
+.cafe-reviews.on-dark .cafe-stars,
+.cafe-reviews.on-dark .cafe-review-link { color: #e1bf67; }
+.cafe-reviews.on-dark .cafe-review-card { background: #392b44; border-color: #d6b45d44; }
+.cafe-reviews.on-dark .cafe-review-card p { color: #f2eadc; }
 @media (max-width: 900px) {
+  .cafe-wordmark { min-width: 0; }
+  .cafe-wordmark .brand-name { font-size: 20px; }
+  .cafe-wordmark .brand-the { font-size: 8px; }
+  .cafe-wordmark .brand-cafe { font-size: 12px; }
   .cafe-tabs {
     position: fixed;
     right: 0;
@@ -209,6 +236,8 @@
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0;
+    height: auto;
+    min-height: 0;
     margin: 0;
     padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
     border-top: 1px solid #e7d9bc33;

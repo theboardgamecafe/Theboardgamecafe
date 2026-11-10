@@ -1,0 +1,104 @@
+/* Keep the café's original visual identity with compact mobile navigation. */
+.mobile-app-nav { display: none; }
+.hero-premium-bg, .hero-premium-overlay { top: 0; right: 0; bottom: 0; left: 0; }
+.hero-proof a { color: #e7c879; min-height: 32px; text-underline-offset: 4px; }
+.homepage-sports-preview { max-width: 840px; margin: 28px auto 0; }
+.homepage-sports-preview video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+.booking-section { background: var(--paper); }
+.booking-section h2,
+.booking-planner h2 { font-family: var(--cafe-serif); }
+.booking-planner { border-radius: 14px; }
+.booking-section .booking-kicker { font-family: var(--cafe-sans); }
+.booking-section .booking-marketing > h2 { font-family: var(--cafe-serif); }
+
+@media (max-width: 1100px) {
+  .topbar { display: none; }
+  .cafe-site-header { z-index: 120; backdrop-filter: none; }
+  .cafe-site-header > .wrap > nav { min-height: 72px; height: 72px; }
+  .navigation-ready .cafe-site-header .mobile-toggle { display: inline-flex; }
+  .cafe-site-header .navlinks {
+    display: none;
+    position: fixed;
+    top: 72px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding: 16px 20px;
+    border: 0;
+    border-radius: 0;
+    background: var(--cafe-plum);
+    box-shadow: none;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0;
+    overflow-y: auto;
+  }
+  .navigation-ready .cafe-site-header .navlinks.open { display: flex; }
+  .cafe-site-header .navlinks a {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 12px 8px;
+    border-bottom: 1px solid #e7d9bc22;
+    font-size: 15px;
+    letter-spacing: 0;
+  }
+  .cafe-site-header .navlinks a.btn { margin-top: 16px; border: 0; }
+  .cafe-site-header .navlinks a::after { display: none; }
+  body.navigation-open { overflow: hidden; }
+}
+
+@media (max-width: 900px) {
+  .mobile-app-nav { display: grid; }
+  html { scroll-padding-top: calc(88px + env(safe-area-inset-top, 0px)); }
+  body { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+  .topbar { display: none; }
+  .cafe-site-header { padding-top: env(safe-area-inset-top, 0px); }
+  .cafe-site-header .navlinks {
+    top: calc(72px + env(safe-area-inset-top, 0px));
+    bottom: calc(63px + env(safe-area-inset-bottom, 0px));
+  }
+  .mobile-toggle { font-size: 13px; border-color: #d6b45d77; color: #e1bf67; }
+  .hero-premium { min-height: 0; }
+  .hero-premium-content { padding-top: 42px; padding-bottom: 42px; }
+  .hero-premium h1 { font-size: clamp(42px, 9vw, 62px); line-height: 1.07; }
+  .hero-premium p { font-size: 15px; line-height: 1.7; }
+  .hero-premium .eyebrow { font-size: 11px; letter-spacing: .1em; }
+  .hero-premium .actions { margin-top: 22px; }
+  .hero-premium .actions + p { margin-top: 18px; }
+  .hero-proof { display: flex; margin-top: 14px; gap: 8px 16px; font-size: 11px; }
+  .visit-shortcuts { gap: 0 16px; }
+  .visit-shortcuts a { font-size: 12px; }
+  .section-head h2, .section-title { font-size: clamp(30px, 7vw, 40px); line-height: 1.16; }
+  .text-link, .experience-link { min-height: 44px; }
+  .booking-section { padding: 30px 0; }
+  .booking-section .booking-marketing > h2 { font-size: 34px; }
+  .booking-section .booking-grid { gap: 22px; }
+}
+
+@media (max-width: 600px) {
+  section { padding: 38px 0; }
+  .hero-premium h1 { font-size: clamp(40px, 11vw, 52px); }
+  .hero-premium-content { padding-top: 34px; padding-bottom: 34px; }
+  .hero-premium .btn { padding: 11px 16px; font-size: 13px; }
+  .hero-premium .actions { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; max-width: 380px; }
+  .hero-premium-bg img { object-position: 65% center; }
+  .trust-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .trust-item { padding: 14px 12px; }
+  .trust-item strong { font-size: 20px; }
+  .trust-item span { font-size: 12px; }
+  .visit-intro.spaced { margin-top: 28px; }
+  .how-inline { gap: 18px; }
+  .how-inline strong { font-size: 17px; }
+  .review-dark .cafe-review-header { margin-bottom: 18px; }
+}
+
+@media (max-width: 1100px) and (scripting: none) {
+  .cafe-site-header { position: static; }
+  .cafe-site-header > .wrap > nav { height: auto; flex-wrap: wrap; }
+  .cafe-site-header .mobile-toggle { display: none; }
+  .cafe-site-header .navlinks { display: flex; position: static; width: 100%; }
+}

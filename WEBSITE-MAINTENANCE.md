@@ -4,7 +4,7 @@ Canonical site: https://theboardgamecafe.co.uk/ · GitHub Pages publishes main.
 
 ## Homepage and booking layout
 
-The homepage uses section navigation and an embedded table planner. `layout-refresh.css` styles the shared masthead, navigation and homepage sections. `layout-refresh.js` manages the active section. Keep the booking form markup in `index.html` and `booking.html` in sync, including the marked pricing and planner blocks, and use `booking.js` and `booking.css` for both entry points.
+The homepage keeps the café's earlier photo hero, Playfair Display / Montserrat fonts, rounded buttons and venue sections. The calendar and two-step table planner stay embedded on the home page and on `booking.html`. `mobile-layout.css` and `mobile-layout.js` maintain compact navigation and phone spacing while `booking.css` and `booking.js` own the booking flow. Keep the planner markup in both entry points in sync.
 
 The planner collects visit details, shows the per-table estimate and then reveals contact details after Review your plan. Edit visit details preserves the entered values. A booking request still needs the café to confirm availability. Validate both entry points after booking changes.
 
@@ -12,7 +12,7 @@ The planner collects visit details, shows the per-table estimate and then reveal
 
 Keep `cafe-ui.css` and `cafe-calendar.js` byte-identical with their copies in `web/` in `theboardgamecafe/the-board-game-cafe-preview`. These files own the shared colours, mobile Home / Book / Join / Menu bar, review cards and calendar. Each booking flow supplies its own date limits and availability predicate; selecting a date updates its original date input. The app still checks station availability on the server, and the public website still sends a booking request.
 
-Mobile navigation uses a single sticky masthead and an expandable vertical menu below 900px. Keep the four bottom links and their active states consistent across the website and app. Verify the menu with a keyboard, phone widths, safe areas and the footer when editing shared navigation.
+Mobile navigation uses the original brand header with an expandable vertical menu below 1100px and four bottom shortcuts below 900px. Keep the four bottom links and their active states consistent across the website and app. Verify the menu with a keyboard, phone widths, safe areas and the footer when editing shared navigation.
 
 The home page includes the previously published 4.9/5 Google rating and two review excerpts. These are manually maintained content, not a live Google feed. Preserve the Google link and do not add a review count without verification.
 
