@@ -153,6 +153,128 @@
   grid-column: 1 / -1;
 }
 
+.booking-calendar {
+  margin: 0 0 20px;
+  padding: 12px;
+  border: 1px solid #e3dbcf;
+  border-radius: 8px;
+  background: #f8f4ed;
+}
+
+.booking-calendar-header {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.booking-calendar-header h3 {
+  margin: 0;
+  color: var(--ink);
+  font: 600 14px/1.4 "Montserrat", system-ui, sans-serif;
+  letter-spacing: normal;
+  text-align: center;
+}
+
+.booking-calendar-month-button {
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid #d9d0c3;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 25px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.booking-calendar-month-button:hover:not(:disabled) {
+  background: #eee7f1;
+}
+
+.booking-calendar-grid {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.booking-calendar-grid th {
+  padding: 5px 0;
+  color: #746b61;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.booking-calendar-grid td {
+  padding: 2px;
+  border: 0;
+}
+
+.booking-calendar-day {
+  display: block;
+  width: 100%;
+  max-width: 44px;
+  min-height: 40px;
+  margin: 0 auto;
+  padding: 5px 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  font: 600 13px/1.4 "Montserrat", system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.booking-calendar-day:hover:not(:disabled) {
+  background: #e9e1ed;
+}
+
+.booking-calendar-day[aria-current="date"] {
+  border-color: #ad8c47;
+}
+
+.booking-calendar-day.is-selected {
+  background: #35243e;
+  color: #fff8e9;
+}
+
+.booking-calendar-day.is-selected:hover {
+  background: #493154;
+}
+
+.booking-calendar-day:disabled,
+.booking-calendar-month-button:disabled {
+  color: #a29a90;
+  cursor: default;
+  opacity: .55;
+}
+
+.booking-calendar-status {
+  margin: 10px 0 0;
+  color: #655d54;
+  font-size: 11px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .booking-visit-grid > .field:first-child,
+  .booking-visit-grid > .field:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .booking-calendar {
+    padding: 8px;
+  }
+
+  .booking-calendar-grid td {
+    padding-inline: 1px;
+  }
+}
+
 .booking-planner .field label {
   margin-bottom: 5px;
   font-size: 12px;
