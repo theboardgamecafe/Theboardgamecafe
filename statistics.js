@@ -22,25 +22,25 @@
     choice=value;known=true;
     try{localStorage.setItem(key,value);}catch(_){}
     if(notice)notice.hidden=true;
-    if(preferenceButton)preferenceButton.textContent=enabled()?'Statistics: on':'Statistics: off';
+    preferenceButton?.setAttribute('aria-label', `Cookie settings (optional statistics ${enabled()?'on':'off'})`);
     view();
     window.dispatchEvent(new CustomEvent('site:statistics-choice',{detail:{enabled:enabled()}}));
   };
   const init=()=>{
-    notice=document.createElement('aside');notice.className='statistics-notice';notice.setAttribute('aria-label','Optional website statistics');
-    const title=document.createElement('strong');title.textContent='Optional website statistics';
-    const text=document.createElement('p');text.textContent='Count page views and button clicks to help us improve this site. Form text and contact details are never included in these counts.';
+    notice=document.createElement('aside');notice.className='statistics-notice';notice.setAttribute('aria-label','Cookie settings');
+    const title=document.createElement('strong');title.textContent='Cookie settings';
+    const text=document.createElement('p');text.textContent='Allow cookies to enable optional site statistics that count page views and button clicks. We use browser storage to remember your choice. These counts exclude form text and contact details.';
     const actions=document.createElement('div');actions.className='statistics-actions';
-    const allow=document.createElement('button');allow.type='button';allow.textContent='Allow statistics';allow.addEventListener('click',()=>updateChoice('on'));
-    const off=document.createElement('button');off.type='button';off.textContent='Keep off';off.addEventListener('click',()=>updateChoice('off'));
-    const privacy=document.createElement('a');privacy.href='/privacy.html#website-statistics';privacy.textContent='How statistics work';
-    const dismiss=document.createElement('button');dismiss.type='button';dismiss.className='statistics-close';dismiss.textContent='Close';dismiss.setAttribute('aria-label','Close statistics preferences');dismiss.addEventListener('click',()=>{notice.hidden=true;preferenceButton?.focus();});
+    const allow=document.createElement('button');allow.type='button';allow.textContent='Allow cookies';allow.addEventListener('click',()=>updateChoice('on'));
+    const off=document.createElement('button');off.type='button';off.textContent='Reject optional cookies';off.addEventListener('click',()=>updateChoice('off'));
+    const privacy=document.createElement('a');privacy.href='/privacy.html#website-statistics';privacy.textContent='About cookies and site statistics';
+    const dismiss=document.createElement('button');dismiss.type='button';dismiss.className='statistics-close';dismiss.textContent='Close';dismiss.setAttribute('aria-label','Close cookie settings');dismiss.addEventListener('click',()=>{notice.hidden=true;preferenceButton?.focus();});
     actions.append(allow,off);notice.append(title,text,actions,privacy,dismiss);document.body.append(notice);
     const footer=document.querySelector('.footerlinks')||document.querySelector('.footer-links')||document.querySelector('.site-footer .wrap,footer .wrap')||document.querySelector('footer');
-    preferenceButton=document.createElement('button');preferenceButton.type='button';preferenceButton.className='statistics-preferences';preferenceButton.textContent=enabled()?'Statistics: on':'Statistics: off';
-    preferenceButton.addEventListener('click',()=>{notice.hidden=false;off.textContent=enabled()?'Turn statistics off':'Keep off';(browserOptOut()?off:allow).focus();});
+    preferenceButton=document.createElement('button');preferenceButton.type='button';preferenceButton.className='statistics-preferences';preferenceButton.textContent='Cookie settings';preferenceButton.setAttribute('aria-label', `Cookie settings (optional statistics ${enabled()?'on':'off'})`);
+    preferenceButton.addEventListener('click',()=>{notice.hidden=false;(browserOptOut()?off:allow).focus();});
     footer?.append(preferenceButton);
-    if(browserOptOut()){allow.disabled=true;text.textContent='Your browser asks not to be tracked. Optional website statistics stay off. No form text or contact details are included in statistics.';}
+    if(browserOptOut()){allow.disabled=true;text.textContent='Your browser has requested privacy protection. Optional site statistics are off.';}
     notice.hidden=known||browserOptOut();view();
   };
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
