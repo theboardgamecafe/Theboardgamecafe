@@ -14,6 +14,21 @@
     observer.observe(whatsOn);
   }
 
+  const video = document.querySelector("video[data-autoplay-in-view]");
+  if (video && "IntersectionObserver" in window) {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const visibleThreshold = 0.25;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting || entry.intersectionRatio < visibleThreshold) return;
+      observer.disconnect();
+      if (!reducedMotion.matches && video.paused && video.currentTime === 0) {
+        // Native controls remain available if the browser blocks autoplay.
+        video.play().catch(() => {});
+      }
+    }, {threshold: visibleThreshold});
+    observer.observe(video);
+  }
+
   window.setMenu=function(open){
     if(!nav||!toggle) return;
     nav.classList.toggle("open",open);
