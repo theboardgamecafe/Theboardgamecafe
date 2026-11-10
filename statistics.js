@@ -49,7 +49,7 @@
     const raw=link.getAttribute('href')||'';let url;try{url=new URL(raw,location.href);}catch(_){return;}
     if(raw.startsWith('tel:'))send('phone');
     else if(url.hostname==='wa.me'||url.hostname.endsWith('.whatsapp.com'))send('whatsapp');
-    else if(url.pathname.endsWith('/booking.html'))send('book_table');
+    else if(url.pathname.endsWith('/booking.html')||(['/', '/index.html'].includes(url.pathname)&&url.hash==='#book'))send('book_table');
     else if(url.pathname.endsWith('/samples.html')||url.searchParams.get('enquiry')==='samples')send('sample_request');
     else if(url.pathname.endsWith('/trade.html')||url.searchParams.get('enquiry')==='trade')send('trade_enquiry');
     else if(/\/(group-bookings|private-hire|corporate-events|birthday-party-venue-blackburn)\.html$/.test(url.pathname))send('group_or_event');

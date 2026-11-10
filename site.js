@@ -4,16 +4,6 @@
   const main=document.getElementById("main-content");
   if(main&&!main.hasAttribute("tabindex")) main.setAttribute("tabindex","-1");
 
-  const whatsOn=document.getElementById("whats-on");
-  const whatsOnLink=nav?.querySelector('a[href="/#whats-on"]');
-  if(whatsOn&&whatsOnLink&&"IntersectionObserver" in window){
-    const observer=new IntersectionObserver(([entry])=>{
-      if(entry.isIntersecting) whatsOnLink.setAttribute("aria-current","location");
-      else whatsOnLink.removeAttribute("aria-current");
-    },{rootMargin:"-90px 0px -40% 0px"});
-    observer.observe(whatsOn);
-  }
-
   const video = document.querySelector("video[data-autoplay-in-view]");
   if (video && "IntersectionObserver" in window) {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -95,7 +85,7 @@
     const a=e.target.closest("a"); if(!a)return;
     const href=a.getAttribute("href")||"";
     let action="";
-    if(href.includes("booking.html")) action="book_table";
+    if(href.includes("booking.html")||["#book","/#book"].includes(href)) action="book_table";
     else if(href.includes("group-bookings.html")||href.includes("private-hire.html")||href.includes("corporate-events.html")) action="group_or_event";
     else if(href.startsWith("tel:")) action="phone";
     else if(href.includes("wa.me")) action="whatsapp";

@@ -2,6 +2,12 @@
 
 Canonical site: https://theboardgamecafe.co.uk/ · GitHub Pages publishes main.
 
+## Homepage and booking layout
+
+The homepage uses section navigation and an embedded table planner. `layout-refresh.css` styles the shared masthead, navigation and homepage sections. `layout-refresh.js` manages the active section. Keep the booking form markup in `index.html` and `booking.html` in sync, including the marked pricing and planner blocks, and use `booking.js` and `booking.css` for both entry points.
+
+The planner collects visit details, shows the per-table estimate and then reveals contact details after Review your plan. Edit visit details preserves the entered values. A booking request still needs the café to confirm availability. Validate both entry points after booking changes.
+
 ## Keep information consistent
 
 - Hours appear in booking.html, contact.html, index.html, FAQ/structured data and booking.js (UK service-day schedule). Update all together only after owner confirmation.
