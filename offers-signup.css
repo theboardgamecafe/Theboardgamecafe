@@ -1,0 +1,47 @@
+.offers-preferences {
+  max-width: 34rem;
+  min-width: 0;
+  margin: 1.75rem 0 0;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border, #5d5143);
+  border-radius: 1rem;
+}
+
+.offers-preferences legend {
+  padding: 0 .4rem;
+  font-weight: 700;
+}
+
+.offers-preferences p {
+  margin: 0 0 .55rem;
+  font-size: .9rem;
+  color: var(--muted);
+}
+
+.offers-preference {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  min-height: 2.75rem;
+  cursor: pointer;
+}
+
+.offers-preference input {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+  margin: 0;
+  accent-color: var(--accent, #e4bd76);
+}
+
+.offers-preferences #offers-confirmation {
+  margin: 0;
+}
+
+.offers-preferences #offers-confirmation:not(:empty) {
+  margin-top: .55rem;
+}
+
+.offers-actions {
+  align-items: center;
+}
