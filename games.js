@@ -1,4 +1,19 @@
 (() => {
+  const openGamesChoice = document.getElementById('open-games-choice');
+  const openGamesGame = document.getElementById('open-games-game');
+  const openGamesWhatsApp = document.getElementById('open-games-whatsapp');
+  if (openGamesChoice && openGamesGame && openGamesWhatsApp) {
+    const fallback = new URL(openGamesWhatsApp.href);
+    openGamesGame.addEventListener('change', () => {
+      const url = new URL(fallback);
+      if (openGamesGame.value) {
+        url.searchParams.set('text', `Hi, I’m looking to join an open game of ${openGamesGame.value} at The Board Game Café. Are there any places coming up?`);
+      }
+      openGamesWhatsApp.href = url.href;
+    });
+    openGamesChoice.hidden = false;
+  }
+
   const filters = document.getElementById('game-filters');
   const search = document.getElementById('game-search');
   const players = document.getElementById('game-players');

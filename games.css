@@ -1,5 +1,40 @@
-.game-catalogue {
+.game-catalogue,
+.open-games {
   scroll-margin-top: 12px;
+}
+
+.open-games-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(16px, 4vw, 46px);
+  padding: clamp(18px, 3.5vw, 34px);
+  border: 1px solid var(--line-light);
+  border-radius: var(--r-card);
+  background: var(--surface-light, #fffaf1);
+}
+
+.open-games-status h3 {
+  margin: 0 0 8px;
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.2;
+}
+
+.open-games-status p {
+  margin: 0 0 8px;
+  color: var(--ink-muted);
+}
+
+.game-filter-fields.open-games-choice {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 310px;
+}
+
+.open-games-enquiry .actions {
+  margin-top: 12px;
+}
+
+.open-games-choice[hidden] + .actions {
+  margin-top: 0;
 }
 
 .game-catalogue-intro {
@@ -179,6 +214,7 @@
 }
 
 @media (max-width: 600px) {
+  .open-games-panel { grid-template-columns: minmax(0, 1fr); }
   .game-catalogue-intro { grid-template-columns: minmax(0, 1fr); }
   .game-catalogue-intro img { max-height: 155px; }
 }

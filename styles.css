@@ -742,6 +742,7 @@ footer{
   line-height:1.75;
 }
 .hero-premium .actions{margin-top:28px}
+.hero-premium .actions + p{margin-top:16px}
 .hero-premium .text-link{color:#f1e7d7}
 .visit-shortcuts{
   height:auto;justify-content:flex-start;flex-wrap:wrap;gap:2px 18px;margin-top:12px
@@ -805,6 +806,7 @@ footer{
   .hero-premium-content{padding-top:58px;padding-bottom:58px}
   .hero-premium h1{font-size:clamp(47px,14vw,64px);line-height:.94}
   .hero-premium p{font-size:15.5px;line-height:1.65}
+  .hero-premium .actions{margin-top:4px}
   .hero-proof{display:grid;gap:7px;margin-top:24px}
   .mobile-bar{
     background:rgba(12,13,11,.97);

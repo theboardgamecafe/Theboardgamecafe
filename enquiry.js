@@ -49,7 +49,12 @@ function updateFormState(){
   const messageLabel=document.getElementById("message-label");
   const needsMessage=!showDetails||rawType==="Live sport"||rawType==="Movie night";
   message.required=needsMessage;
-  if(messageLabel)messageLabel.textContent=rawType==="Live sport"?"Which match or event would you like to watch?":rawType==="Movie night"?"Tell us your preferred film and plans":needsMessage?"Tell us what you’re planning":"Anything else we should know? (optional)";
+  const prompts={
+    "Open game":"Which game would you like to play, and when?",
+    "Live sport":"Which match or event would you like to watch?",
+    "Movie night":"Tell us your preferred film and plans"
+  };
+  if(messageLabel)messageLabel.textContent=prompts[rawType]||(needsMessage?"Tell us what you’re planning":"Anything else we should know? (optional)");
 }
 function enquiryPayload(){
   return {
