@@ -33,4 +33,4 @@ Optional aggregate statistics: statistics.js/statistics.css; disabled until expl
 
 Protected operational console: https://hollin-and-vale-enquiries.r9shbntmg2.chatgpt.site/admin — owner ChatGPT sign-in required; no public records. It shows H&V enquiries and statistics for both websites, excludes QA by default and does not send email notifications. SITE_ADMIN_EMAIL stays secret in hosting runtime. Existing enquiry API and CORS are unchanged.
 
-Fonts now use exact self-hosted approved WOFF2 files in assets/fonts with OFL licences and critical preloads; preserve their declared weights. Google rating is dated to its last confirmed check, not represented as a fresh live number.
+Fonts now use exact self-hosted approved WOFF2 files in assets/fonts with OFL licences and critical preloads; preserve their declared weights. The Google rating on the homepage is maintained manually. Keep the review link alongside it.
