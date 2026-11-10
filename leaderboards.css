@@ -1,0 +1,344 @@
+.leaderboards-page {
+  min-width: 0;
+}
+
+.leaderboards-page .leaderboard-hero {
+  padding: 48px 0 36px;
+}
+
+.leaderboard-hero h1 {
+  margin: 12px 0 16px;
+  max-width: 800px;
+  font-size: clamp(38px, 6vw, 64px);
+  line-height: 1.08;
+}
+
+.leaderboard-hero p {
+  max-width: 690px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.leaderboards-page .leaderboard-jumps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  justify-content: start;
+  gap: 8px;
+  width: min(470px, 100%);
+  height: auto;
+  min-height: 0;
+  margin-top: 24px;
+}
+
+.leaderboard-jumps a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid rgba(195, 154, 66, .5);
+  border-radius: var(--r-control);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: none;
+}
+
+.leaderboard-jumps a:hover {
+  border-color: #d7b65e;
+  background: rgba(195, 154, 66, .12);
+}
+
+.leaderboards-page .light-band {
+  padding: 36px 0;
+}
+
+.leaderboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  max-width: 780px;
+  margin-inline: auto;
+}
+
+.leaderboard-card {
+  min-width: 0;
+  padding: 24px;
+  border: 1px solid var(--line-light);
+  border-radius: var(--r-card);
+  background: var(--surface-light, #fffaf1);
+  color: var(--ink);
+  scroll-margin-top: 16px;
+}
+
+.leaderboard-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.leaderboard-heading .eyebrow {
+  grid-column: 1 / -1;
+  margin: 0 0 8px;
+  font-size: 10px;
+  letter-spacing: .12em;
+}
+
+.leaderboard-heading .eyebrow::before {
+  width: 20px;
+}
+
+.leaderboard-heading h2 {
+  min-width: 0;
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.leaderboard-scale {
+  display: inline-block;
+  padding: 4px 8px;
+  border: 1px solid rgba(61, 41, 76, .18);
+  border-radius: var(--r-pill);
+  background: #eee7f1;
+  color: var(--plum-deep);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.leaderboard-intro {
+  margin: 14px 0 20px;
+  color: var(--ink-muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.leaderboard-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.leaderboard-table th {
+  padding: 0 0 10px;
+  border-bottom: 1px solid rgba(38, 27, 45, .25);
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.leaderboard-table td {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line-light);
+  vertical-align: middle;
+}
+
+.leaderboard-table th:first-child,
+.leaderboard-table td:first-child,
+.leaderboard-table .leaderboard-rank {
+  width: 44px;
+  padding-right: 8px;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.leaderboard-table th:last-child,
+.leaderboard-table td:last-child,
+.leaderboard-table .leaderboard-value {
+  width: 68px;
+  padding-left: 8px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.leaderboard-table td:nth-child(2),
+.leaderboard-table .leaderboard-player {
+  min-width: 0;
+  font-weight: 600;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+.leaderboard-tier {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.leaderboard-table td:last-child,
+.leaderboard-table .leaderboard-value {
+  color: var(--plum-deep);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.leaderboard-status {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-left: 2px solid #c39a42;
+  border-radius: 0 var(--r-control) var(--r-control) 0;
+  background: #f3ecdf;
+  color: var(--ink-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.leaderboard-note {
+  margin: 16px 0 4px;
+  color: var(--ink-muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.leaderboard-card-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--plum-deep);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-underline-offset: 4px;
+}
+
+.leaderboards-page .leaderboard-how {
+  padding: 40px 0 44px;
+}
+
+.leaderboard-how h2 {
+  margin: 0 0 20px;
+  font-size: clamp(28px, 4vw, 36px);
+  line-height: 1.15;
+}
+
+.leaderboard-how .section-head {
+  margin-bottom: 22px;
+}
+
+.leaderboard-how .section-head h2 {
+  margin: 8px 0 0;
+}
+
+.leaderboard-how .commercial-benefit {
+  min-width: 0;
+  padding: 16px 0 0;
+}
+
+.leaderboard-how .commercial-benefit h3 {
+  font-size: 22px;
+}
+
+.leaderboard-how .commercial-benefit p {
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+@media (min-width: 1080px) {
+  .leaderboard-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: none;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .leaderboard-card {
+    padding: 22px;
+  }
+
+  .leaderboard-heading h2 {
+    font-size: 26px;
+  }
+
+  .leaderboard-intro {
+    min-height: 43px;
+  }
+}
+
+@media (max-width: 600px) {
+  .leaderboards-page .leaderboard-hero {
+    padding: 30px 0 26px;
+  }
+
+  .leaderboard-hero h1 {
+    margin: 10px 0 14px;
+    font-size: clamp(36px, 10vw, 43px);
+  }
+
+  .leaderboard-hero p {
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .leaderboards-page .leaderboard-jumps {
+    gap: 6px;
+    margin-top: 20px;
+  }
+
+  .leaderboard-jumps a {
+    padding: 8px 6px;
+    font-size: 12px;
+  }
+
+  .leaderboards-page .light-band {
+    padding: 24px 0;
+  }
+
+  .leaderboard-grid {
+    gap: 16px;
+  }
+
+  .leaderboard-card {
+    padding: 18px 16px 12px;
+    scroll-margin-top: 8px;
+  }
+
+  .leaderboard-heading h2 {
+    font-size: 26px;
+  }
+
+  .leaderboard-intro {
+    margin: 12px 0 18px;
+  }
+
+  .leaderboard-table th:first-child,
+  .leaderboard-table td:first-child,
+  .leaderboard-table .leaderboard-rank {
+    width: 38px;
+  }
+
+  .leaderboard-table th:last-child,
+  .leaderboard-table td:last-child,
+  .leaderboard-table .leaderboard-value {
+    width: 61px;
+  }
+
+  .leaderboard-status {
+    padding: 11px 12px;
+  }
+
+  .leaderboards-page .leaderboard-how {
+    padding: 30px 0 34px;
+  }
+
+  .leaderboard-how h2 {
+    margin-bottom: 18px;
+  }
+
+  .leaderboard-how .commercial-benefits {
+    gap: 18px;
+  }
+}

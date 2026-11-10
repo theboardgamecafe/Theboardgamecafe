@@ -16,6 +16,12 @@ The Games page reads `game-sessions.json`. Add a row once the café has confirme
 
 Update `seatsOpen` as you confirm places. A row with zero seats shows Full. Remove cancelled sessions or set `status` to `cancelled`. Dates display in UK time, with Friday to Sunday under This weekend. Seat requests open a WhatsApp draft for the visitor to send. Host enquiries use the existing contact form.
 
+## Leaderboards
+
+`leaderboards.html` reads the public `leaderboards.json` feed, with separate `fc27`, `chess` and `boxing` arrays. Start empty until the café has verified entries. Use a stable `playerId`, an agreed public `displayName` of up to 60 characters, `verified` set to `true` and `verifiedAt` as an ISO 8601 timestamp including a timezone. Keep contact details out of this public file.
+
+FC27 and Chess entries use a numeric `rating` from 1 to 4, in steps of 0.1, reviewed by café staff. The labels are Beginner below 2, Developing below 3, Skilled below 4 and Elite at 4. The latest verified rating for each player counts. Boxing entries use an integer `score` from 0 to 999, with the highest verified attempt per player counting. Equal ratings or scores share a competition rank, such as 1, 1, 3. The boards are ongoing standings. Competition dates, reset periods and prizes need owner-confirmed rules before publication.
+
 ## Forms and privacy
 
 booking.js and enquiry.js send to the existing Web3Forms account. A successful HTTP response must contain success:true. Test failures as well as success; keep test messages clearly labelled and verify actual inbox delivery separately. Do not place a booking/payment during QA.
