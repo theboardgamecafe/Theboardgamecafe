@@ -3,7 +3,7 @@
   min-width: 0;
   margin: 1.75rem 0 0;
   padding: 1rem 1.25rem;
-  border: 1px solid var(--border, #5d5143);
+  border: 1px solid var(--line);
   border-radius: 1rem;
 }
 
@@ -31,7 +31,7 @@
   height: 1.15rem;
   flex: 0 0 auto;
   margin: 0;
-  accent-color: var(--accent, #e4bd76);
+  accent-color: #b59ac2;
 }
 
 .offers-preferences #offers-confirmation {
