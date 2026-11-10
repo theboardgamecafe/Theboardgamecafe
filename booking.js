@@ -35,7 +35,7 @@ const maxTableRequestGuests=6;
 const game=new URLSearchParams(location.search).get("game")?.trim();
 if(game && /^[\p{L}\p{N}][\p{L}\p{N} ’'&.,:!?()+/–-]{0,79}$/u.test(game)){
   const gameInput=document.getElementById("booking-game");
-  gameInput.value=game;
+  gameInput.value=game.toLowerCase()==="catan"?"Catan":game;
   gameInput.disabled=false;
   document.getElementById("booking-game-field").hidden=false;
 }

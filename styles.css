@@ -650,6 +650,7 @@ nav{height:82px}
   font-size:12px;
   box-shadow:none;
 }
+.btn.keep-case{text-transform:none}
 .btn-primary{
   color:#171711;
   background:linear-gradient(135deg,#e1c16f,#b98934);
