@@ -351,7 +351,7 @@ footer{padding:36px 0 42px;border-top:1px solid var(--line);margin-top:64px;back
 .price{font-family:"Space Grotesk",sans-serif;font-size:64px;font-weight:700;line-height:1;margin-top:8px}
 .callout-title{font-size:34px;margin:6px 0}
 
-.portrait-media{aspect-ratio:4/5!important;object-fit:cover!important;object-position:center 62%!important}
+.commercial-layout>.portrait-media{aspect-ratio:auto;object-fit:contain}
 .sports-license{display:grid;grid-template-columns:.95fr 1.05fr;gap:32px;align-items:center}
 .sports-license-media{overflow:hidden;border-radius:var(--r-large);border:1px solid var(--line-light);background:#05070b;box-shadow:var(--shadow)}
 .sports-license-media video{display:block;width:100%;height:auto}
