@@ -57,10 +57,6 @@
 }
 
 .catalogue-category-heading {
-  align-items: center;
-  display: grid;
-  gap: clamp(14px, 4vw, 32px);
-  grid-template-columns: minmax(0, 1fr) minmax(96px, 20%);
   margin-bottom: 20px;
 }
 
@@ -73,20 +69,10 @@
 }
 
 .catalogue-category-heading p,
-.catalogue-item > p,
+.catalogue-item-copy > p,
 .catalogue-options p {
   color: var(--ink-muted);
   margin: 0;
-}
-
-.catalogue-category-heading img {
-  aspect-ratio: 5 / 4;
-  border: 1px solid var(--line-light);
-  border-radius: var(--r-card);
-  display: block;
-  height: auto;
-  object-fit: cover;
-  width: 100%;
 }
 
 .catalogue-items {
@@ -99,9 +85,29 @@
 }
 
 .catalogue-item {
+  align-items: start;
   border-bottom: 1px solid var(--line-light);
+  display: grid;
+  gap: clamp(10px, 2vw, 18px);
+  grid-template-columns: clamp(76px, 12vw, 124px) minmax(0, 1fr);
   min-width: 0;
   padding: 13px 0;
+}
+
+#cakes-desserts .catalogue-item,
+#ice-cream .catalogue-item {
+  grid-template-columns: clamp(96px, 13vw, 152px) minmax(0, 1fr);
+}
+
+.catalogue-item-photo {
+  aspect-ratio: 5 / 4;
+  background: #e9dfce;
+  border: 1px solid var(--line-light);
+  border-radius: 10px;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
 }
 
 .catalogue-item-heading {
@@ -119,13 +125,13 @@
   font-weight: 700;
 }
 
-.catalogue-item > p,
+.catalogue-item-copy > p,
 .catalogue-options p {
   font-size: 0.85rem;
   line-height: 1.5;
 }
 
-.catalogue-item > p {
+.catalogue-item-copy > p {
   margin-top: 4px;
 }
 
