@@ -10,6 +10,12 @@ Canonical site: https://theboardgamecafe.co.uk/ · GitHub Pages publishes main.
 - Parking/access: free on-site parking, step-free street-level entry, accessible parking, no accessible toilet. Private hire: £100/hour exclusive whole venue, three-hour minimum (£300), food/refreshments separate, £50 outside-food fee, no café VAT added. This existing owner-approved rate was recovered from the 30 October visibility/action-plan record. Capacity is confirmed by layout: earlier maximum60 conflicts with later platform layout figures, so do not publish a blanket capacity until reconciled. The agreed quote confirms catering, access and safe capacity.
 - Movie requests require verified screening permissions and setup. Publish dated events only when confirmed.
 
+## Open game sessions
+
+The Games page reads `game-sessions.json`. Add a row once the café has confirmed the session and table. Each row needs `status` set to `confirmed`, a public `title`, `startsAt` in ISO 8601 format with a UTC offset or Z, `durationMinutes` as a positive whole number and `seatsOpen` as a non-negative whole number. Optional `level` and `host` strings appear on the public card. Use an agreed public host label.
+
+Update `seatsOpen` as you confirm places. A row with zero seats shows Full. Remove cancelled sessions or set `status` to `cancelled`. Dates display in UK time, with Friday to Sunday under This weekend. Seat requests open a WhatsApp draft for the visitor to send. Host enquiries use the existing contact form.
+
 ## Forms and privacy
 
 booking.js and enquiry.js send to the existing Web3Forms account. A successful HTTP response must contain success:true. Test failures as well as success; keep test messages clearly labelled and verify actual inbox delivery separately. Do not place a booking/payment during QA.

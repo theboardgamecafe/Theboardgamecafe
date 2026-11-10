@@ -1,25 +1,166 @@
 .game-catalogue,
-.open-games {
+.open-games,
+.session-calendar {
   scroll-margin-top: 12px;
+}
+
+.session-calendar {
+  padding: clamp(16px, 3vw, 28px);
+  border: 1px solid var(--line-light);
+  border-radius: var(--r-card);
+  background: var(--surface-light, #fffaf1);
+}
+
+.session-calendar-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+}
+
+.session-calendar-heading h3 {
+  margin: 0;
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.2;
+}
+
+.session-calendar-heading p,
+.session-empty p,
+.session-details {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: 14px;
+}
+
+.session-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.session-filter {
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1px solid #8b8273;
+  border-radius: var(--r-pill);
+  background: var(--surface-light, #fffaf1);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.session-filter:hover {
+  border-color: var(--plum-deep);
+}
+
+.session-filter[aria-pressed="true"] {
+  border-color: var(--plum-deep);
+  background: var(--plum-deep);
+  color: #fffaf1;
+}
+
+.session-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.session-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line-light);
+  border-radius: var(--r-control);
+  background: var(--paper);
+  overflow-wrap: anywhere;
+}
+
+.session-card-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.session-when,
+.session-seats {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.session-seats {
+  margin-block: 2px;
+  padding: 2px 7px;
+  border-radius: var(--r-pill);
+  background: var(--plum-light);
+}
+
+.session-when {
+  margin-inline-end: 8px;
+}
+
+.session-seats.is-full {
+  background: transparent;
+  border: 1px solid var(--line-light);
+  color: var(--ink-muted);
+}
+
+.session-card h4,
+.session-empty h4 {
+  margin: 0;
+  font: 600 20px/1.2 "Playfair Display", Georgia, serif;
+}
+
+.session-card h4 {
+  margin-top: 6px;
+}
+
+.session-card .session-details {
+  margin: 4px 0 9px;
+}
+
+.session-card .btn {
+  margin-top: auto;
+}
+
+.session-empty {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: var(--r-control);
+  background: var(--paper);
+}
+
+.session-empty h4 {
+  margin-bottom: 5px;
 }
 
 .open-games-panel {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(16px, 4vw, 46px);
+  margin-top: 14px;
   padding: clamp(18px, 3.5vw, 34px);
   border: 1px solid var(--line-light);
   border-radius: var(--r-card);
   background: var(--surface-light, #fffaf1);
 }
 
-.open-games-status h3 {
+.open-games-status h3,
+.open-games-enquiry h3 {
   margin: 0 0 8px;
   font-size: clamp(22px, 3vw, 30px);
   line-height: 1.2;
 }
 
-.open-games-status p {
+.open-games-status p,
+.open-games-enquiry p {
   margin: 0 0 8px;
   color: var(--ink-muted);
 }
@@ -29,8 +170,14 @@
   max-width: 310px;
 }
 
-.open-games-enquiry .actions {
-  margin-top: 12px;
+.open-games-enquiry .actions,
+.open-games-status .actions {
+  gap: 0;
+  margin-top: 8px;
+}
+
+.open-games-panel .actions > * {
+  margin: 4px 8px 0 0;
 }
 
 .open-games-choice[hidden] + .actions {
@@ -210,10 +357,13 @@
 }
 
 @media (max-width: 900px) {
+  .session-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .game-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 600px) {
+  .session-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .session-list { grid-template-columns: minmax(0, 1fr); }
   .open-games-panel { grid-template-columns: minmax(0, 1fr); }
   .game-catalogue-intro { grid-template-columns: minmax(0, 1fr); }
   .game-catalogue-intro img { max-height: 155px; }

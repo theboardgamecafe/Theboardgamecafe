@@ -9,6 +9,10 @@ const submitBtn=document.getElementById("enquiry-submit");
 const statusEl=document.getElementById("enquiry-status");
 const routeNote=document.getElementById("booking-route-note");
 const routeLink=document.getElementById("table-booking-link");
+const hostGameDetails=document.getElementById("host-game-details");
+const hostGameTemplate=document.getElementById("host-game-details-template");
+const message=document.getElementById("message");
+const defaultMessagePlaceholder=message.placeholder;
 const eventTypes=new Set(["Birthday party","Group booking","Private hire","Corporate event","School or college group","Care or support group","Charity or community event","Live sport","Movie night"]);
 function todayKey(){
   const parts=new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/London",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());
@@ -29,7 +33,7 @@ function updateFormState(){
   if(host&&template){
     const alreadyShown=Boolean(host.querySelector("#date"));
     if(showDetails&&!alreadyShown) host.appendChild(template.content.cloneNode(true));
-    if(!showDetails&&alreadyShown) host.replaceChildren();
+    if(!showDetails&&alreadyShown) host.textContent="";
     const date=host.querySelector("#date");
     const size=host.querySelector("#size");
     if(date){date.min=todayKey();date.required=showDetails}
@@ -45,10 +49,17 @@ function updateFormState(){
         :"Times are UK local time. Timing and any food or TV arrangements are confirmed with you before a booking is agreed.";
     }
   }
-  const message=document.getElementById("message");
+  const showHostDetails=rawType==="Host a game";
+  if(showHostDetails&&hostGameDetails&&hostGameTemplate){
+    if(!hostGameDetails.hasChildNodes()) hostGameDetails.appendChild(hostGameTemplate.content.cloneNode(true));
+    hostGameDetails.querySelector("#host-date").min=todayKey();
+  }else if(hostGameDetails?.hasChildNodes()){
+    hostGameDetails.textContent="";
+  }
   const messageLabel=document.getElementById("message-label");
-  const needsMessage=!showDetails||rawType==="Live sport"||rawType==="Movie night";
+  const needsMessage=(!showDetails&&!showHostDetails)||rawType==="Live sport"||rawType==="Movie night";
   message.required=needsMessage;
+  message.placeholder=showHostDetails?"Experience level, duration or anything else useful.":defaultMessagePlaceholder;
   const prompts={
     "Open game":"Which game would you like to play, and when?",
     "Off-site games hire":"What’s your event date, venue postcode, group size and preferred games?",
@@ -63,9 +74,11 @@ function enquiryPayload(){
     email:document.getElementById("email")?.value.trim()||"",
     phone:document.getElementById("phone")?.value.trim()||"",
     type:selectedEnquiryType(),
-    date:document.getElementById("date")?.value||"",
+    game:document.getElementById("host-game")?.value.trim()||"",
+    seats:document.getElementById("host-seats")?.value||"",
+    date:document.getElementById("date")?.value||document.getElementById("host-date")?.value||"",
     size:document.getElementById("size")?.value||"",
-    time:document.getElementById("event-time")?.value||"",
+    time:document.getElementById("event-time")?.value||document.getElementById("host-time")?.value||"",
     duration:document.getElementById("event-duration")?.value||"",
     catering:document.getElementById("event-catering")?.value||"",
     screens:document.getElementById("event-screens")?.value.trim()||"",
@@ -85,9 +98,11 @@ function validEnquiry(){
 function formattedBody(){
   const d=enquiryPayload();
   const lines=["Website enquiry – "+d.type,"","Name: "+d.name,"Email: "+(d.email||"Not provided"),"Phone: "+(d.phone||"Not provided")];
+  if(d.game) lines.push("Game: "+d.game);
   if(d.date) lines.push("Preferred date: "+d.date);
   if(d.size) lines.push("Group size: "+d.size);
   if(d.time) lines.push("Preferred start time (UK): "+d.time);
+  if(d.seats) lines.push("Seats to open: "+d.seats);
   if(d.duration) lines.push("Approximate duration: "+d.duration);
   if(d.catering) lines.push("Food and drinks: "+d.catering);
   if(d.screens) lines.push("TV or presentation requirements: "+d.screens);
