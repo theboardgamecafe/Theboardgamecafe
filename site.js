@@ -4,6 +4,16 @@
   const main=document.getElementById("main-content");
   if(main&&!main.hasAttribute("tabindex")) main.setAttribute("tabindex","-1");
 
+  const whatsOn=document.getElementById("whats-on");
+  const whatsOnLink=nav?.querySelector('a[href="/#whats-on"]');
+  if(whatsOn&&whatsOnLink&&"IntersectionObserver" in window){
+    const observer=new IntersectionObserver(([entry])=>{
+      if(entry.isIntersecting) whatsOnLink.setAttribute("aria-current","location");
+      else whatsOnLink.removeAttribute("aria-current");
+    },{rootMargin:"-90px 0px -40% 0px"});
+    observer.observe(whatsOn);
+  }
+
   window.setMenu=function(open){
     if(!nav||!toggle) return;
     nav.classList.toggle("open",open);

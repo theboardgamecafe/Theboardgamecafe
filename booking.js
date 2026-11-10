@@ -16,9 +16,29 @@ try{
 }catch(_){}
 const timeSelect=document.getElementById("booking-time");
 const durationSelect=document.getElementById("booking-duration");
+const sizeInput=document.getElementById("booking-size");
+const arrivalDateInput=document.getElementById("booking-arrival-date");
+const timeStatus=document.getElementById("booking-time-status");
 const statusEl=document.getElementById("booking-status");
 const submitBtn=document.getElementById("booking-submit");
+const plan=document.getElementById("booking-plan");
+const planDetails=document.getElementById("booking-plan-details");
+const estimateAmount=document.getElementById("booking-estimate-amount");
+const seatingNote=document.getElementById("booking-seating-note");
+const groupRoute=document.getElementById("booking-group-route");
+const contactDetails=document.getElementById("booking-contact-details");
+const requestActions=document.getElementById("booking-request-actions");
 const hours={0:[14,23],1:[19,24],2:null,3:[19,24],4:[19,24],5:[19,26],6:[16,26]};
+const firstTableHour=15;
+const additionalTableHour=8;
+const maxTableRequestGuests=6;
+const game=new URLSearchParams(location.search).get("game")?.trim();
+if(game && /^[\p{L}\p{N}][\p{L}\p{N} ’'&.,:!?()+/–-]{0,79}$/u.test(game)){
+  const gameInput=document.getElementById("booking-game");
+  gameInput.value=game;
+  gameInput.disabled=false;
+  document.getElementById("booking-game-field").hidden=false;
+}
 function ukNow(){
   const parts=new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/London",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23"}).formatToParts(new Date());
   const value=Object.fromEntries(parts.filter(p=>p.type!=="literal").map(p=>[p.type,Number(p.value)]));
@@ -27,11 +47,44 @@ function ukNow(){
 function pad(n){return String(n).padStart(2,"0")}
 function labelTime(v){const h=Math.floor(v)%24,m=v%1?30:0,ap=h>=12?"pm":"am",hh=h%12||12;return hh+":"+pad(m)+ap}
 function key(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())}
+function formatVisitDate(value){
+  return new Date(value+"T00:00:00").toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"});
+}
+function updatePlan(){
+  const partySize=sizeInput.validity.valid?sizeInput.valueAsNumber:0;
+  const groupVisit=partySize>maxTableRequestGuests;
+  groupRoute.hidden=!groupVisit;
+  plan.hidden=groupVisit;
+  contactDetails.hidden=groupVisit;
+  contactDetails.disabled=groupVisit;
+  requestActions.hidden=groupVisit;
+  seatingNote.hidden=partySize<5;
+  submitBtn.disabled=groupVisit || !partySize || !timeSelect.value || !durationSelect.value || form.getAttribute("aria-busy")==="true";
+  if(groupVisit) return;
+
+  const details=[];
+  const visitDate=arrivalDateInput.value || dateInput.value;
+  if(visitDate) details.push(formatVisitDate(visitDate));
+  if(timeSelect.value) details.push(timeSelect.value);
+  if(partySize) details.push(partySize+" "+(partySize===1?"guest":"guests"));
+  if(durationSelect.value) details.push(durationSelect.value);
+  planDetails.textContent=details.join(" · ") || "Choose your visit details to see them here.";
+
+  const duration=durationSelect.value;
+  if(!partySize || !duration){
+    estimateAmount.textContent="—";
+    return;
+  }
+  const total=firstTableHour+additionalTableHour*(Number.parseInt(duration,10)-1);
+  estimateAmount.textContent=(duration==="4+ hours"?"From ":"")+"£"+total;
+}
 function resetDuration(){
   durationSelect.disabled=true;
   durationSelect.innerHTML='<option value="">Choose an arrival time first</option>';
 }
 function refreshDurations(){
+  arrivalDateInput.value="";
+  timeStatus.textContent="";
   const option=timeSelect.selectedOptions[0];
   const start=Number(option?.dataset.hour);
   const close=Number(option?.dataset.close);
@@ -55,36 +108,33 @@ function refreshDurations(){
   durationSelect.disabled=durationSelect.options.length<=1;
   const actualDate=new Date(dateInput.value+"T00:00:00");
   if(start>=24)actualDate.setDate(actualDate.getDate()+1);
-  document.getElementById("booking-arrival-date").value=key(actualDate);
-  statusEl.textContent=start>=24?"Your arrival is after midnight on "+actualDate.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"})+" (the night of your selected booking date).":"";
+  arrivalDateInput.value=key(actualDate);
+  if(start>=24) timeStatus.textContent="Your arrival is after midnight on "+formatVisitDate(arrivalDateInput.value)+" (the night of your selected booking date).";
 }
 function refreshTimes(){
-  document.getElementById("booking-arrival-date").value="";
+  arrivalDateInput.value="";
   timeSelect.innerHTML="";
   resetDuration();
   if(!dateInput.value){
     timeSelect.disabled=true;
     timeSelect.innerHTML='<option value="">Choose a date first</option>';
-    statusEl.textContent="";
-    submitBtn.disabled=false;
+    timeStatus.textContent="";
     return;
   }
   if(dateInput.value<dateInput.min){
     timeSelect.disabled=true;
     timeSelect.innerHTML='<option value="">Choose an available date</option>';
-    statusEl.textContent="Please choose today or a future date.";
-    submitBtn.disabled=true;return;
+    timeStatus.textContent="Please choose today or a future date.";
+    return;
   }
   const selected=new Date(dateInput.value+"T00:00:00"),schedule=hours[selected.getDay()];
   if(!schedule){
     timeSelect.disabled=true;
     timeSelect.innerHTML='<option value="">Closed Tuesdays</option>';
-    statusEl.textContent="We’re closed on Tuesdays — please choose another date.";
-    submitBtn.disabled=true;
+    timeStatus.textContent="We’re closed on Tuesdays — please choose another date.";
     return;
   }
-  statusEl.textContent="";
-  submitBtn.disabled=false;
+  timeStatus.textContent="";
   timeSelect.innerHTML='<option value="">Choose a time</option>';
   const now=ukNow();
   for(let t=schedule[0];t<=schedule[1]-1;t+=0.5){
@@ -101,8 +151,7 @@ function refreshTimes(){
   }
   timeSelect.disabled=timeSelect.options.length<=1;
   if(timeSelect.disabled){
-    statusEl.textContent="No remaining booking times are available to request for today. Please choose another date.";
-    submitBtn.disabled=true;
+    timeStatus.textContent="No remaining booking times are available to request for today. Please choose another date.";
   }
 }
 const today=ukNow();
@@ -112,12 +161,20 @@ const previousSchedule=hours[previousDay.getDay()];
 const currentHour=today.getHours()+today.getMinutes()/60;
 const inLateNightSpillover=Boolean(previousSchedule&&previousSchedule[1]>24&&currentHour<(previousSchedule[1]-24));
 dateInput.min=key(inLateNightSpillover?previousDay:today);
-dateInput.addEventListener("change",refreshTimes);
-timeSelect.addEventListener("change",refreshDurations);
+dateInput.addEventListener("change",()=>{
+  refreshTimes();
+  updatePlan();
+});
+timeSelect.addEventListener("change",()=>{
+  refreshDurations();
+  updatePlan();
+});
+sizeInput.addEventListener("input",updatePlan);
+durationSelect.addEventListener("change",updatePlan);
 form.addEventListener("submit",async e=>{
   e.preventDefault();
   if(hpInput?.value || Date.now()-formStarted<800) return;
-  if(!form.reportValidity()) return;
+  if(sizeInput.valueAsNumber>maxTableRequestGuests || !timeSelect.value || !durationSelect.value || !form.reportValidity()) return;
   if(form.getAttribute("aria-busy")==="true") return;
   form.setAttribute("aria-busy","true");
   const previous=submitBtn.textContent;
@@ -141,10 +198,11 @@ form.addEventListener("submit",async e=>{
   }catch(_){
     statusEl.textContent="We couldn’t send your request just now. Please try again, call 07768 489048, or use the contact page.";
     form.removeAttribute("aria-busy");
-    submitBtn.disabled=false;
     submitBtn.textContent=previous;
+    updatePlan();
   }
 });
 refreshTimes();
+updatePlan();
 
 })();

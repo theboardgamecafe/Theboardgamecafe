@@ -1,0 +1,75 @@
+@media (min-width: 901px) {
+  .booking-grid {
+    grid-template-columns: 1.18fr .82fr;
+  }
+}
+
+.booking-planner .field {
+  min-width: 0;
+}
+
+.planner-fields {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.planner-fields legend {
+  margin: 0 0 12px;
+  padding: 0;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.planner-fields .form-note {
+  margin: 8px 0 0;
+}
+
+.planner-panel {
+  margin: 16px 0 24px;
+  padding: 16px;
+  border: 1px solid var(--line-light);
+  border-radius: var(--r-card);
+  background: var(--paper);
+}
+
+.planner-panel h3,
+.planner-panel p {
+  margin: 0;
+}
+
+.planner-panel h3 {
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 1.2rem;
+}
+
+.planner-panel .form-note + .form-note,
+.planner-panel .text-link {
+  margin-top: 8px;
+}
+
+.planner-panel .text-link {
+  display: inline-block;
+}
+
+.planner-panel .planner-estimate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+  margin: 12px 0 6px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-light);
+}
+
+#booking-estimate-amount {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.booking-planner .booking-status:empty {
+  display: none;
+}
