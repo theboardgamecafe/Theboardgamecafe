@@ -51,6 +51,7 @@ function updateFormState(){
   message.required=needsMessage;
   const prompts={
     "Open game":"Which game would you like to play, and when?",
+    "Off-site games hire":"What’s your event date, venue postcode, group size and preferred games?",
     "Live sport":"Which match or event would you like to watch?",
     "Movie night":"Tell us your preferred film and plans"
   };
