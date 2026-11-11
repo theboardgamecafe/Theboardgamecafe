@@ -66,7 +66,7 @@ Fonts now use exact self-hosted approved WOFF2 files in assets/fonts with OFL li
 
 Confirmed by the owner on 11 November 2026 and published across the site:
 
-- Tuesdays stay closed in the regular schedule and the online planner, but the café opens for Champions League match nights. The "from 7pm" opening time matches other weeknights and should be re-confirmed with the owner. Tuesday visits are booked by phone or WhatsApp, not the planner.
+- Tuesdays are still closed. The owner plans to open for Champions League match nights shortly; the site says "coming soon" until a start date and opening time are confirmed. Update hours, booking.js and the live sport page together when it starts.
 - All food served is halal (home, menu, desserts, FAQ, party pages, private hire, llms.txt, homepage schema).
 - Birthday, group and off-site games-hire bookings are advertised "from £50 an hour".
 - Private hire: up to 80 guests, 50% deposit to confirm, cancellations at least 24 hours before the event. The 80 figure supersedes the earlier unreconciled 60; re-check it against the venue's fire risk assessment.
