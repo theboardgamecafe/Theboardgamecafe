@@ -194,8 +194,8 @@ function refreshTimes(){
   const selected=new Date(dateInput.value+"T00:00:00"),schedule=hours[selected.getDay()];
   if(!schedule){
     timeSelect.disabled=true;
-    timeSelect.innerHTML='<option value="">Closed Tuesdays</option>';
-    timeStatus.textContent="We’re closed on Tuesdays — please choose another date.";
+    timeSelect.innerHTML='<option value="">Tuesdays: call to book</option>';
+    timeStatus.textContent="Tuesdays open for Champions League match nights only. Call 07768 489048 to reserve a match night, or choose another date.";
     return;
   }
   timeStatus.textContent="";
