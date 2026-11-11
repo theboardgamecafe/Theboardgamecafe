@@ -60,3 +60,16 @@ Optional aggregate statistics: statistics.js/statistics.css; disabled until expl
 Protected operational console: https://hollin-and-vale-enquiries.r9shbntmg2.chatgpt.site/admin — owner ChatGPT sign-in required; no public records. It shows H&V enquiries and statistics for both websites, excludes QA by default and does not send email notifications. SITE_ADMIN_EMAIL stays secret in hosting runtime. Existing enquiry API and CORS are unchanged.
 
 Fonts now use exact self-hosted approved WOFF2 files in assets/fonts with OFL licences and critical preloads; preserve their declared weights. The Google rating on the homepage is maintained manually. Keep the review link alongside it.
+
+
+## Owner-confirmed updates, 11 November 2026
+
+Confirmed by the owner on 11 November 2026 and published across the site:
+
+- Tuesdays are still closed. The owner plans to open for Champions League match nights shortly; the site says "coming soon" until a start date and opening time are confirmed. Update hours, booking.js and the live sport page together when it starts.
+- All food served is halal (home, menu, desserts, FAQ, party pages, private hire, llms.txt, homepage schema).
+- Birthday, group and off-site games-hire bookings are advertised "from £50 an hour".
+- Private hire: up to 80 guests, 50% deposit to confirm, cancellations at least 24 hours before the event. The 80 figure supersedes the earlier unreconciled 60; re-check it against the venue's fire risk assessment.
+- Walk-ins are welcome; booking is recommended on busy evenings.
+- About page now says the café is owned and run by two friends who bought it from the previous owners. Names are not published.
+- Leaderboards and My account were removed from the primary navigation (boards are empty and accounts are not open yet). Leaderboards is linked from the footer; restore both to the navigation when they launch.
