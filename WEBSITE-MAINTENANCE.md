@@ -19,7 +19,7 @@ The home page includes the previously published 4.9/5 Google rating and two revi
 ## Keep information consistent
 
 - Hours appear in booking.html, contact.html, index.html, FAQ/structured data and booking.js (UK service-day schedule). Update all together only after owner confirmation.
-- Gaming prices appear on several pages and schema. Current published first-hour offer is £15 including four drinks, then £8 per extra hour. Older owner records say £12; reconcile before changing.
+- Gaming prices appear on several pages and schema. Current published price is £8 per hour per table, with drinks and food ordered separately. The owner removed the £15 first-hour offer with four drinks on 12 November 2026; do not reintroduce it.
 - Menu.html contains in-café highlights. Uber Eats prices and stock are a different source; never copy delivery prices into the café menu automatically.
 - Parking/access: free on-site parking, step-free street-level entry, accessible parking, no accessible toilet. Private hire: £100/hour exclusive whole venue, three-hour minimum (£300), food/refreshments separate, £50 outside-food fee, no café VAT added. This existing owner-approved rate was recovered from the 30 October visibility/action-plan record. Maximum capacity is 80 guests, the figure in the venue's fire risk assessment (owner-confirmed 12 November 2026); it replaces the earlier 60. The agreed quote confirms catering and access.
 - Movie requests require verified screening permissions and setup. Publish dated events only when confirmed.
