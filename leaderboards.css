@@ -122,6 +122,41 @@
   line-height: 1.65;
 }
 
+.leaderboard-period {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  max-width: 340px;
+  margin: 0 0 18px;
+}
+
+.leaderboard-period[hidden] {
+  display: none;
+}
+
+.leaderboard-period button {
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 1px solid #8b8273;
+  border-radius: var(--r-pill);
+  background: var(--surface-light, #fffaf1);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.leaderboard-period button:hover {
+  border-color: var(--plum-deep);
+}
+
+.leaderboard-period button[aria-pressed="true"] {
+  border-color: var(--plum-deep);
+  background: var(--plum-deep);
+  color: #fffaf1;
+}
+
 .leaderboard-table {
   width: 100%;
   table-layout: fixed;
