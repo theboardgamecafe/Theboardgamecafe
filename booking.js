@@ -226,7 +226,6 @@ function refreshDurations(){
   const actualDate=new Date(dateInput.value+"T00:00:00");
   if(start>=24)actualDate.setDate(actualDate.getDate()+1);
   arrivalDateInput.value=key(actualDate);
-  if(start>=24) timeStatus.textContent="Your arrival is after midnight on "+formatVisitDate(arrivalDateInput.value)+" (the night of your selected booking date).";
 }
 function refreshLiveDurations(){
   const slot=liveSlot();
