@@ -26,6 +26,8 @@ The home page includes the previously published 4.9/5 Google rating and two revi
 
 ## Open game sessions
 
+The Games page also reads the café app. `#game-calendar` carries `data-games-api` (the app's address, which must also be in that page's `connect-src`). When the app's `/api/config` reports `features.groups` as true, the page lists the open games from `/api/groups` beside any rows in `game-sessions.json`, each with a “Join this game” link that opens that game in the app, and the Host a game button goes to the app. The list is read again each minute while the page is on screen. If the app has games switched off or cannot be reached, the page keeps its enquiry wording and shows only `game-sessions.json`. Never point `data-games-api` at a test or preview service.
+
 The Games page reads `game-sessions.json`. Add a row once the café has confirmed the session and table. Each row needs `status` set to `confirmed`, a public `title`, `startsAt` in ISO 8601 format with a UTC offset or Z, `durationMinutes` as a positive whole number and `seatsOpen` as a non-negative whole number. Optional `level` and `host` strings appear on the public card. Use an agreed public host label.
 
 Update `seatsOpen` as you confirm places. A row with zero seats shows Full. Remove cancelled sessions or set `status` to `cancelled`. Dates display in UK time, with Friday to Sunday under This weekend. Seat requests open a WhatsApp draft for the visitor to send. Host enquiries use the existing contact form.

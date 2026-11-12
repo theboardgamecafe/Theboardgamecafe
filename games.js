@@ -54,13 +54,21 @@
       when.dateTime = session.startsAt;
       when.textContent = `${dayLabel.format(session.start)} · ${time}`;
       card.querySelector('[data-session-title]').textContent = session.title;
-      card.querySelector('[data-session-details]').textContent = [
+      card.querySelector('[data-session-details]').textContent = (session.live ? [
+        session.game, session.style, durationLabel(session.durationMinutes), session.price ? `${session.price} a seat` : ''
+      ] : [
         durationLabel(session.durationMinutes),
         typeof session.level === 'string' ? session.level.trim() : '',
         typeof session.host === 'string' && session.host.trim() ? `Hosted by ${session.host.trim()}` : ''
-      ].filter(Boolean).join(' · ');
+      ]).filter(Boolean).join(' · ');
 
-      if (!session.seatsOpen) {
+      if (session.live) {
+        // A game hosted in the café app: the visitor picks their seat and pays for it there.
+        seats.textContent = `${session.seatsOpen} ${session.seatsOpen === 1 ? 'seat' : 'seats'} left`;
+        request.textContent = 'Join this game';
+        request.href = session.link;
+        request.setAttribute('aria-label', `Join ${session.title}, ${when.textContent}`);
+      } else if (!session.seatsOpen) {
         seats.textContent = 'Full';
         seats.classList.add('is-full');
         request.remove();
@@ -75,58 +83,145 @@
       return card;
     }
 
-    emptyTitle.textContent = 'Checking upcoming sessions…';
-    try {
+    const startsWithOffset = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
+    const gamesApi = (calendar.dataset.gamesApi || '').trim().replace(/\/$/, '');
+    let scheduled = [];
+    let scheduleFailed = false;
+    // null until the app says its games are on. Then the list of games open to join, which may be empty.
+    let liveGames = null;
+    let filter = 'all';
+
+    // Sessions the café runs itself, from the website's own schedule file.
+    async function loadSchedule() {
       const response = await fetch(calendar.dataset.sessionsUrl, {cache: 'no-cache'});
       if (!response.ok) throw new Error('Schedule unavailable');
       const entries = await response.json();
       if (!Array.isArray(entries)) throw new Error('Invalid schedule');
-
-      const startsWithOffset = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?(?:Z|[+-]\d{2}:\d{2})$/;
-      const sessions = entries.filter(session => session?.status === 'confirmed'
+      return entries.filter(session => session?.status === 'confirmed'
         && typeof session.title === 'string' && session.title.trim()
         && typeof session.startsAt === 'string' && startsWithOffset.test(session.startsAt)
         && Number.isInteger(session.durationMinutes) && session.durationMinutes > 0
         && Number.isInteger(session.seatsOpen) && session.seatsOpen >= 0)
-        .map(session => ({...session, title: session.title.trim(), start: Date.parse(session.startsAt)}))
-        .filter(session => Number.isFinite(session.start))
-        .sort((a, b) => a.start - b.start);
+        .map(session => ({...session, live: false, title: session.title.trim(), start: Date.parse(session.startsAt)}))
+        .filter(session => Number.isFinite(session.start));
+    }
 
-      function showSessions(filter) {
-        const now = Date.now();
-        const today = londonDay(now);
-        const weekday = new Date(today).getUTCDay();
-        const friday = today + (weekday === 0 ? -2 : 5 - weekday) * dayMs;
-        const ranges = {today: [today, today], tomorrow: [today + dayMs, today + dayMs], weekend: [friday, friday + 2 * dayMs]};
-        const range = ranges[filter];
-        const upcoming = sessions.filter(session => session.start > now);
-        const visible = range ? upcoming.filter(session => {
-          const day = londonDay(session.start);
-          return day >= range[0] && day <= range[1];
-        }) : upcoming;
-
-        for (const button of buttons) button.setAttribute('aria-pressed', String(button.dataset.sessionFilter === filter));
-        list.textContent = '';
-        list.append(...visible.map(sessionCard));
-        list.hidden = !visible.length;
-        empty.hidden = Boolean(visible.length);
-        if (visible.length) {
-          count.textContent = `${visible.length} ${visible.length === 1 ? 'session' : 'sessions'} shown.`;
-        } else {
-          const when = {today: 'today', tomorrow: 'tomorrow', weekend: 'this weekend'}[filter];
-          emptyTitle.textContent = when ? `No confirmed sessions ${when}` : 'No sessions confirmed yet';
-          emptyNote.textContent = upcoming.length ? 'Try All dates or ask us about a game below.' : 'Have a game in mind? Ask us or propose a session below.';
-          count.textContent = emptyTitle.textContent;
-        }
+    // Games players are hosting in the café app. Returns null when the app is not listing games, or cannot be reached.
+    async function loadLiveGames() {
+      if (!gamesApi) return null;
+      const read = async path => {
+        const response = await fetch(gamesApi + path, {cache: 'no-store', headers: {Accept: 'application/json'}, signal: AbortSignal.timeout(8000)});
+        if (!response.ok) throw new Error('App unavailable');
+        return response.json();
+      };
+      try {
+        const config = await read('/api/config');
+        if (config?.features?.groups !== true) return null;
+        const labels = new Map((Array.isArray(config.groupGames) ? config.groupGames : []).map(game => [game.id, game.label]));
+        const {groups} = await read('/api/groups');
+        if (!Array.isArray(groups)) return null;
+        return groups.filter(group => typeof group?.id === 'string' && typeof group.title === 'string' && group.title.trim()
+          && typeof group.start === 'string' && startsWithOffset.test(group.start)
+          && Number.isInteger(group.duration) && group.duration > 0
+          && Number.isInteger(group.seatsAvailable) && group.seatsAvailable > 0)
+          .map(group => {
+            const link = new URL('/', gamesApi);
+            link.searchParams.set('group', group.id);
+            link.hash = 'tables';
+            return {live: true, title: group.title.trim(), startsAt: group.start, start: Date.parse(group.start),
+              durationMinutes: group.duration * 60, seatsOpen: group.seatsAvailable,
+              game: typeof labels.get(group.game) === 'string' ? labels.get(group.game) : '',
+              style: group.style === 'competitive' ? 'Competitive' : 'Friendly',
+              price: Number.isSafeInteger(group.nextShare) && group.nextShare > 0 ? `£${(group.nextShare / 100).toFixed(2)}` : '',
+              link: link.href};
+          }).filter(session => Number.isFinite(session.start));
+      } catch (_) {
+        return null;
       }
+    }
 
-      for (const button of buttons) button.addEventListener('click', () => showSessions(button.dataset.sessionFilter));
-      showSessions('all');
-      controls.hidden = false;
-    } catch (_) {
-      emptyTitle.textContent = 'The session schedule is unavailable';
-      emptyNote.textContent = 'Use the enquiry below to check what’s coming up.';
-      count.textContent = emptyTitle.textContent;
+    // With the app's games on, visitors join and host there. Until then the page keeps its enquiry wording.
+    function showLiveWording() {
+      const intro = document.getElementById('open-games-intro');
+      const hostNote = document.getElementById('host-game-note');
+      const hostLink = document.getElementById('host-game-link');
+      const heading = document.getElementById('game-calendar-heading');
+      if (heading) heading.textContent = 'Open games';
+      if (intro) intro.textContent = 'Coming on your own or looking for another player? Pick a game, pay for your seat and you’re in.';
+      if (hostNote) hostNote.textContent = 'Choose a game and a time, pay for your own seat, and your game is listed here for other players to join.';
+      if (hostLink) {
+        hostLink.textContent = 'Host a game';
+        hostLink.href = gamesApi + '/tables';
+      }
+    }
+
+    function showSessions() {
+      const now = Date.now();
+      const today = londonDay(now);
+      const weekday = new Date(today).getUTCDay();
+      const friday = today + (weekday === 0 ? -2 : 5 - weekday) * dayMs;
+      const ranges = {today: [today, today], tomorrow: [today + dayMs, today + dayMs], weekend: [friday, friday + 2 * dayMs]};
+      const range = ranges[filter];
+      const upcoming = [...scheduled, ...(liveGames ?? [])].filter(session => session.start > now).sort((a, b) => a.start - b.start);
+      const visible = range ? upcoming.filter(session => {
+        const day = londonDay(session.start);
+        return day >= range[0] && day <= range[1];
+      }) : upcoming;
+
+      for (const button of buttons) button.setAttribute('aria-pressed', String(button.dataset.sessionFilter === filter));
+      list.textContent = '';
+      list.append(...visible.map(sessionCard));
+      list.hidden = !visible.length;
+      empty.hidden = Boolean(visible.length);
+      const noun = liveGames ? 'game' : 'session';
+      if (visible.length) {
+        count.textContent = `${visible.length} ${visible.length === 1 ? noun : `${noun}s`} shown.`;
+      } else if (scheduleFailed && !liveGames) {
+        emptyTitle.textContent = 'The session schedule is unavailable';
+        emptyNote.textContent = 'Use the enquiry below to check what’s coming up.';
+        count.textContent = emptyTitle.textContent;
+      } else {
+        const when = {today: 'today', tomorrow: 'tomorrow', weekend: 'this weekend'}[filter];
+        emptyTitle.textContent = liveGames ? (when ? `No open games ${when}` : 'No open games right now')
+          : when ? `No confirmed sessions ${when}` : 'No sessions confirmed yet';
+        emptyNote.textContent = upcoming.length ? 'Try All dates or ask us about a game below.'
+          : liveGames ? 'Be the first: host a game below, or ask us about one.' : 'Have a game in mind? Ask us or propose a session below.';
+        count.textContent = emptyTitle.textContent;
+      }
+      controls.hidden = scheduleFailed && !liveGames;
+    }
+
+    for (const button of buttons) {
+      button.addEventListener('click', () => {
+        filter = button.dataset.sessionFilter;
+        showSessions();
+      });
+    }
+
+    emptyTitle.textContent = 'Checking upcoming sessions…';
+    const [schedule, games] = await Promise.all([loadSchedule().catch(() => null), loadLiveGames()]);
+    scheduled = schedule ?? [];
+    scheduleFailed = schedule === null;
+    liveGames = games;
+    if (liveGames) showLiveWording();
+    showSessions();
+
+    // Seats fill and new games appear, so the list is read again each minute while the page is on screen.
+    if (gamesApi) {
+      let refreshing = false;
+      const refresh = async () => {
+        if (refreshing || document.visibilityState !== 'visible') return;
+        refreshing = true;
+        const latest = await loadLiveGames();
+        refreshing = false;
+        // A failed read keeps the games already shown.
+        if (!latest) return;
+        if (!liveGames) showLiveWording();
+        liveGames = latest;
+        showSessions();
+      };
+      setInterval(refresh, 60_000);
+      document.addEventListener('visibilitychange', refresh);
     }
   }
 
