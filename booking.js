@@ -239,9 +239,10 @@ function refreshLiveDurations(){
     durationSelect.appendChild(o);
   }
   durationSelect.disabled=false;
-  timeStatus.textContent=(slot.free===1?"Last table free":slot.free+" tables free")+" at "+slot.label+"."
-    +(/next day/.test(slot.label)?" This arrival is after midnight, on the night of your selected date.":"");
+  timeStatus.textContent=(slot.free===1?"Last table free":slot.free+" tables free")+" at "+slot.label+".";
 }
+// Times are shown as the clock time only: a time after midnight belongs to the night that was chosen.
+function plainTime(label){return String(label==null?"":label).replace(/\s*·\s*next day\s*$/i,"");}
 // Ask the booking server which start times still have a free table, for one, two and three hours.
 async function refreshLiveTimes(){
   const serial=++live.request;
@@ -276,7 +277,7 @@ async function refreshLiveTimes(){
     if(answer.status!=="fulfilled") return;
     const result=answer.value;
     for(const slot of result.slots||[]){
-      const entry=live.slots.get(slot.start)||{start:slot.start,label:slot.label,free:slot.tablesFree,durations:new Map()};
+      const entry=live.slots.get(slot.start)||{start:slot.start,label:plainTime(slot.label),free:slot.tablesFree,durations:new Map()};
       entry.durations.set(index+1,{amount:result.amount,base:result.baseAmount??result.amount});
       if(index===0) entry.free=slot.tablesFree;
       live.slots.set(slot.start,entry);
@@ -367,7 +368,7 @@ function showConfirmation(booking){
   const panel=document.getElementById("booking-confirmed");
   const guests=booking.partySize+" "+(booking.partySize===1?"guest":"guests");
   const length=booking.duration+" hour"+(booking.duration>1?"s":"");
-  document.getElementById("booking-confirmed-summary").textContent=formatVisitDate(booking.date)+" · "+booking.label+" · "+guests+" · "+length;
+  document.getElementById("booking-confirmed-summary").textContent=formatVisitDate(booking.date)+" · "+plainTime(booking.label)+" · "+guests+" · "+length;
   document.getElementById("booking-confirmed-reference").textContent=booking.reference;
   document.getElementById("booking-confirmed-payment").textContent="Pay "+pounds.format(booking.amount/100)+" at the café when you arrive. We hold your table for 15 minutes after your start time.";
   document.getElementById("booking-confirmed-calendar").href=apiBase+"/api/bookings/"+encodeURIComponent(booking.token)+"/calendar";
@@ -389,7 +390,7 @@ function notifyCafe(booking,paying){
   payload.set("Status",paying?"NOT CONFIRMED YET. The guest is paying "+pounds.format(booking.amount/100)+" by card. A separate PAID email follows if the payment goes through. If none arrives, ignore this note."
     :"Confirmed automatically · pay "+pounds.format(booking.amount/100)+" at the café");
   payload.set("Table type",activitySelect.selectedOptions[0]?.textContent||"");
-  payload.set("Arrival time",booking.label);
+  payload.set("Arrival time",plainTime(booking.label));
   payload.delete("Actual arrival date");
   for(const [field,value] of Array.from(payload)) if(value==="") payload.delete(field);
   // keepalive lets the email finish sending while the browser moves on to the payment page.
