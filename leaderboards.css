@@ -377,3 +377,7 @@
     gap: 18px;
   }
 }
+
+/* A player's name links to their public profile in the app. */
+.leaderboard-table .leaderboard-player a { color: inherit; text-decoration: underline; text-decoration-color: rgba(21, 55, 46, .35); text-underline-offset: 3px; }
+.leaderboard-table .leaderboard-player a:hover, .leaderboard-table .leaderboard-player a:focus-visible { text-decoration-color: currentColor; }
