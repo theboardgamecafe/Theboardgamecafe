@@ -21,7 +21,7 @@ The home page includes the previously published 4.9/5 Google rating and two revi
 - Hours appear in booking.html, contact.html, index.html, FAQ/structured data and booking.js (UK service-day schedule). Update all together only after owner confirmation.
 - Gaming prices appear on several pages and schema. Current published first-hour offer is £15 including four drinks, then £8 per extra hour. Older owner records say £12; reconcile before changing.
 - Menu.html contains in-café highlights. Uber Eats prices and stock are a different source; never copy delivery prices into the café menu automatically.
-- Parking/access: free on-site parking, step-free street-level entry, accessible parking, no accessible toilet. Private hire: £100/hour exclusive whole venue, three-hour minimum (£300), food/refreshments separate, £50 outside-food fee, no café VAT added. This existing owner-approved rate was recovered from the 30 October visibility/action-plan record. Capacity is confirmed by layout: earlier maximum60 conflicts with later platform layout figures, so do not publish a blanket capacity until reconciled. The agreed quote confirms catering, access and safe capacity.
+- Parking/access: free on-site parking, step-free street-level entry, accessible parking, no accessible toilet. Private hire: £100/hour exclusive whole venue, three-hour minimum (£300), food/refreshments separate, £50 outside-food fee, no café VAT added. This existing owner-approved rate was recovered from the 30 October visibility/action-plan record. Maximum capacity is 80 guests, the figure in the venue's fire risk assessment (owner-confirmed 12 November 2026); it replaces the earlier 60. The agreed quote confirms catering and access.
 - Movie requests require verified screening permissions and setup. Publish dated events only when confirmed.
 
 ## Open game sessions
@@ -69,7 +69,7 @@ Confirmed by the owner on 11 November 2026 and published across the site:
 - Tuesdays are still closed. The owner plans to open for Champions League match nights shortly; the site says "coming soon" until a start date and opening time are confirmed. Update hours, booking.js and the live sport page together when it starts.
 - All food served is halal (home, menu, desserts, FAQ, party pages, private hire, llms.txt, homepage schema).
 - Birthday, group and off-site games-hire bookings are advertised "from £50 an hour".
-- Private hire: up to 80 guests, 50% deposit to confirm, cancellations at least 24 hours before the event. The 80 figure supersedes the earlier unreconciled 60; re-check it against the venue's fire risk assessment.
+- Private hire: up to 80 guests, 50% deposit to confirm, cancellations at least 24 hours before the event. The 80 figure is the fire-risk-assessed capacity, confirmed by the owner on 12 November 2026.
 - Walk-ins are welcome; booking is recommended on busy evenings.
 - About page now says the café is owned and run by two friends who bought it from the previous owners. Names are not published.
 - Leaderboards and My account were removed from the primary navigation (boards are empty and accounts are not open yet). Leaderboards is linked from the footer; restore both to the navigation when they launch.
