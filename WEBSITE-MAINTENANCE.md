@@ -32,6 +32,10 @@ The Games page reads `game-sessions.json`. Add a row once the café has confirme
 
 Update `seatsOpen` as you confirm places. A row with zero seats shows Full. Remove cancelled sessions or set `status` to `cancelled`. Dates display in UK time, with Friday to Sunday under This weekend. Seat requests open a WhatsApp draft for the visitor to send. Host enquiries use the existing contact form.
 
+## Ordering from the menu page
+
+`menu.html` has a hidden “Order to your table” button (`#order-in-app`) that `menu-order.js` shows while the café app reports `features.ordering` as true. It links to the app's ordering page. The app sells from the same menu at the same café prices (`server/cafe-menu.json` in the app's repository), so when an item or price changes, change `menu.html` and that file together. Never point `data-order-api` at a test or preview service.
+
 ## Leaderboards
 
 `leaderboards.html` also reads the café app. `.leaderboard-grid` carries `data-boards-api` (the app's address, which must also be in that page's `connect-src`). When the app's `/api/config` reports `features.groups` as true, the page shows the app's boards from `/api/players/leaderboard` instead of `leaderboards.json`: FC 27 and Chess by skill level, and the boxing machine with a **This month** board (shown first) and an **All time** board. Text marked `data-live` is swapped for its live wording at the same time. If the app has games switched off or cannot be reached, the page reads `leaderboards.json` as described below. Never point `data-boards-api` at a test or preview service.
