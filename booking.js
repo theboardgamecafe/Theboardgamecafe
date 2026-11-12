@@ -39,8 +39,7 @@ const estimateRow=document.getElementById("booking-estimate-row");
 const priceNote=document.getElementById("booking-price-note");
 let reviewing=false;
 const hours={0:[14,23],1:[19,24],2:null,3:[19,24],4:[19,24],5:[19,26],6:[16,26]};
-const firstTableHour=15;
-const additionalTableHour=8;
+const tableHour=8;
 let maxTableRequestGuests=6;
 
 /* Live bookings. When data-booking-api is set on the form and that booking server answers, the planner
@@ -146,7 +145,7 @@ function updatePlan(){
     document.getElementById("booking-estimate-label").textContent="Total for your table";
     estimateAmount.textContent=quote?pounds.format(quote.base/100):"—";
     seatingNote.hidden=true;
-    priceNote.textContent=quote&&quote.drinks?quote.drinks+" drinks are included.":"Choose a time and length to see the total.";
+    priceNote.textContent=quote?"Drinks and food are ordered separately.":"Choose a time and length to see the total.";
     payLaterButton.textContent=quote?"Book now · pay "+pounds.format(quote.base/100)+" at the café":"Book now and pay at the café";
     const prepay=quote&&live.prepay&&quote.amount<quote.base;
     payNowButton.hidden=!live.prepay;
@@ -158,7 +157,7 @@ function updatePlan(){
     estimateAmount.textContent="—";
     return;
   }
-  const total=firstTableHour+additionalTableHour*(Number.parseInt(duration,10)-1);
+  const total=tableHour*Number.parseInt(duration,10);
   estimateAmount.textContent=(duration==="4+ hours"?"From ":"")+"£"+total;
 }
 function reviewPlan(){
@@ -278,7 +277,7 @@ async function refreshLiveTimes(){
     const result=answer.value;
     for(const slot of result.slots||[]){
       const entry=live.slots.get(slot.start)||{start:slot.start,label:slot.label,free:slot.tablesFree,durations:new Map()};
-      entry.durations.set(index+1,{amount:result.amount,base:result.baseAmount??result.amount,drinks:result.includedDrinks||0});
+      entry.durations.set(index+1,{amount:result.amount,base:result.baseAmount??result.amount});
       if(index===0) entry.free=slot.tablesFree;
       live.slots.set(slot.start,entry);
     }
