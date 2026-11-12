@@ -74,16 +74,14 @@ Confirmed by the owner on 11 November 2026 and published across the site:
 - About page now says the café is owned and run by two friends who bought it from the previous owners. Names are not published.
 - Leaderboards and My account were removed from the primary navigation (boards are empty and accounts are not open yet). Leaderboards is linked from the footer; restore both to the navigation when they launch.
 
-## Instant table bookings (switched off)
+## Instant table bookings (on)
 
-The booking form on `index.html` and `booking.html` can confirm tables straight away instead of sending a request. It is off while `data-booking-api` on `#booking-form` is empty, and the form then behaves exactly as before.
+The booking form on `index.html` and `booking.html` confirms tables straight away. `data-booking-api` on `#booking-form` holds the address of the live booking server (`theboardgamecafe/the-board-game-cafe-preview`, running in its `venue` mode on Render with a persistent disk): `https://the-board-game-cafe-preview.onrender.com`.
 
-To switch it on, once the booking server from `theboardgamecafe/the-board-game-cafe-preview` is live on hosting that keeps its data:
+- The planner asks the server for free tables (`/api/availability`), shows the total, and books with `POST /api/bookings` and `payment: "venue"` (pay at the café). Guests get an on-page confirmation with their reference, a calendar file and a private link to view or cancel the booking.
+- Each instant booking still sends the usual Web3Forms email to the café, with "CONFIRMED" and the booking reference in the subject. Staff manage bookings in the server's staff dashboard (`/staff`), which is the one diary for online bookings, walk-in holds and cancellations.
+- A "Pay now" button appears only when the server reports live card payments.
+- If the server cannot be reached when the page loads, the form falls back to the old booking request (Web3Forms email, then `booking-thanks.html`), so the static wording in the HTML still describes a request. `booking.js` swaps in the instant-booking wording once the server answers.
+- Bigger groups (five or more), parties and private hire stay as enquiries.
 
-1. Set `data-booking-api` on `#booking-form` in both pages to the server's address, such as `https://app.theboardgamecafe.co.uk` (no trailing slash).
-2. Add that same address to `connect-src` in the Content-Security-Policy of both pages.
-3. On the server, set `CAFE_WEB_ORIGINS` to `https://theboardgamecafe.co.uk,https://www.theboardgamecafe.co.uk`.
-4. Bump the `booking.js` cache version.
-
-When on, the planner asks the server for free tables (`/api/availability`), shows the total, and books with `POST /api/bookings` and `payment: "venue"` (pay at the café). Each instant booking still sends the usual Web3Forms email to the café, with "CONFIRMED" and the booking reference in the subject. A "Pay now" button appears only when the server reports live card payments. If the server cannot be reached when the page loads, the form falls back to a booking request. Never point the live site at the preview server: it loses its data when it restarts.
-
+If the server moves (for example to `https://app.theboardgamecafe.co.uk`): change `data-booking-api` in both pages, change the same address in `connect-src` in both pages' Content-Security-Policy, make sure the server's `CAFE_WEB_ORIGINS` includes `https://theboardgamecafe.co.uk,https://www.theboardgamecafe.co.uk`, and bump the `booking.js` cache version. To switch instant bookings off, empty `data-booking-api` in both pages. Never point the live site at a server without persistent storage: its bookings would be lost on a restart.
