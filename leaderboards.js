@@ -170,7 +170,16 @@
         ['leaderboard-value', boxing ? String(entry.score) : entry.level.toFixed(1)]].forEach(([className, value], column) => {
         const cell = document.createElement('td');
         cell.className = className;
-        cell.textContent = value;
+        if (column === 1) {
+          // A player's name opens their public profile in the café app: levels, results and who they have played.
+          const link = document.createElement('a');
+          link.href = `${api}/?player=${encodeURIComponent(entry.username)}#tables`;
+          link.textContent = value;
+          link.title = `${value}: view profile`;
+          cell.appendChild(link);
+        } else {
+          cell.textContent = value;
+        }
         if (column === 1 && tier) {
           const label = document.createElement('span');
           label.className = 'leaderboard-tier';
