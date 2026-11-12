@@ -114,7 +114,7 @@
   }
 
   // ---------- Live boards from the café app ----------
-  // When the app has games switched on, its boards are shown here instead of the file above: FC27 and Chess by
+  // When the app has games switched on, its boards are shown here instead of the file above: FC 27 and Chess by
   // skill level, and the boxing machine with a board for this month (shown first) and one for all time.
   const grid = document.querySelector('[data-boards-api]');
   const api = ((grid && grid.dataset.boardsApi) || '').trim().replace(/\/$/, '');
