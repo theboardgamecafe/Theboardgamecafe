@@ -492,6 +492,7 @@ if(apiBase){
     activitySelect.disabled=false;
     activityField.hidden=false;
     document.querySelector(".booking-planner-intro")?.replaceChildren("Choose your visit details to see free tables and the total price.");
+    document.querySelector(".booking-intro")?.replaceChildren("Choose a date, group size and duration. Your table is confirmed straight away and you pay at the café.");
     reviewActions.querySelector(".form-note")?.replaceChildren("Your table is confirmed as soon as you book.");
     reviewing=false;
     refreshTimes();
