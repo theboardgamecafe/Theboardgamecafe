@@ -1028,3 +1028,4 @@ main>section:not(.light-band) .form-note{color:var(--muted)}
 .callout .price,.callout h2,.callout h3,.callout .eyebrow{color:var(--text)}
 .callout .muted{color:var(--muted)}
 .dark-band .muted,.review-dark .muted,.footer-cta .muted{color:var(--muted)}
+.review-links{display:flex;flex-wrap:wrap;gap:0 26px}
