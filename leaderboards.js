@@ -113,5 +113,108 @@
     }
   }
 
-  loadLeaderboards();
+  // ---------- Live boards from the café app ----------
+  // When the app has games switched on, its boards are shown here instead of the file above: FC27 and Chess by
+  // skill level, and the boxing machine with a board for this month (shown first) and one for all time.
+  const grid = document.querySelector('[data-boards-api]');
+  const api = ((grid && grid.dataset.boardsApi) || '').trim().replace(/\/$/, '');
+  const appGames = {fc27: 'fc-27', chess: 'chess', boxing: 'boxing'};
+  const usernamePattern = /^[A-Za-z0-9_.-]{3,20}$/;
+  let boxingPeriod = 'month';
+  let boxingRequest = 0;
+
+  async function read(path) {
+    const response = await fetch(api + path, {cache: 'no-store', headers: {Accept: 'application/json'}, signal: AbortSignal.timeout(8000)});
+    if (!response.ok) throw new Error('App unavailable');
+    return response.json();
+  }
+
+  const boardPath = name => `/api/players/leaderboard?game=${appGames[name]}${name === 'boxing' ? `&period=${boxingPeriod}` : ''}`;
+
+  function renderLiveBoard(board, data) {
+    const name = board.getAttribute('data-leaderboard');
+    const boxing = name === 'boxing';
+    const status = board.querySelector('[data-board-status]');
+    const table = board.querySelector('[data-board-table]');
+    const rows = board.querySelector('[data-board-rows]');
+    const entries = (Array.isArray(data && data.entries) ? data.entries : []).filter(entry => entry
+      && typeof entry.username === 'string' && usernamePattern.test(entry.username)
+      && Number.isInteger(entry.rank) && entry.rank > 0
+      && (boxing ? Number.isInteger(entry.score) && entry.score >= 1 && entry.score <= 999
+        : typeof entry.level === 'number' && entry.level >= 1 && entry.level <= 4));
+    // An app that knows about the monthly board says which one it sent. An older one sends all time only.
+    const month = boxing && data.period === 'month' && typeof data.month === 'string' && data.month.length <= 30 ? data.month : '';
+    if (boxing) {
+      const period = board.querySelector('[data-board-period]');
+      const intro = board.querySelector('[data-board-intro]');
+      const known = data.period === 'month' || data.period === 'all';
+      if (period) {
+        period.hidden = !known;
+        period.querySelectorAll('button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.period === data.period)));
+      }
+      if (intro) intro.textContent = month ? `Best scores in ${month}. The board starts again on the 1st of each month.` : 'Best scores of all time.';
+    }
+
+    rows.textContent = '';
+    table.hidden = !entries.length;
+    if (!entries.length) {
+      status.textContent = month ? `No scores in ${month} yet. Have a go and ask the team to record your score.`
+        : boxing ? 'No scores yet. Have a go and ask the team to record your score.'
+          : 'No rated games yet. Play a competitive game through the café app to get on the board.';
+      return;
+    }
+    entries.forEach(entry => {
+      const row = document.createElement('tr');
+      const tier = boxing ? '' : `${typeof entry.label === 'string' ? entry.label.slice(0, 20) : ''}${entry.provisional === true ? ' · provisional' : ''}`;
+      [['leaderboard-rank', String(entry.rank)], ['leaderboard-player', entry.username],
+        ['leaderboard-value', boxing ? String(entry.score) : entry.level.toFixed(1)]].forEach(([className, value], column) => {
+        const cell = document.createElement('td');
+        cell.className = className;
+        cell.textContent = value;
+        if (column === 1 && tier) {
+          const label = document.createElement('span');
+          label.className = 'leaderboard-tier';
+          label.textContent = tier;
+          cell.appendChild(label);
+        }
+        row.appendChild(cell);
+      });
+      rows.appendChild(row);
+    });
+    status.textContent = `${entries.length} ${entries.length === 1 ? 'player' : 'players'}${month ? ` in ${month}` : ''}.`;
+  }
+
+  // True once the app's boards are on the page. False when the app has games off or cannot be reached.
+  async function loadLiveBoards() {
+    if (!api) return false;
+    try {
+      const config = await read('/api/config');
+      if (!config || !config.features || config.features.groups !== true) return false;
+      const known = boards.filter(board => Object.prototype.hasOwnProperty.call(appGames, board.getAttribute("data-leaderboard")));
+      const results = await Promise.all(known.map(board => read(boardPath(board.getAttribute('data-leaderboard')))));
+      document.querySelectorAll('[data-live]').forEach(element => { element.textContent = element.dataset.live; });
+      known.forEach((board, index) => renderLiveBoard(board, results[index]));
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  const boxingBoard = boards.find(board => board.getAttribute('data-leaderboard') === 'boxing');
+  if (boxingBoard) {
+    boxingBoard.querySelectorAll('[data-board-period] button').forEach(button => {
+      button.addEventListener('click', async () => {
+        boxingPeriod = button.dataset.period === 'all' ? 'all' : 'month';
+        const request = ++boxingRequest;
+        try {
+          const data = await read(boardPath('boxing'));
+          if (request === boxingRequest) renderLiveBoard(boxingBoard, data);
+        } catch (error) {
+          if (request === boxingRequest) boxingBoard.querySelector('[data-board-status]').textContent = 'This leaderboard is temporarily unavailable. Please try again later.';
+        }
+      });
+    });
+  }
+
+  loadLiveBoards().then(live => { if (!live) loadLeaderboards(); });
 })();
