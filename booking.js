@@ -41,7 +41,40 @@ let reviewing=false;
 const hours={0:[14,23],1:[19,24],2:null,3:[19,24],4:[19,24],5:[19,26],6:[16,26]};
 const firstTableHour=15;
 const additionalTableHour=8;
-const maxTableRequestGuests=6;
+let maxTableRequestGuests=6;
+
+/* Live bookings. When data-booking-api is set on the form and that booking server answers, the planner
+   shows real availability, the total price and how many tables are free, and the table is confirmed
+   straight away. If the server is not set or cannot be reached, this stays a booking request. */
+const apiBase=(form.dataset.bookingApi||"").trim().replace(/\/$/,"");
+const live={on:false,config:null,slots:new Map(),request:0,key:null,busy:false};
+const activityField=document.getElementById("booking-activity-field");
+const activitySelect=document.getElementById("booking-activity");
+const liveActions=document.getElementById("booking-live-actions");
+const payLaterButton=document.getElementById("booking-pay-later");
+const payNowButton=document.getElementById("booking-pay-now");
+const partyNote=document.getElementById("booking-party-note");
+const pounds=new Intl.NumberFormat("en-GB",{style:"currency",currency:"GBP"});
+async function liveFetch(path,body){
+  const response=await fetch(apiBase+path,{
+    method:body?"POST":"GET",
+    headers:body?{Accept:"application/json","Content-Type":"application/json"}:{Accept:"application/json"},
+    body:body?JSON.stringify(body):undefined,
+    signal:AbortSignal.timeout(15000)
+  });
+  const data=await response.json().catch(()=>null);
+  if(!response.ok||!data){
+    const error=new Error(typeof data?.error==="string"&&data.error.length<280?data.error:"Something went wrong. Please try again.");
+    error.status=response.status;
+    throw error;
+  }
+  return data;
+}
+function liveSlot(){return live.slots.get(timeSelect.selectedOptions[0]?.dataset.start||"")}
+function liveQuote(){return liveSlot()?.durations.get(Number.parseInt(durationSelect.value,10))}
+function liveGuestLimit(){
+  return live.config?.activities?.find(activity=>activity.id===activitySelect.value)?.maxPartySize||4;
+}
 const game=new URLSearchParams(location.search).get("game")?.trim();
 if(game && /^[\p{L}\p{N}][\p{L}\p{N} ’'&.,:!?()+/–-]{0,79}$/u.test(game)){
   const gameInput=document.getElementById("booking-game");
@@ -73,6 +106,11 @@ function availableStartHours(selected,now){
   return starts;
 }
 function updatePlan(){
+  if(live.done) return;
+  if(live.on){
+    maxTableRequestGuests=liveGuestLimit();
+    partyNote.textContent="For "+(maxTableRequestGuests+1)+" or more guests, we’ll help you plan a group visit.";
+  }
   const partySize=sizeInput.validity.valid?sizeInput.valueAsNumber:0;
   const groupVisit=partySize>maxTableRequestGuests;
   if(groupVisit) reviewing=false;
@@ -81,7 +119,8 @@ function updatePlan(){
   visitDetails.hidden=reviewing;
   contactDetails.hidden=!reviewing;
   contactDetails.disabled=!reviewing;
-  requestActions.hidden=!reviewing;
+  requestActions.hidden=!reviewing||live.on;
+  liveActions.hidden=!reviewing||!live.on;
   reviewActions.hidden=reviewing||groupVisit;
   editActions.hidden=!reviewing;
   reviewButton.disabled=busy;
@@ -101,6 +140,20 @@ function updatePlan(){
   planDetails.textContent=details.join(" · ")||"Your visit details will appear here.";
 
   const duration=durationSelect.value;
+  if(live.on){
+    // The total and the buttons come from the booking server's own price for this time and length.
+    const quote=groupVisit?null:liveQuote();
+    document.getElementById("booking-estimate-label").textContent="Total for your table";
+    estimateAmount.textContent=quote?pounds.format(quote.base/100):"—";
+    seatingNote.hidden=true;
+    priceNote.textContent=quote&&quote.drinks?quote.drinks+" drinks are included.":"Choose a time and length to see the total.";
+    payLaterButton.textContent=quote?"Book now · pay "+pounds.format(quote.base/100)+" at the café":"Book now and pay at the café";
+    const prepay=quote&&live.prepay&&quote.amount<quote.base;
+    payNowButton.hidden=!live.prepay;
+    payNowButton.textContent=prepay?"Pay now · "+pounds.format(quote.amount/100)+" (save "+pounds.format((quote.base-quote.amount)/100)+")":"Pay now";
+    payLaterButton.disabled=payNowButton.disabled=!quote||busy||live.busy;
+    return;
+  }
   if(groupVisit||!partySize||!duration){
     estimateAmount.textContent="—";
     return;
@@ -147,6 +200,7 @@ function resetDuration(){
   durationSelect.innerHTML='<option value="">Choose an arrival time first</option>';
 }
 function refreshDurations(){
+  if(live.on){refreshLiveDurations();return}
   arrivalDateInput.value="";
   timeStatus.textContent="";
   const option=timeSelect.selectedOptions[0];
@@ -175,7 +229,75 @@ function refreshDurations(){
   arrivalDateInput.value=key(actualDate);
   if(start>=24) timeStatus.textContent="Your arrival is after midnight on "+formatVisitDate(arrivalDateInput.value)+" (the night of your selected booking date).";
 }
+function refreshLiveDurations(){
+  const slot=liveSlot();
+  if(!slot){resetDuration();return}
+  durationSelect.innerHTML='<option value="">Choose duration</option>';
+  for(const [hoursBooked,quote] of slot.durations){
+    const o=document.createElement("option");
+    o.value=hoursBooked+" hour"+(hoursBooked>1?"s":"");
+    o.textContent=o.value+" · "+pounds.format(quote.base/100);
+    durationSelect.appendChild(o);
+  }
+  durationSelect.disabled=false;
+  timeStatus.textContent=(slot.free===1?"Last table free":slot.free+" tables free")+" at "+slot.label+"."
+    +(/next day/.test(slot.label)?" This arrival is after midnight, on the night of your selected date.":"");
+}
+// Ask the booking server which start times still have a free table, for one, two and three hours.
+async function refreshLiveTimes(){
+  const serial=++live.request;
+  live.slots=new Map();
+  live.key=null;
+  arrivalDateInput.value="";
+  resetDuration();
+  timeSelect.disabled=true;
+  const partySize=sizeInput.validity.valid?sizeInput.valueAsNumber:0;
+  if(!dateInput.value||!partySize){
+    timeSelect.innerHTML='<option value="">'+(dateInput.value?"Enter your group size first":"Choose a date first")+'</option>';
+    timeStatus.textContent="";
+    return;
+  }
+  if(partySize>liveGuestLimit()){
+    timeSelect.innerHTML='<option value="">Group visit</option>';
+    timeStatus.textContent="";
+    return;
+  }
+  timeSelect.innerHTML='<option value="">Checking tables…</option>';
+  timeStatus.textContent="Checking which tables are free…";
+  const query="date="+encodeURIComponent(dateInput.value)+"&partySize="+partySize+"&activity="+encodeURIComponent(activitySelect.value);
+  const answers=await Promise.allSettled([1,2,3].map(length=>liveFetch("/api/availability?"+query+"&duration="+length)));
+  if(serial!==live.request) return;
+  const failed=answers.find(answer=>answer.status==="rejected");
+  if(answers.every(answer=>answer.status==="rejected")){
+    timeSelect.innerHTML='<option value="">Times unavailable</option>';
+    timeStatus.textContent=failed.reason.status===400?failed.reason.message:"We couldn’t check availability just now. Please try again or call 07768 489048.";
+    return;
+  }
+  answers.forEach((answer,index)=>{
+    if(answer.status!=="fulfilled") return;
+    const result=answer.value;
+    for(const slot of result.slots||[]){
+      const entry=live.slots.get(slot.start)||{start:slot.start,label:slot.label,free:slot.tablesFree,durations:new Map()};
+      entry.durations.set(index+1,{amount:result.amount,base:result.baseAmount??result.amount,drinks:result.includedDrinks||0});
+      if(index===0) entry.free=slot.tablesFree;
+      live.slots.set(slot.start,entry);
+    }
+  });
+  const slots=[...live.slots.values()].filter(slot=>slot.durations.has(1)).sort((a,b)=>a.start<b.start?-1:1);
+  timeSelect.innerHTML='<option value="">'+(slots.length?"Choose a time":"No tables free")+'</option>';
+  for(const slot of slots){
+    const o=document.createElement("option");
+    o.value=slot.label;
+    o.dataset.start=slot.start;
+    o.textContent=slot.label+(slot.free?" · "+slot.free+" free":"");
+    timeSelect.appendChild(o);
+  }
+  timeSelect.disabled=slots.length===0;
+  timeStatus.textContent=slots.length?"":"No tables are free on this date for your group. Please choose another date.";
+  updatePlan();
+}
 function refreshTimes(){
+  if(live.on){void refreshLiveTimes();return}
   arrivalDateInput.value="";
   timeSelect.innerHTML="";
   resetDuration();
@@ -234,8 +356,85 @@ timeSelect.addEventListener("change",()=>{
 });
 sizeInput.addEventListener("input",()=>{
   reviewing=false;
+  if(live.on) refreshTimes();
   updatePlan();
 });
+activitySelect.addEventListener("change",()=>{
+  reviewing=false;
+  refreshTimes();
+  updatePlan();
+});
+function showConfirmation(booking){
+  const panel=document.getElementById("booking-confirmed");
+  const guests=booking.partySize+" "+(booking.partySize===1?"guest":"guests");
+  const length=booking.duration+" hour"+(booking.duration>1?"s":"");
+  document.getElementById("booking-confirmed-summary").textContent=formatVisitDate(booking.date)+" · "+booking.label+" · "+guests+" · "+length;
+  document.getElementById("booking-confirmed-reference").textContent=booking.reference;
+  document.getElementById("booking-confirmed-payment").textContent="Pay "+pounds.format(booking.amount/100)+" at the café when you arrive. We hold your table for 15 minutes after your start time.";
+  document.getElementById("booking-confirmed-calendar").href=apiBase+"/api/bookings/"+encodeURIComponent(booking.token)+"/calendar";
+  document.getElementById("booking-confirmed-manage").href=apiBase+"/booking#booking="+encodeURIComponent(booking.token);
+  live.done=true;
+  form.hidden=true;
+  stepLabel.textContent="Booking confirmed";
+  document.querySelector(".booking-planner-intro")?.setAttribute("hidden","");
+  panel.hidden=false;
+  panel.focus();
+}
+// The café still gets its usual email for each instant booking, so staff hear about it straight away.
+function notifyCafe(booking){
+  const payload=new FormData(form);
+  payload.set("subject","Website table booking CONFIRMED · "+booking.reference);
+  payload.set("Booking reference",booking.reference);
+  payload.set("Status","Confirmed automatically · pay "+pounds.format(booking.amount/100)+" at the café");
+  payload.set("Table type",activitySelect.selectedOptions[0]?.textContent||"");
+  payload.set("Arrival time",booking.label);
+  payload.delete("Actual arrival date");
+  for(const [field,value] of Array.from(payload)) if(value==="") payload.delete(field);
+  fetch(form.action,{method:"POST",body:payload,signal:AbortSignal.timeout(20000)}).catch(()=>{});
+}
+async function submitLive(payment){
+  if(live.busy||hpInput?.value||Date.now()-formStarted<800) return;
+  const slot=liveSlot(),quote=liveQuote();
+  if(!slot||!quote){reviewing=false;updatePlan();return}
+  for(const id of ["booking-name","booking-phone","booking-email"]){
+    if(!document.getElementById(id).reportValidity()) return;
+  }
+  const body={
+    activity:activitySelect.value,date:dateInput.value,start:slot.start,duration:Number.parseInt(durationSelect.value,10),partySize:sizeInput.valueAsNumber,
+    name:document.getElementById("booking-name").value.trim(),email:document.getElementById("booking-email").value.trim(),phone:document.getElementById("booking-phone").value.trim()
+  };
+  if(payment==="venue") body.payment="venue";
+  const fingerprint=JSON.stringify(body);
+  if(live.key?.fingerprint!==fingerprint) live.key={fingerprint,value:crypto.randomUUID()};
+  live.busy=true;
+  statusEl.textContent=payment==="venue"?"Booking your table…":"Taking you to payment…";
+  updatePlan();
+  try{
+    const {booking}=await liveFetch("/api/bookings",{...body,idempotencyKey:live.key.value});
+    if(payment==="venue"){
+      if(booking.status!=="confirmed") throw new Error("We couldn’t confirm that table. Please try again.");
+      try{window.dispatchEvent(new CustomEvent("site:conversion",{detail:{form:"booking"}}));}catch(_){}
+      notifyCafe(booking);
+      statusEl.textContent="";
+      showConfirmation(booking);
+      return;
+    }
+    if(!booking.checkoutUrl) throw new Error("Online payment isn’t available just now. You can book and pay at the café instead.");
+    location.href=new URL(booking.checkoutUrl,apiBase+"/").href;
+  }catch(error){
+    statusEl.textContent=error.status===429?"Too many attempts. Please wait a moment and try again.":error.message;
+    if(error.status===409){
+      // Someone else has just taken that time, so show what is free now.
+      reviewing=false;
+      refreshTimes();
+    }
+  }finally{
+    live.busy=false;
+    updatePlan();
+  }
+}
+payLaterButton.addEventListener("click",()=>void submitLive("venue"));
+payNowButton.addEventListener("click",()=>void submitLive("online"));
 durationSelect.addEventListener("change",()=>{
   reviewing=false;
   updatePlan();
@@ -244,6 +443,11 @@ form.addEventListener("submit",async e=>{
   e.preventDefault();
   if(!reviewing){
     reviewPlan();
+    return;
+  }
+  // With live bookings on, pressing Enter books the table and pays at the café; it never sends a request.
+  if(live.on){
+    void submitLive("venue");
     return;
   }
   if(hpInput?.value || Date.now()-formStarted<800) return;
@@ -277,6 +481,24 @@ form.addEventListener("submit",async e=>{
 });
 refreshTimes();
 updatePlan();
+if(apiBase){
+  liveFetch("/api/config").then(config=>{
+    if(!Array.isArray(config.activities)||config.payAtVenue!==true) return;
+    live.on=true;
+    live.config=config;
+    // Online prepayment appears only once the booking server takes real payments.
+    live.prepay=config.paymentMode==="stripe"||form.dataset.bookingPrepay==="test";
+    const wanted=(game||"").toLowerCase();
+    activitySelect.value=/pool/.test(wanted)?"pool":/carrom/.test(wanted)?"carrom":/ps5|playstation|fc ?27|ea sports|gta|ufc/.test(wanted)?"ps5":"board-games";
+    activitySelect.disabled=false;
+    activityField.hidden=false;
+    document.querySelector(".booking-planner-intro")?.replaceChildren("Choose your visit details to see free tables and the total price.");
+    reviewActions.querySelector(".form-note")?.replaceChildren("Your table is confirmed as soon as you book.");
+    reviewing=false;
+    refreshTimes();
+    updatePlan();
+  }).catch(()=>{});
+}
 window.setupCafeCalendar?.({
   calendar:document.getElementById("booking-calendar"),
   dateInput,
