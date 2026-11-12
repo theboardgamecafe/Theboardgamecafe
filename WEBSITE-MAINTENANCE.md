@@ -80,7 +80,7 @@ The booking form on `index.html` and `booking.html` confirms tables straight awa
 
 - The planner asks the server for free tables (`/api/availability`), shows the total, and books with `POST /api/bookings` and `payment: "venue"` (pay at the café). Guests get an on-page confirmation with their reference, a calendar file and a private link to view or cancel the booking.
 - Each instant booking still sends the usual Web3Forms email to the café, with "CONFIRMED" and the booking reference in the subject. Staff manage bookings in the server's staff dashboard (`/staff`), which is the one diary for online bookings, walk-in holds and cancellations.
-- A "Pay now" button appears only when the server reports live card payments.
+- A "Pay now" button appears only when the server reports that card payments are on (`features.prepay` in `/api/config`). It holds the table, sends the guest to Stripe's payment page, and Stripe returns them to their booking in the app (`app.theboardgamecafe.co.uk`). The server emails the guest and the café once the payment is in, and handles cancellations and refunds; the website only forwards a guest's note, marked as not confirmed yet.
 - If the server cannot be reached when the page loads, the form falls back to the old booking request (Web3Forms email, then `booking-thanks.html`), so the static wording in the HTML still describes a request. `booking.js` swaps in the instant-booking wording once the server answers.
 - Bigger groups (five or more), parties and private hire stay as enquiries.
 

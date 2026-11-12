@@ -380,16 +380,20 @@ function showConfirmation(booking){
   panel.focus();
 }
 // The café still gets its usual email for each instant booking, so staff hear about it straight away.
-function notifyCafe(booking){
+// For a card payment the booking service emails the café itself once the money is in. The website only passes on
+// a guest's note, which would otherwise be lost, and says clearly that the booking is not confirmed yet.
+function notifyCafe(booking,paying){
   const payload=new FormData(form);
-  payload.set("subject","Website table booking CONFIRMED · "+booking.reference);
+  payload.set("subject",paying?"Guest note for a booking being paid by card · "+booking.reference:"Website table booking CONFIRMED · "+booking.reference);
   payload.set("Booking reference",booking.reference);
-  payload.set("Status","Confirmed automatically · pay "+pounds.format(booking.amount/100)+" at the café");
+  payload.set("Status",paying?"NOT CONFIRMED YET. The guest is paying "+pounds.format(booking.amount/100)+" by card. A separate PAID email follows if the payment goes through. If none arrives, ignore this note."
+    :"Confirmed automatically · pay "+pounds.format(booking.amount/100)+" at the café");
   payload.set("Table type",activitySelect.selectedOptions[0]?.textContent||"");
   payload.set("Arrival time",booking.label);
   payload.delete("Actual arrival date");
   for(const [field,value] of Array.from(payload)) if(value==="") payload.delete(field);
-  fetch(form.action,{method:"POST",body:payload,signal:AbortSignal.timeout(20000)}).catch(()=>{});
+  // keepalive lets the email finish sending while the browser moves on to the payment page.
+  fetch(form.action,{method:"POST",body:payload,keepalive:paying===true,signal:paying?undefined:AbortSignal.timeout(20000)}).catch(()=>{});
 }
 async function submitLive(payment){
   if(live.busy||hpInput?.value||Date.now()-formStarted<800) return;
@@ -419,6 +423,7 @@ async function submitLive(payment){
       return;
     }
     if(!booking.checkoutUrl) throw new Error("Online payment isn’t available just now. You can book and pay at the café instead.");
+    if(document.getElementById("booking-message")?.value.trim()) notifyCafe(booking,true);
     location.href=new URL(booking.checkoutUrl,apiBase+"/").href;
   }catch(error){
     statusEl.textContent=error.status===429?"Too many attempts. Please wait a moment and try again.":error.message;
@@ -485,15 +490,21 @@ if(apiBase){
     if(!Array.isArray(config.activities)||config.payAtVenue!==true) return;
     live.on=true;
     live.config=config;
-    // Online prepayment appears only once the booking server takes real payments.
-    live.prepay=config.paymentMode==="stripe"||form.dataset.bookingPrepay==="test";
+    // Paying now by card appears only once the booking server says it takes card payments.
+    live.prepay=config.features?.prepay===true||form.dataset.bookingPrepay==="test";
     const wanted=(game||"").toLowerCase();
     activitySelect.value=/pool/.test(wanted)?"pool":/carrom/.test(wanted)?"carrom":/ps5|playstation|fc ?27|ea sports|gta|ufc/.test(wanted)?"ps5":"board-games";
     activitySelect.disabled=false;
     activityField.hidden=false;
     document.querySelector(".booking-planner-intro")?.replaceChildren("Choose your visit details to see free tables and the total price.");
-    document.querySelector(".booking-intro")?.replaceChildren("Choose a date, group size and duration. Your table is confirmed straight away and you pay at the café.");
+    const saving=Number.isInteger(config.prepayDiscountPercent)&&config.prepayDiscountPercent>0?" and save "+config.prepayDiscountPercent+"%":"";
+    document.querySelector(".booking-intro")?.replaceChildren(live.prepay
+      ?"Choose a date, group size and duration. Your table is confirmed straight away. Pay at the café, or pay now by card"+saving+"."
+      :"Choose a date, group size and duration. Your table is confirmed straight away and you pay at the café.");
     reviewActions.querySelector(".form-note")?.replaceChildren("Your table is confirmed as soon as you book.");
+    // With card payments on, say what paying now means before the guest chooses.
+    const liveNote=document.getElementById("booking-live-note");
+    if(live.prepay&&liveNote?.firstChild) liveNote.firstChild.textContent="Pay now by card"+saving+", with a full refund if you cancel at least 24 hours before your start time. Or book now and pay at the café. By booking, you acknowledge our ";
     reviewing=false;
     refreshTimes();
     updatePlan();
