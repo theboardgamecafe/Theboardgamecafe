@@ -243,6 +243,25 @@ function refreshLiveDurations(){
   timeStatus.textContent=(slot.free===1?"Last table free":slot.free+" tables free")+" at "+slot.label+".";
 }
 // Times are shown as the clock time only: a time after midnight belongs to the night that was chosen.
+// Times after midnight still belong to the night being booked. They sit under one "After midnight" heading in the list.
+const londonCalendar=new Intl.DateTimeFormat("en-GB",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"Europe/London"});
+function londonDay(start){
+  const instant=new Date(start);
+  if(Number.isNaN(instant.getTime()))return "";
+  const parts={};
+  for(const part of londonCalendar.formatToParts(instant))parts[part.type]=part.value;
+  return parts.year+"-"+parts.month+"-"+parts.day;
+}
+function timeList(late){
+  if(!late)return timeSelect;
+  let group=timeSelect.querySelector("optgroup");
+  if(!group){
+    group=document.createElement("optgroup");
+    group.label="After midnight";
+    timeSelect.appendChild(group);
+  }
+  return group;
+}
 function plainTime(label){return String(label==null?"":label).replace(/\s*·\s*next day\s*$/i,"");}
 // Ask the booking server which start times still have a free table, for one, two and three hours.
 async function refreshLiveTimes(){
@@ -292,7 +311,7 @@ async function refreshLiveTimes(){
     o.value=slot.label;
     o.dataset.start=slot.start;
     o.textContent=slot.label+(slot.free?" · "+slot.free+" free":"");
-    timeSelect.appendChild(o);
+    timeList(londonDay(slot.start)>dateInput.value).appendChild(o);
   }
   timeSelect.disabled=slots.length===0;
   timeStatus.textContent=slots.length?"":"No tables are free on this date for your group. Please choose another date.";
@@ -331,7 +350,7 @@ function refreshTimes(){
     o.textContent=labelTime(t);
     o.dataset.hour=String(t);
     o.dataset.close=String(schedule[1]);
-    timeSelect.appendChild(o);
+    timeList(t>=24).appendChild(o);
   }
   timeSelect.disabled=timeSelect.options.length<=1;
   if(timeSelect.disabled){
