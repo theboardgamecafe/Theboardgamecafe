@@ -52,7 +52,6 @@ const activitySelect=document.getElementById("booking-activity");
 const liveActions=document.getElementById("booking-live-actions");
 const payLaterButton=document.getElementById("booking-pay-later");
 const payNowButton=document.getElementById("booking-pay-now");
-const partyNote=document.getElementById("booking-party-note");
 const pounds=new Intl.NumberFormat("en-GB",{style:"currency",currency:"GBP"});
 async function liveFetch(path,body){
   const response=await fetch(apiBase+path,{
@@ -104,12 +103,15 @@ function availableStartHours(selected,now){
   }
   return starts;
 }
+// The form does not ask how many are coming. A table is booked for as many as it seats: four, or two for pool and
+// carrom. Bigger groups are pointed to an enquiry by the note under the times.
+function syncSeats(){
+  maxTableRequestGuests=live.on?liveGuestLimit():4;
+  sizeInput.value=String(maxTableRequestGuests);
+}
 function updatePlan(){
   if(live.done) return;
-  if(live.on){
-    maxTableRequestGuests=liveGuestLimit();
-    partyNote.textContent="For "+(maxTableRequestGuests+1)+" or more guests, we’ll help you plan a group visit.";
-  }
+  syncSeats();
   const partySize=sizeInput.validity.valid?sizeInput.valueAsNumber:0;
   const groupVisit=partySize>maxTableRequestGuests;
   if(groupVisit) reviewing=false;
@@ -134,7 +136,6 @@ function updatePlan(){
   const visitDate=arrivalDateInput.value||dateInput.value;
   if(visitDate) details.push(formatVisitDate(visitDate));
   if(timeSelect.value) details.push(timeSelect.value);
-  if(partySize) details.push(partySize+" "+(partySize===1?"guest":"guests"));
   if(durationSelect.value) details.push(durationSelect.value);
   planDetails.textContent=details.join(" · ")||"Your visit details will appear here.";
 
@@ -176,7 +177,7 @@ function reviewPlan(){
       return;
     }
   }
-  for(const field of [dateInput,sizeInput,timeSelect,durationSelect]){
+  for(const field of [dateInput,timeSelect,durationSelect]){
     if(!field.reportValidity()) return;
   }
   if(!timeSelect.value||!durationSelect.value){
@@ -251,9 +252,10 @@ async function refreshLiveTimes(){
   arrivalDateInput.value="";
   resetDuration();
   timeSelect.disabled=true;
+  syncSeats();
   const partySize=sizeInput.validity.valid?sizeInput.valueAsNumber:0;
   if(!dateInput.value||!partySize){
-    timeSelect.innerHTML='<option value="">'+(dateInput.value?"Enter your group size first":"Choose a date first")+'</option>';
+    timeSelect.innerHTML='<option value="">Choose a date first</option>';
     timeStatus.textContent="";
     return;
   }
@@ -366,9 +368,8 @@ activitySelect.addEventListener("change",()=>{
 });
 function showConfirmation(booking){
   const panel=document.getElementById("booking-confirmed");
-  const guests=booking.partySize+" "+(booking.partySize===1?"guest":"guests");
   const length=booking.duration+" hour"+(booking.duration>1?"s":"");
-  document.getElementById("booking-confirmed-summary").textContent=formatVisitDate(booking.date)+" · "+plainTime(booking.label)+" · "+guests+" · "+length;
+  document.getElementById("booking-confirmed-summary").textContent=formatVisitDate(booking.date)+" · "+plainTime(booking.label)+" · "+length;
   document.getElementById("booking-confirmed-reference").textContent=booking.reference;
   document.getElementById("booking-confirmed-payment").textContent="Pay "+pounds.format(booking.amount/100)+" at the café when you arrive. We hold your table for 15 minutes after your start time.";
   document.getElementById("booking-confirmed-calendar").href=apiBase+"/api/bookings/"+encodeURIComponent(booking.token)+"/calendar";
@@ -500,8 +501,8 @@ if(apiBase){
     document.querySelector(".booking-planner-intro")?.replaceChildren("Choose your visit details to see free tables and the total price.");
     const saving=Number.isInteger(config.prepayDiscountPercent)&&config.prepayDiscountPercent>0?" and save "+config.prepayDiscountPercent+"%":"";
     document.querySelector(".booking-intro")?.replaceChildren(live.prepay
-      ?"Choose a date, group size and duration. Your table is confirmed straight away. Pay at the café, or pay now by card"+saving+"."
-      :"Choose a date, group size and duration. Your table is confirmed straight away and you pay at the café.");
+      ?"Choose a date and how long. Your table is confirmed straight away. Pay at the café, or pay now by card"+saving+"."
+      :"Choose a date and how long. Your table is confirmed straight away and you pay at the café.");
     reviewActions.querySelector(".form-note")?.replaceChildren("Your table is confirmed as soon as you book.");
     // With card payments on, say what paying now means before the guest chooses.
     const liveNote=document.getElementById("booking-live-note");
