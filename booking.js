@@ -125,7 +125,7 @@ function updatePlan(){
   reviewButton.disabled=busy;
   editButton.disabled=busy;
   estimateRow.hidden=groupVisit;
-  priceNote.hidden=groupVisit;
+  priceNote.hidden=groupVisit||!priceNote.textContent;
   seatingNote.hidden=partySize<5||groupVisit;
   stepLabel.textContent=reviewing?"Step 2 of 2 · Your details":"Step 1 of 2 · Your visit";
   submitBtn.disabled=!reviewing||groupVisit||!partySize||!timeSelect.value||!durationSelect.value||busy;
@@ -145,7 +145,8 @@ function updatePlan(){
     document.getElementById("booking-estimate-label").textContent="Total for your table";
     estimateAmount.textContent=quote?pounds.format(quote.base/100):"—";
     seatingNote.hidden=true;
-    priceNote.textContent=quote?"Drinks and food are ordered separately.":"Choose a time and length to see the total.";
+    priceNote.textContent=quote?"":"Choose a time and length to see the total.";
+    priceNote.hidden=groupVisit||!priceNote.textContent;
     payLaterButton.textContent=quote?"Book now · pay "+pounds.format(quote.base/100)+" at the café":"Book now and pay at the café";
     const prepay=quote&&live.prepay&&quote.amount<quote.base;
     payNowButton.hidden=!live.prepay;
