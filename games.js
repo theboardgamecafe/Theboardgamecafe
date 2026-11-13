@@ -76,7 +76,7 @@
         seats.textContent = `${session.seatsOpen} ${session.seatsOpen === 1 ? 'seat' : 'seats'} left`;
         const url = new URL(whatsappBase);
         const date = requestDate.format(session.start);
-        url.searchParams.set('text', `Hi, could I request a seat for ${session.title} on ${date} at ${time} (UK time) at The Board Game Café? Please let me know if there’s space.`);
+        url.searchParams.set('text', `Hi, could I request a seat for ${session.title} on ${date} at ${time} at The Board Game Café? Please let me know if there’s space.`);
         request.href = url.href;
         request.setAttribute('aria-label', `Request a seat for ${session.title}, ${when.textContent}`);
       }

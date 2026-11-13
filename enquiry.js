@@ -45,8 +45,8 @@ function updateFormState(){
       if(isHire&&["1 hour","2 hours"].includes(duration.value))duration.value="";
       duration.setAttribute("aria-describedby","event-planning-note");
       host.querySelector("#event-planning-note").textContent=isHire
-        ?"Times are UK local time. Private hire has a three-hour minimum. Bringing outside food has a £50 fee. We confirm availability, catering and the full quote with you."
-        :"Times are UK local time. Timing and any food or TV arrangements are confirmed with you before a booking is agreed.";
+        ?"Private hire has a three-hour minimum. Bringing outside food has a £50 fee. We confirm availability, catering and the full quote with you."
+        :"Timing and any food or TV arrangements are confirmed with you before a booking is agreed.";
     }
   }
   const showHostDetails=rawType==="Host a game";
@@ -101,7 +101,7 @@ function formattedBody(){
   if(d.game) lines.push("Game: "+d.game);
   if(d.date) lines.push("Preferred date: "+d.date);
   if(d.size) lines.push("Group size: "+d.size);
-  if(d.time) lines.push("Preferred start time (UK): "+d.time);
+  if(d.time) lines.push("Preferred start time: "+d.time);
   if(d.seats) lines.push("Seats to open: "+d.seats);
   if(d.duration) lines.push("Approximate duration: "+d.duration);
   if(d.catering) lines.push("Food and drinks: "+d.catering);
