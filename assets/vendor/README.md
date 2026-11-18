@@ -15,3 +15,7 @@ esbuild packages/core/index.ts --bundle --format=iife --global-name=LenisBundle 
 ```
 
 `motion.js` in the site root is the café's own code that uses these. See "Motion" in `WEBSITE-MAINTENANCE.md`.
+
+## Icons
+
+The four icons in the phone bar at the bottom of every page (Home, Book, Join, Menu) are from Lucide (https://github.com/lucide-icons/lucide): `house`, `calendar-days`, `users` and `coffee`, copied into each page's `.cafe-tabs` markup. They are the same icons the café app uses for its own bar. Lucide is ISC licensed; its licence is in `LICENSE-lucide.txt`.
