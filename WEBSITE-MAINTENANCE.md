@@ -8,6 +8,31 @@ The homepage keeps the café's earlier photo hero, Playfair Display / Montserrat
 
 The planner collects visit details, shows the per-table estimate and then reveals contact details after Review your plan. Edit visit details preserves the entered values. A booking request still needs the café to confirm availability. Validate both entry points after booking changes.
 
+## Motion
+
+Added 17 November 2026 at the owner's request, using GSAP, Lenis and effects modelled on React Bits. Every page loads `motion.css` in the head and, at the end of the body, `assets/vendor/gsap.min.js`, `assets/vendor/SplitText.min.js`, `assets/vendor/lenis.min.js` and `motion.js`. Versions, licences and how the Lenis file was built are in `assets/vendor/README.md`. The libraries are self-hosted because the CSP allows same-origin scripts only.
+
+What it does:
+
+- **Hero intro** on every page with a `.hero`: the headline rises word by word, then the rest follows. The highlighted words (`.brand-emphasis`, `.neon`) get a slow gold shimmer afterwards.
+- **Scroll reveals**: section headings slide up line by line; cards, photos and icons fade, unveil or draw in as they come into view.
+- **Scrolling strip** under the home hero (`.mo-marquee` in `index.html`). It drifts by itself and speeds up with the scroll. The words are things the café already advertises; edit the list in `index.html` if the offer changes.
+- **Google rating** counts up when it first appears.
+- **Sparks** on buttons and main links when clicked.
+- **Mouse only**: Lenis smooth scrolling, a gentle push-in on the home hero photo, a spotlight on cards, tilting photo cards and primary buttons that lean towards the cursor. Phones and tablets keep native scrolling and get none of these.
+
+Rules to keep when changing it:
+
+- Content must be visible without the script. `motion.css` holds the hero text back for at most 1.7 seconds and then shows it by itself; `motion-noscript.css` removes that hold when JavaScript is off. Below the hero, only `motion.js` hides anything, only if it is below the fold when the script starts, and a backstop shows anything left hidden on screen.
+- `prefers-reduced-motion: reduce` switches the whole layer off. Keep it that way.
+- Forms and the booking planner are never hidden or moved (`SKIP` in `motion.js`). The menu catalogue, legal text, game cards and leaderboards are also left alone.
+- Headings are only split when that leaves their size unchanged (`splitSafely`), otherwise they fade. Do not remove that check: a tight heading wraps differently once split and the page jumps.
+- Do not add GSAP's ScrollTrigger without retesting phones. It resets the scroll position when it refreshes, which cut short the native smooth jump to `/#book` on phones during testing. Reveals use IntersectionObserver instead, and nothing writes the scroll position on touch screens.
+- Thirteen pages have `style-src 'self'` with no `'unsafe-inline'`. Set styles through `element.style` only, never with style attributes or `<style>` tags.
+- `google-reviews.js` replaces the rating and review cards after load, so the reviews block is revealed as a whole and the spotlight is attached on hover.
+
+To switch it all off, remove the `motion.css` link, the `<noscript>` link beside it and the four script tags from every page, and delete the `.mo-marquee` block from `index.html`. Removing only the scripts leaves the hero text waiting on its hold at every page load. Bump the `?v=` strings on `motion.css` and `motion.js` together when either changes. Before publishing a change, check phone and desktop widths for console and CSP errors, `/#book` opened from another page on a phone, the booking planner, the pull-down menu, and reduced motion.
+
 ## Website and app together
 
 Keep `cafe-ui.css` and `cafe-calendar.js` byte-identical with their copies in `web/` in `theboardgamecafe/the-board-game-cafe-preview`. These files own the shared colours, mobile Home / Book / Join / Menu bar, review cards and calendar. Each booking flow supplies its own date limits and availability predicate; selecting a date updates its original date input. The app still checks station availability on the server, and the public website still sends a booking request.
