@@ -1,0 +1,168 @@
+/* The Board Game Café — motion layer styles. Works with motion.js.
+ *
+ * GSAP (gsap.com) drives the animation, Lenis (lenis.darkroom.engineering)
+ * smooths desktop scrolling, and the split headline, scrolling strip, spotlight
+ * cards, sparks and shimmer follow effects from React Bits (reactbits.dev),
+ * rebuilt in plain JavaScript because this site does not use React.
+ *
+ * Nothing here hides content for good: the hero hold below ends by itself,
+ * reduced-motion visitors get none of it, and print shows everything.
+ */
+
+/* ---------- Lenis smooth scrolling (desktop pointers only) ---------- */
+html.lenis,
+html.lenis body { height: auto; }
+html.lenis { scroll-behavior: auto !important; }
+.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
+/* ---------- Hero hold ----------
+ * Keeps the hero text back for a moment so motion.js can bring it in without a
+ * flash. If the script is slow, blocked or fails, the text fades in by itself.
+ * motion.js adds .mo-intro to <html> when it takes over. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes mo-hold {
+    0%, 76% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes mo-hold-zoom {
+    0%, 55% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  html:not(.mo-intro) .hero h1,
+  html:not(.mo-intro) .hero h1 ~ :not(form):not(fieldset),
+  html:not(.mo-intro) .hero .eyebrow {
+    animation: mo-hold 1.7s linear backwards;
+  }
+  html:not(.mo-intro) .hero-premium-bg img {
+    animation: mo-hold-zoom 2.4s cubic-bezier(.2, .7, .2, 1) backwards;
+  }
+}
+
+/* ---------- Reveal helpers ---------- */
+.mo-anim { transition: none !important; }
+
+/* Headline lines slide up from behind a mask (SplitText adds the -mask
+ * wrapper). The mask is drawn a little larger than the line so descenders and
+ * italic overhang are not cut off, without changing the layout. */
+.mo-line-mask {
+  overflow: visible !important;
+  clip-path: inset(-.12em -.25em -.3em -.25em);
+}
+
+/* ---------- Scrolling strip under the home hero ---------- */
+.mo-marquee {
+  position: relative;
+  overflow: hidden;
+  padding: 15px 0 14px;
+  background: #1e1426;
+  border-bottom: 1px solid rgba(195, 154, 66, .22);
+  color: #f2eadc;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.mo-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+.mo-marquee-group {
+  display: flex;
+  flex: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.mo-marquee-group li {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(17px, 2vw, 23px);
+  line-height: 1.2;
+  letter-spacing: .005em;
+}
+.mo-marquee-group li::after {
+  content: "\2726";
+  margin: 0 1.5em;
+  color: #c9a451;
+  font-style: normal;
+  font-size: .5em;
+}
+
+/* ---------- Gold shimmer on the hero's highlighted words ---------- */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero h1 .mo-shiny {
+    padding: 0 .08em;
+    margin: 0 -.08em;
+    background-image: linear-gradient(105deg, #d8b65f 0%, #d8b65f 40%, #fff3c9 50%, #d8b65f 60%, #d8b65f 100%);
+    background-size: 280% 100%;
+    background-position: 100% 0;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    animation: mo-shine 7s ease-in-out 1s infinite;
+  }
+  @keyframes mo-shine {
+    0%, 52% { background-position: 100% 0; }
+    100% { background-position: -40% 0; }
+  }
+}
+
+/* ---------- Spotlight that follows the mouse over cards ---------- */
+.mo-spot-glow,
+.mo-spot-edge {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+.mo-spot-glow {
+  background: radial-gradient(circle 260px at var(--mo-x, 50%) var(--mo-y, 50%), var(--mo-glow, rgba(225, 193, 111, .15)), transparent 72%);
+}
+.mo-spot-edge {
+  padding: 1px;
+  background: radial-gradient(circle 200px at var(--mo-x, 50%) var(--mo-y, 50%), var(--mo-edge, rgba(236, 208, 134, .85)), transparent 72%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.mo-spot-on > .mo-spot-glow,
+.mo-spot-on > .mo-spot-edge { opacity: 1; }
+.light-band .mo-spot { --mo-glow: rgba(195, 154, 66, .13); --mo-edge: rgba(185, 137, 52, .8); }
+.group-photo.mo-spot { --mo-glow: rgba(255, 255, 255, .13); --mo-edge: rgba(236, 208, 134, .7); }
+
+/* ---------- Spark on click ---------- */
+.mo-spark {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 132px;
+  height: 132px;
+  z-index: 2147483000;
+  pointer-events: none;
+}
+
+/* ---------- Reduced motion and print ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero h1 .mo-shiny { animation: none; }
+  .mo-spot-glow,
+  .mo-spot-edge { transition: none; }
+}
+@media print {
+  [data-mo] { opacity: 1 !important; transform: none !important; clip-path: none !important; }
+  .hero h1,
+  .hero h1 ~ *,
+  .hero .eyebrow,
+  .hero-premium-bg img { animation: none !important; }
+  .mo-marquee,
+  .mo-spark { display: none !important; }
+}

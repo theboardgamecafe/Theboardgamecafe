@@ -1,0 +1,6 @@
+/* Loaded only when JavaScript is off: show the hero straight away instead of
+ * waiting for the short hold in motion.css to finish. */
+.hero h1,
+.hero h1 ~ *,
+.hero .eyebrow,
+.hero-premium-bg img { animation: none !important; }
